@@ -3,6 +3,7 @@ require_once 'database/connection.php';
 require_once 'database/categories.php';
 session_start();
 require 'templates/common/header.php';
+require 'templates/category-menu.php';
 
 $categories = getAllCategories($db);
 ?>

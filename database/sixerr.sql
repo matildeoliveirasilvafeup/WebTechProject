@@ -63,6 +63,13 @@ CREATE TABLE categories (
     name TEXT UNIQUE NOT NULL
 );
 
+CREATE TABLE subcategories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    UNIQUE(category_id, name)
+);
+
 CREATE TABLE conversations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user1_id INTEGER REFERENCES users(id),
@@ -104,6 +111,71 @@ INSERT INTO categories (name, icon) VALUES
 ('Music & Audio', 'fas fa-headphones'),
 ('Business', 'fas fa-briefcase'),
 ('Consulting', 'fas fa-users-cog');
+
+INSERT INTO subcategories (category_id, name) VALUES
+(1, 'Logos'),
+(1, 'Business Cards'),
+(1, 'Brand Identity'),
+(1, 'Social Media Design'),
+(1, 'Flyers & Posters'),
+(1, 'Illustration'),
+(1, 'Presentation Design'),
+
+(2, 'Landing Pages'),
+(2, 'Email Marketing'),
+(2, 'SEO'),
+(2, 'Online Advertising'),
+(2, 'Social Media Strategy'),
+(2, 'Content Marketing'),
+
+(3, 'Creative Writing'),
+(3, 'Translations'),
+(3, 'Proofreading & Editing'),
+(3, 'Technical Writing'),
+(3, 'Copywriting'),
+(3, 'Product Descriptions'),
+
+(4, 'Web Development'),
+(4, 'Mobile Apps'),
+(4, 'Automation'),
+(4, 'Scripts & Bots'),
+(4, 'API Integration'),
+(4, 'Database Development'),
+
+(5, 'Explainer Videos'),
+(5, '2D Animation'),
+(5, '3D Animation'),
+(5, 'Video Editing'),
+(5, 'Logo Animation'),
+(5, 'Subtitles & Captions'),
+
+(6, 'Image Generation'),
+(6, 'Chatbots'),
+(6, 'Machine Learning Models'),
+(6, 'AI Data Analysis'),
+(6, 'Voice Cloning'),
+(6, 'AI Assistants'),
+
+(7, 'Voice Over'),
+(7, 'Music Production'),
+(7, 'Mixing & Mastering'),
+(7, 'Podcast Editing'),
+(7, 'Sound Effects'),
+(7, 'Jingles & Intros'),
+
+(8, 'Business Plans'),
+(8, 'Market Research'),
+(8, 'Financial Consulting'),
+(8, 'Pitch Decks'),
+(8, 'Virtual Assistant'),
+(8, 'Data Entry'),
+
+(9, 'Career Coaching'),
+(9, 'Startup Consulting'),
+(9, 'Legal Consulting'),
+(9, 'Marketing Strategy'),
+(9, 'Tech Consulting'),
+(9, 'HR & Recruiting');
 
 INSERT INTO services (freelancer_id, title, description, category_id, price, delivery_time) VALUES
 (1, 'Criação de logotipos únicos', 'Logo personalizado para a sua marca.', 1, 75.00, 3),
