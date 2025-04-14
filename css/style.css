@@ -496,6 +496,7 @@ nav a:hover {
     top: -20px;
 }
 
+.sign-up-container input[type="name"],
 .sign-up-container input[type="username"],
 .sign-up-container input[type="email"],
 .sign-up-container input[type="password"],

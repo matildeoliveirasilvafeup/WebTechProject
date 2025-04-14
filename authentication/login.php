@@ -1,26 +1,34 @@
 <?php
 session_start();
 
-$error = '';
+$db = new PDO('sqlite:../database/sixerr.db');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    // Fake login for testing
-    if ($email === 'user@example.com' && $password === 'password123') {
-        $_SESSION['user'] = $email;
-        header('Location: dashboard.php');
+    $stmt = $db->prepare("SELECT id, email, password_hash FROM users WHERE email = :email");
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($password, $user['password_hash'])) {
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_email'] = $user['email'];
+        $_SESSION['user_name'] = $user['name'];
+
+        header('Location: /dashboard.php');
         exit;
     } else {
-        $error = 'Invalid email or password.';
+        $error = 'Email or password is incorrect.';
     }
 }
 
-require 'includes/header.php';
+require '../includes/header.php';
 ?>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <div class="login-container">
@@ -47,7 +55,7 @@ require 'includes/header.php';
     <p class="signup-link">Don't have an account? <a href="register.php">Join here</a></p>
 </div>
 
-<script src="scripts/script.js"></script>
+<script src="../scripts/script.js"></script>
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
-<?php require 'includes/footer.php'; ?>
+<?php require '../includes/footer.php'; ?>

@@ -1,26 +1,39 @@
 <?php
 session_start();
+
+$db = new PDO('sqlite:../database/sixerr.db');
+
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['name'] ?? '';
     $username = $_POST['username'] ?? '';
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    // Simple validation
-    if (empty($username)|| empty($email) || empty($password)) {
-        $error = 'Please fill in all fields.';
-    } else {
-        $_SESSION['user'] = $email;
-        header('Location: dashboard.php');
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+    try {
+        $stmt = $db->prepare("INSERT INTO users (name, username, email, password_hash) 
+                              VALUES (:name, :username, :email, :password_hash)");
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password_hash', $password_hash);
+        $stmt->execute();
+
+        header("Location: /index.php");
         exit;
+
+    } catch (PDOException $e) {
+        $error = 'Error registering: ' . $e->getMessage();
     }
 }
 
-require 'includes/header.php';
+require '../includes/header.php';
 ?>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
 
 <div class="sign-up-container">
@@ -31,6 +44,9 @@ require 'includes/header.php';
     <?php endif; ?>
 
     <form method="POST" action="register.php">
+
+        <label for="name">Name</label>
+        <input type="name" name="name" id="name" required>
         
         <label for="username">Username</label>
         <input type="username" name="username" id="username" required>
@@ -58,7 +74,7 @@ require 'includes/header.php';
     <p class="login-link">Already have an account? <a href="login.php">Sign in</a></p>
 </div>
 
-<script src="scripts/script.js"></script>
+<script src="../scripts/script.js"></script>
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
-<?php require 'includes/footer.php'; ?>
+<?php require '../includes/footer.php'; ?>

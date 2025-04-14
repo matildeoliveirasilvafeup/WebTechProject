@@ -45,6 +45,7 @@ function togglePassword(icon) {
 
 /* ===== FORM SETUP ===== */
 
+const nameInput = document.getElementById('name');
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
 const emailInput = document.getElementById('email');
@@ -59,6 +60,11 @@ emailInput.addEventListener('input', function () {
     checkSignInFormValidity();
     checkSignUpFormValidity();
 });
+
+nameInput.addEventListener('input', function () {
+    checkSignUpFormValidity();
+});
+
 usernameInput.addEventListener('input', function () {
     checkSignUpFormValidity();
 });
@@ -120,6 +126,7 @@ function checkSignInFormValidity() {
 }
 
 function checkSignUpFormValidity() {
+    const isNameValid = nameInput.value.trim();
     const isUsernameValid = usernameInput.value.trim();
     const email = emailInput.value.trim();
     const password = passwordInput.value;
@@ -128,7 +135,7 @@ function checkSignUpFormValidity() {
     const isEmailValid = checkEmailRequirements(email);
     let isPasswordValid = checkPasswordRequirements(password);
 
-    if (isUsernameValid && isEmailValid && isPasswordValid) {
+    if (isNameValid && isUsernameValid && isEmailValid && isPasswordValid) {
         Btn.removeAttribute('disabled');
     } else {
         Btn.setAttribute('disabled', 'true');
