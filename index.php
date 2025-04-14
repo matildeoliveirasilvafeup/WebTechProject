@@ -90,4 +90,13 @@ $featuredServices = getFeaturedServices($db);;
     </div>
 </div>
 
+<div class="final-cta">
+    <h2>Ready to join our freelance marketplace?</h2>
+    <p>Whether you're here to offer your talent or find it, you're just a click away.</p>
+    <div class="cta-buttons">
+        <a href="register.php" class="cta-btn primary">Join Now</a>
+        <a href="search.php" class="cta-btn secondary">Browse Services</a>
+    </div>
+</div>
+
 <?php require 'templates/common/footer.php'; ?>

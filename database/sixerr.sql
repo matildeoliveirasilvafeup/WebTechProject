@@ -201,8 +201,16 @@ INSERT INTO orders_services (client_id, freelancer_id, service_id, total_price, 
 (2, 3, 2, 150.00, 'in_progress');
 
 INSERT INTO reviews (service_id, client_id, rating, comment) VALUES
-(1, 4, 5, 'Serviço excelente, recomendo!'),
-(2, 2, 4, 'Muito profissional, mas podia ser mais rápido.');
+(1, 4, 5, 'Excellent service, highly recommended!'),
+(2, 2, 4, 'Very professional, but could be a bit faster.'),
+(3, 4, 5, 'Loved the business card design, it’s exactly what I needed.'),
+(4, 2, 3, 'Good work, but took longer than expected.'),
+(5, 4, 4, 'Nice templates for Instagram, helped boost my brand.'),
+(6, 2, 5, 'Landing page looks great and works perfectly.'),
+(7, 4, 5, 'The brand guide was super useful, great attention to detail.'),
+(2, 4, 4, 'Clean layout, fits well on mobile devices.'),
+(3, 2, 5, 'Super fast delivery and great communication.'),
+(1, 2, 5, 'Amazing logo, captured my vision perfectly.');
 
 INSERT INTO conversations (user1_id, user2_id) VALUES
 (4, 1),
