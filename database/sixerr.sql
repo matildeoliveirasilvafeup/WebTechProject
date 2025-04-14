@@ -59,6 +59,7 @@ CREATE TABLE reviews (
 
 CREATE TABLE categories (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    icon TEXT,
     name TEXT UNIQUE NOT NULL
 );
 
@@ -93,11 +94,11 @@ INSERT INTO profiles (user_id, bio, profile_picture, is_freelancer, is_client) V
 (4, 'Empresária à procura de serviços criativos.', 'https://picsum.photos/200?4', 0, 1);
 
 
-INSERT INTO categories (name) VALUES
-('Design Gráfico'),
-('Desenvolvimento Web'),
-('Marketing Digital'),
-('Escrita & Tradução');
+INSERT INTO categories (name, icon) VALUES
+('Design Gráfico', 'fas fa-paint-brush'),
+('Desenvolvimento Web', 'fas fa-code'),
+('Marketing Digital', 'fas fa-bullhorn'),
+('Escrita & Tradução', 'fas fa-pencil-alt');
 
 
 INSERT INTO services (freelancer_id, title, description, category_id, price, delivery_time) VALUES

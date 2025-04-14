@@ -8,7 +8,7 @@ $categories = getAllCategories($db);
 ?>
 
 <div class="hero">
-    <h1>Find the perfect freelancer for your project</h1>
+    <h1 id="typing-effect">Find the perfect freelancer for your project</h1>
     <form method="GET" action="search.php">
         <input type="text" name="q" placeholder="Search services...">
         <button type="submit">Search</button>
@@ -20,7 +20,7 @@ $categories = getAllCategories($db);
         <div class="category-carousel">
             <?php foreach ($categories as $category): ?>
                 <a href="search.php?category=<?= $category['id'] ?>" class="category-card">
-                    <div class="category-icon">🎯</div>
+                    <i class="icon <?= htmlspecialchars($category['icon']) ?>"></i>
                     <p><?= htmlspecialchars($category['name']) ?></p>
                 </a>
             <?php endforeach; ?>
