@@ -2,7 +2,7 @@
 require_once 'database/connection.php';
 require_once 'database/categories.php';
 session_start();
-require 'includes/header.php';
+require 'templates/common/header.php';
 
 $categories = getAllCategories($db);
 ?>
@@ -28,4 +28,4 @@ $categories = getAllCategories($db);
     </div>    
 </div>
 
-<?php require 'includes/footer.php'; ?>
+<?php require 'templates/common/footer.php'; ?>
