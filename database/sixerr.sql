@@ -178,19 +178,23 @@ INSERT INTO subcategories (category_id, name) VALUES
 (9, 'HR & Recruiting');
 
 INSERT INTO services (freelancer_id, title, description, category_id, price, delivery_time) VALUES
-(1, 'Criação de logotipos únicos', 'Logo personalizado para a sua marca.', 1, 75.00, 3),
-(3, 'Landing Page Profissional', 'Página de captura moderna e responsiva.', 2, 150.00, 5),
-(1, 'Design de cartão de visita profissional', 'Crio cartões de visita modernos e elegantes para sua marca.', 1, 40.00, 2),
-(3, 'Website institucional em HTML/CSS', 'Desenvolvimento de site responsivo com até 5 páginas.', 2, 200.00, 7),
-(1, 'Template para redes sociais', 'Pack com 10 templates personalizáveis para Instagram.', 1, 60.00, 3),
-(3, 'Landing page com formulário de contacto', 'Landing otimizada para captação de leads com formulário funcional.', 2, 130.00, 4),
-(1, 'Manual de identidade visual', 'Criação de um guia completo com cores, tipografia e aplicação da marca.', 1, 120.00, 6);
+(1, 'Unique Logo Design', 'Custom logo tailored to your brand identity.', 1, 75.00, 3),
+(3, 'Professional Landing Page', 'Modern, responsive landing page design.', 2, 150.00, 5),
+(1, 'Business Card Design', 'Stylish and modern business cards for your brand.', 1, 40.00, 2),
+(3, 'Company Website in HTML/CSS', 'Responsive website with up to 5 pages.', 2, 200.00, 7),
+(1, 'Social Media Template Pack', 'Set of 10 customizable Instagram templates.', 1, 60.00, 3),
+(3, 'Landing Page with Contact Form', 'Lead-optimized landing page with working contact form.', 2, 130.00, 4),
+(1, 'Brand Identity Manual', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6);
 
 
 INSERT INTO service_images (service_id, media_url) VALUES
 (1, 'https://picsum.photos/300?logo1'),
-(1, 'https://picsum.photos/300?logo2'),
-(2, 'https://picsum.photos/300?landing1');
+(2, 'https://picsum.photos/300?landing1'),
+(3, 'https://picsum.photos/300?card1'),
+(4, 'https://picsum.photos/300?website1'),
+(5, 'https://picsum.photos/300?template1'),
+(6, 'https://picsum.photos/300?landing2'),
+(7, 'https://picsum.photos/300?identity1');
 
 INSERT INTO orders_services (client_id, freelancer_id, service_id, total_price, status) VALUES
 (4, 1, 1, 75.00, 'completed'),
