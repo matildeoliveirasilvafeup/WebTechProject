@@ -13,7 +13,7 @@ CREATE TABLE profiles (
     bio TEXT,
     profile_picture TEXT,
     is_freelancer INTEGER DEFAULT 0,
-    is_client INTEGER DEFAULT 0
+    is_client INTEGER DEFAULT 1
 );
 
 CREATE TABLE services (
@@ -52,6 +52,7 @@ CREATE TABLE reviews (
     rating INTEGER CHECK (rating BETWEEN 1 AND 5),
     comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    UNIQUE(service_id, client_id)
 );
 
 CREATE TABLE categories (
@@ -59,10 +60,17 @@ CREATE TABLE categories (
     name TEXT UNIQUE NOT NULL
 );
 
+CREATE TABLE conversations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user1_id INTEGER REFERENCES users(id),
+    user2_id INTEGER REFERENCES users(id),
+    started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    receiver_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE,
+    sender_id INTEGER REFERENCES users(id),
     message TEXT NOT NULL,
     read INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
