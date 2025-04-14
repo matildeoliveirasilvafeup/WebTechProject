@@ -1,0 +1,139 @@
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    username TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role TEXT CHECK(role IN ('user', 'admin')) DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE profiles (
+    user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    bio TEXT,
+    profile_picture TEXT,
+    is_freelancer INTEGER DEFAULT 0,
+    is_client INTEGER DEFAULT 1
+);
+
+CREATE TABLE services (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    freelancer_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    description TEXT,
+    category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
+    price REAL NOT NULL,
+    delivery_time INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE service_images (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
+    media_url TEXT NOT NULL
+);
+
+CREATE TABLE orders_services (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    client_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    freelancer_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
+    total_price REAL NOT NULL,
+    status TEXT CHECK(status IN ('pending', 'in_progress', 'completed', 'cancelled')) DEFAULT 'pending',
+    reviewed INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE reviews (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
+    client_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    rating INTEGER CHECK (rating BETWEEN 1 AND 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(service_id, client_id)
+);
+
+CREATE TABLE categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    icon TEXT,
+    name TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE conversations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user1_id INTEGER REFERENCES users(id),
+    user2_id INTEGER REFERENCES users(id),
+    started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE,
+    sender_id INTEGER REFERENCES users(id),
+    message TEXT NOT NULL,
+    read INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+INSERT INTO users (name, username, email, password_hash, role) VALUES
+('João Silva', 'joaosilva', 'joao@example.com', 'hash1', 'user'),
+('Maria Costa', 'mariac', 'maria@example.com', 'hash2', 'admin'),
+('Ricardo Melo', 'ricardomelo', 'ricardo@example.com', 'hash3', 'user'),
+('Ana Sousa', 'anasousa', 'ana@example.com', 'hash4', 'user');
+
+
+INSERT INTO profiles (user_id, bio, profile_picture, is_freelancer, is_client) VALUES
+(1, 'Designer gráfico com 5 anos de experiência.', 'https://picsum.photos/200?1', 1, 1),
+(2, 'Gestora de plataforma.', 'https://picsum.photos/200?2', 0, 1),
+(3, 'Desenvolvedor web especializado em front-end.', 'https://picsum.photos/200?3', 1, 1),
+(4, 'Empresária à procura de serviços criativos.', 'https://picsum.photos/200?4', 0, 1);
+
+
+INSERT INTO categories (name, icon) VALUES
+('Graphics & Design', 'fas fa-paint-brush'),
+('Digital Marketing', 'fas fa-bullhorn'),
+('Writing & Translation', 'fas fa-pencil-alt'),
+('Programming & Tech', 'fas fa-laptop-code'),
+('Video & Animation', 'fas fa-video'),
+('AI Services', 'fas fa-robot'),
+('Music & Audio', 'fas fa-headphones'),
+('Business', 'fas fa-briefcase'),
+('Consulting', 'fas fa-users-cog');
+
+INSERT INTO services (freelancer_id, title, description, category_id, price, delivery_time) VALUES
+(1, 'Criação de logotipos únicos', 'Logo personalizado para a sua marca.', 1, 75.00, 3),
+(3, 'Landing Page Profissional', 'Página de captura moderna e responsiva.', 2, 150.00, 5),
+(1, 'Design de cartão de visita profissional', 'Crio cartões de visita modernos e elegantes para sua marca.', 1, 40.00, 2),
+(3, 'Website institucional em HTML/CSS', 'Desenvolvimento de site responsivo com até 5 páginas.', 2, 200.00, 7),
+(1, 'Template para redes sociais', 'Pack com 10 templates personalizáveis para Instagram.', 1, 60.00, 3),
+(3, 'Landing page com formulário de contacto', 'Landing otimizada para captação de leads com formulário funcional.', 2, 130.00, 4),
+(1, 'Manual de identidade visual', 'Criação de um guia completo com cores, tipografia e aplicação da marca.', 1, 120.00, 6);
+
+
+INSERT INTO service_images (service_id, media_url) VALUES
+(1, 'https://picsum.photos/300?logo1'),
+(1, 'https://picsum.photos/300?logo2'),
+(2, 'https://picsum.photos/300?landing1');
+
+INSERT INTO orders_services (client_id, freelancer_id, service_id, total_price, status) VALUES
+(4, 1, 1, 75.00, 'completed'),
+(2, 3, 2, 150.00, 'in_progress');
+
+INSERT INTO reviews (service_id, client_id, rating, comment) VALUES
+(1, 4, 5, 'Serviço excelente, recomendo!'),
+(2, 2, 4, 'Muito profissional, mas podia ser mais rápido.');
+
+INSERT INTO conversations (user1_id, user2_id) VALUES
+(4, 1),
+(2, 3);
+
+INSERT INTO messages (conversation_id, sender_id, message) VALUES
+(1, 4, 'Olá, estou interessada no teu serviço de design.'),
+(1, 1, 'Olá Ana! Claro, como posso ajudar?'),
+(2, 2, 'Preciso de ajuda com o site da empresa.'),
+(2, 3, 'Claro, posso marcar uma call para hoje.');
