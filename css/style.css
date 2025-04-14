@@ -107,22 +107,28 @@ nav a:hover {
     margin: 2em;
 }
 
+.hero form {
+    display: flex;
+    gap: 0;
+    justify-content: center;
+    align-items: center;
+}
+
 .hero input[type="text"] {
     padding: 10px;
     width: 60%;
     border: none;
-    border-radius: 5px;
+    border-radius: 5px 0 0 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .hero button {
-    padding: 10px 15px;
+    padding: 10px 30px;
     background: #1e3a5f;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 0 5px 5px 0;
     cursor: pointer;
-    margin-left: 10px;
 }
 
 .hero button:hover {

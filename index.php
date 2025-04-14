@@ -11,7 +11,7 @@ $categories = getAllCategories($db);
     <h1 id="typing-effect">Find the perfect freelancer for your project</h1>
     <form method="GET" action="search.php">
         <input type="text" name="q" placeholder="Search services...">
-        <button type="submit">Search</button>
+        <button type="submit"><i class="fas fa-search"></i></button>
     </form>
 </div>  
 
