@@ -13,8 +13,8 @@
     <div class="logo"><a href="index.php">Sixerr</a></div>
     <nav>
         <?php if (!isset($_SESSION['user_id'])): ?>
-            <a href="login.php">Login</a>
-            <a href="register.php">Register</a>
+            <a href="authentication/login.php">Login</a>
+            <a href="authentication/register.php">Register</a>
         <?php else: ?>
             <a href="dashboard.php">Dashboard</a>
             <a href="logout.php">Logout</a>
