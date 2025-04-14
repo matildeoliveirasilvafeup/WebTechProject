@@ -95,11 +95,15 @@ INSERT INTO profiles (user_id, bio, profile_picture, is_freelancer, is_client) V
 
 
 INSERT INTO categories (name, icon) VALUES
-('Design Gráfico', 'fas fa-paint-brush'),
-('Desenvolvimento Web', 'fas fa-code'),
-('Marketing Digital', 'fas fa-bullhorn'),
-('Escrita & Tradução', 'fas fa-pencil-alt');
-
+('Graphics & Design', 'fas fa-paint-brush'),
+('Digital Marketing', 'fas fa-bullhorn'),
+('Writing & Translation', 'fas fa-pencil-alt'),
+('Programming & Tech', 'fas fa-laptop-code'),
+('Video & Animation', 'fas fa-video'),
+('AI Services', 'fas fa-robot'),
+('Music & Audio', 'fas fa-headphones'),
+('Business', 'fas fa-briefcase'),
+('Consulting', 'fas fa-users-cog');
 
 INSERT INTO services (freelancer_id, title, description, category_id, price, delivery_time) VALUES
 (1, 'Criação de logotipos únicos', 'Logo personalizado para a sua marca.', 1, 75.00, 3),
