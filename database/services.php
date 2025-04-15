@@ -34,4 +34,29 @@ function getFeaturedServices(PDO $db, int $limit = 6): array {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getServiceById(PDO $db, int $id): ?array {
+    $stmt = $db->prepare("
+        SELECT 
+            services.*,
+            users.name AS freelancer_name,
+            profiles.profile_picture,
+            (
+                SELECT media_url 
+                FROM service_images 
+                WHERE service_id = services.id 
+                ORDER BY id ASC LIMIT 1
+            ) AS media_url
+        FROM services
+        JOIN users ON services.freelancer_id = users.id
+        LEFT JOIN profiles ON users.id = profiles.user_id
+        WHERE services.id = :id
+        LIMIT 1
+    ");
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    $service = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $service ?: null;
+}
+
 ?>
