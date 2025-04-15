@@ -43,7 +43,7 @@
                         By <strong><?= htmlspecialchars($service['freelancer_name']) ?></strong><br>
                         <?php if ($ratingInfo['avg']): ?>
                             <?= renderStars($ratingInfo['avg']) ?>
-                            <?= $ratingInfo['avg'] ?> (<?= $ratingInfo['count'] ?>)
+                            <?= $ratingInfo['avg'] ?> (<?= $ratingInfo['count'] ?> reviews)
                         <?php else: ?>
                             No reviews yet
                         <?php endif; ?>
@@ -57,6 +57,16 @@
                     <a href="contact_freelancer.php?id=<?= $service['freelancer_id'] ?>" class="btn-hire">Contact</a>
                     <a href="#" class="btn-add-cart">Add to Cart</a>
                 </div>
+            </div>
+
+            <div class="service-info">
+                <h3>Service Information</h3>
+                <ul>
+                    <li><i class="fas fa-clock"></i><strong> Delivery: </strong> <?= $service['delivery_time'] ?> days</li>
+                    <li><i class="fas fa-tags"></i><strong> Category: </strong> <?= htmlspecialchars($service['category_name']) ?></li>
+                    <li><i class="fas fa-sync-alt"></i><strong> Included Revisions: </strong> Until <?= $service['number_of_revisions'] ?> revisions</li>
+                    <li><i class="fas fa-language"></i><strong> Language: </strong> <?= htmlspecialchars($service['language']) ?></li>
+                </ul>
             </div>
         </div>
     </body>

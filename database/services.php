@@ -40,6 +40,7 @@ function getServiceById(PDO $db, int $id): ?array {
             services.*,
             users.name AS freelancer_name,
             profiles.profile_picture,
+            categories.name AS category_name,
             (
                 SELECT media_url 
                 FROM service_images 
@@ -49,9 +50,11 @@ function getServiceById(PDO $db, int $id): ?array {
         FROM services
         JOIN users ON services.freelancer_id = users.id
         LEFT JOIN profiles ON users.id = profiles.user_id
+        LEFT JOIN categories ON services.category_id = categories.id
         WHERE services.id = :id
         LIMIT 1
     ");
+    
     $stmt->bindValue(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     $service = $stmt->fetch(PDO::FETCH_ASSOC);
