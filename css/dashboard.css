@@ -1,0 +1,145 @@
+:root {
+    --main-text-color: #3c3c3c;
+    --primary-color: #00b4d8;
+    --bg-color: #f0f4f8;
+    --accent-light: #e1ecf4;
+    --sidebar-width: 250px;
+    --icon-width: 50px;
+    --text-offset: 20px; /* Ajusta a posição horizontal do texto */
+}
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--main-text-color);
+    position: relative; /* Adiciona essa propriedade para permitir o uso de sticky */
+}
+
+.sidebar {
+    width: var(--icon-width); /* Inicialmente a sidebar tem a largura do ícone */
+    overflow: hidden;
+    background-color: white;
+    padding: 2em 1em;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    position: sticky; /* Agora a sidebar será fixa ao rolar a página */
+    top: 0; /* Fixa no topo da página */
+    bottom: 0; /* Garante que a sidebar não ultrapasse a parte inferior da tela */
+    z-index: 10;
+    transition: width 0.3s ease;
+    flex-shrink: 0; /* Impede que a sidebar encolha */
+}
+
+.sidebar:hover {
+    width: var(--sidebar-width); /* Expande a sidebar quando o mouse está em cima */
+}
+
+.sidebar h3 {
+    width: 100%;
+    font-size: 2em;
+    color: var(--main-text-color);
+    margin-bottom: 1em;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar h3 span {
+    font-size: 1em;
+    color: var(--primary-color);
+    margin-bottom: 1em;
+    text-align: center;
+    display: none;
+}
+
+.sidebar h3 i {
+    font-size: 1em;
+    color: var(--primary-color);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 1em 0;
+    position: relative;
+    align-items: start; /* Alinha o ícone e o texto verticalmente */
+    transition: background-color 0.3s ease;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: var(--main-text-color);
+    font-weight: 500;
+    display: flex; /* Usa flex para alinhar horizontalmente */
+    align-items: center; /* Alinha o ícone e o texto verticalmente no centro */
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+    background-color: var(--accent-light);
+    color: var(--primary-color);
+}
+
+.sidebar a i {
+    font-size: 1.5em; /* Define o tamanho do ícone */
+    margin-right: 10px; /* Adiciona espaço entre o ícone e o texto */
+}
+
+.sidebar ul li a span {
+    width: 250px;
+    display: inline-block; /* Exibe o texto ao lado do ícone */
+    position: absolute;
+    left: calc(var(--text-offset) + 25px); /* Ajuste da posição horizontal do texto */
+    opacity: 0; /* Texto sempre visível */
+    transition: left 0.3s ease;
+}
+
+.sidebar:hover ul li a span {
+    left: calc(var(--icon-width) + 10px); /* Ajusta a posição do texto quando a sidebar estiver expandida */
+    opacity: 1;
+}
+
+.sidebar:hover h3 span {
+    display: block; /* Exibe o texto ao lado do ícone quando a sidebar estiver expandida */
+}
+
+.sidebar:hover h3 i {
+    display: none; /* Exibe o texto ao lado do ícone quando a sidebar estiver expandida */
+}
+
+.dashboard-content {
+    position: absolute;
+    flex-grow: 1;
+    padding: 2em;
+    margin-left: calc(var(--sidebar-width) / 2);
+    transition: margin-left 0.3s ease;
+}
+
+.dashboard-content h2 {
+    color: var(--primary-color);
+    margin-bottom: 1em;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.sidebar .menu-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.logout {
+    margin-bottom: auto; /* Isso empurra o item de logout para a parte inferior */
+}
