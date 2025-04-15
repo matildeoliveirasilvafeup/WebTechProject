@@ -22,6 +22,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':password_hash', $password_hash);
         $stmt->execute();
 
+        $user_id = $db->lastInsertId();
+
+        $stmt = $db->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $user_id);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $_SESSION['user'] = $user;
+        $_SESSION['user_id'] = $user['id'];
+
         header("Location: /index.php");
         exit;
 
