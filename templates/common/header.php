@@ -12,7 +12,7 @@
 <header>
     <div class="logo"><a href="/index.php">Sixerr</a></div>
     <nav>
-        <?php if (!isset($_SESSION['user_id'])): ?>
+        <?php if (!isset($_SESSION['user'])): ?>
             <a href="/authentication/login.php">Login</a>
             <a href="/authentication/register.php">Register</a>
         <?php else: ?>

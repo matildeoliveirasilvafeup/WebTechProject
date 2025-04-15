@@ -30,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $_SESSION['user'] = $user;
-        $_SESSION['user_id'] = $user['id'];
 
         header("Location: /index.php");
         exit;
@@ -60,9 +59,11 @@ require '../templates/common/header.php';
         
         <label for="username">Username</label>
         <input type="username" name="username" id="username" required>
+        <span id="username-status" class="validation-msg"></span>
 
         <label for="email">Email</label>
         <input type="email" name="email" id="email" placeholder="user@example.com" required>
+        <span id="email-status" class="validation-msg"></span>
 
         <label for="password">Password</label>
         <div class="password-wrapper">

@@ -51,23 +51,68 @@ const passwordInput = document.getElementById('password');
 const emailInput = document.getElementById('email');
 const Btn = document.getElementById('btn');
 
-passwordInput.addEventListener('input', function () {
-    checkSignInFormValidity();
+const emailStatus = document.getElementById('email-status');
+const usernameStatus = document.getElementById('username-status');
+
+let emailAvailable = false;
+let usernameAvailable = false;
+
+passwordInput.addEventListener('input', () => {
+    checkPasswordRequirements(passwordInput.value);
     checkSignUpFormValidity();
 });
 
-emailInput.addEventListener('input', function () {
-    checkSignInFormValidity();
-    checkSignUpFormValidity();
+emailInput.addEventListener('input', () => {
+    const email = emailInput.value.trim();
+
+    if (checkEmailRequirements(email)) {
+        fetch(`../database/register.php?email=${encodeURIComponent(email)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.email?.used) {
+                    emailStatus.textContent = 'Email already in use';
+                    emailStatus.style.color = 'red';
+                    emailAvailable = false;
+                } else {
+                    emailStatus.textContent = '';
+                    emailAvailable = true;
+                }
+                checkSignUpFormValidity();
+            });
+    } else {
+        emailStatus.textContent = 'Invalid email format';
+        emailStatus.style.color = 'gray';
+        emailAvailable = false;
+        checkSignUpFormValidity();
+    }
 });
 
-nameInput.addEventListener('input', function () {
-    checkSignUpFormValidity();
+usernameInput.addEventListener('input', () => {
+    const username = usernameInput.value.trim();
+
+    if (username) {
+        fetch(`../database/register.php?username=${encodeURIComponent(username)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.username?.used) {
+                    usernameStatus.textContent = 'Username already taken';
+                    usernameStatus.style.color = 'red';
+                    usernameAvailable = false;
+                } else {
+                    usernameStatus.textContent = 'Username available';
+                    usernameStatus.style.color = 'green';
+                    usernameAvailable = true;
+                }
+                checkSignUpFormValidity();
+            });
+    } else {
+        usernameStatus.textContent = '';
+        usernameAvailable = false;
+        checkSignUpFormValidity();
+    }
 });
 
-usernameInput.addEventListener('input', function () {
-    checkSignUpFormValidity();
-});
+nameInput.addEventListener('input', checkSignUpFormValidity);
 
 function checkEmailRequirements(email) {
 
@@ -94,10 +139,8 @@ function checkPasswordRequirements(password) {
 
 function updateRequirement(id, isValid) {
     const item = document.getElementById(id);
-
     if (item) {
         const icon = item.querySelector('i');
-    
         if (isValid) {
             item.classList.add('completed');
             item.classList.remove('failed');
@@ -112,30 +155,18 @@ function updateRequirement(id, isValid) {
     }
 }
 
-function checkSignInFormValidity() {
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-
-    const isEmailValid = checkEmailRequirements(email);
-
-    if (isEmailValid && password.length >= 1) {
-        Btn.removeAttribute('disabled');
-    } else {
-        Btn.setAttribute('disabled', 'true');
-    }
-}
-
 function checkSignUpFormValidity() {
     const isNameValid = nameInput.value.trim();
     const isUsernameValid = usernameInput.value.trim();
     const email = emailInput.value.trim();
     const password = passwordInput.value;
-    
 
     const isEmailValid = checkEmailRequirements(email);
-    let isPasswordValid = checkPasswordRequirements(password);
+    const isPasswordValid = checkPasswordRequirements(password);
 
-    if (isNameValid && isUsernameValid && isEmailValid && isPasswordValid) {
+    if (isNameValid && isUsernameValid && isEmailValid && isPasswordValid && 
+        emailAvailable && usernameAvailable
+    ) {
         Btn.removeAttribute('disabled');
     } else {
         Btn.setAttribute('disabled', 'true');
