@@ -30,10 +30,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-require '../includes/header.php';
+require '../templates/common/header.php';
 ?>
 
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
 
 <div class="sign-up-container">
@@ -74,7 +74,7 @@ require '../includes/header.php';
     <p class="login-link">Already have an account? <a href="login.php">Sign in</a></p>
 </div>
 
-<script src="../scripts/script.js"></script>
+<script src="/scripts/script.js"></script>
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
-<?php require '../includes/footer.php'; ?>
+<?php require '../templates/common/footer.php'; ?>

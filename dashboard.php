@@ -6,14 +6,14 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-require 'includes/header.php';
+require 'templates/common/header.php';
 ?>
 
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <div class="login-container">
     <h2>Hello, <?= htmlspecialchars($_SESSION['user_name']) ?>!</h2>
     <p>Welcome to your user dashboard.</p>
 </div>
 
-<?php require 'includes/footer.php'; ?>
+<?php require 'templates/common/footer.php'; ?>
