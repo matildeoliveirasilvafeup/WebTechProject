@@ -51,6 +51,11 @@ const passwordInput = document.getElementById('password');
 const emailInput = document.getElementById('email');
 const Btn = document.getElementById('btn');
 
+const container = document.querySelector('.login-container') || document.querySelector('.sign-up-container');
+const signType = container?.dataset.formType || '';
+
+console.log()
+
 const emailStatus = document.getElementById('email-status');
 const usernameStatus = document.getElementById('username-status');
 
@@ -58,31 +63,40 @@ let emailAvailable = false;
 let usernameAvailable = false;
 
 passwordInput.addEventListener('input', () => {
-    checkPasswordRequirements(passwordInput.value);
-    checkSignUpFormValidity();
+
+    if (signType == 'signin') {
+        checkSignInFormValidity();
+    } else if (signType == 'signup') {
+        checkSignUpFormValidity();
+    }
+
 });
 
 emailInput.addEventListener('input', () => {
     const email = emailInput.value.trim();
-
+    
     if (checkEmailRequirements(email)) {
         fetch(`../database/register.php?email=${encodeURIComponent(email)}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.email?.used) {
-                    emailStatus.textContent = 'Email already in use';
-                    emailStatus.style.color = 'red';
-                    emailAvailable = false;
-                } else {
-                    emailStatus.textContent = '';
-                    emailAvailable = true;
-                }
-                checkSignUpFormValidity();
-            });
+        .then(res => res.json())
+        .then(data => {
+            if (data.email?.used) {
+                emailStatus.textContent = 'Email already in use';
+                emailStatus.style.color = 'red';
+                emailAvailable = false;
+            } else {
+                emailStatus.textContent = '';
+                emailAvailable = true;
+            }
+        });
     } else {
         emailStatus.textContent = 'Invalid email format';
         emailStatus.style.color = 'gray';
         emailAvailable = false;
+    }
+    
+    if (signType == 'signin') {
+        checkSignInFormValidity();
+    } else if (signType == 'signup') {
         checkSignUpFormValidity();
     }
 });
@@ -103,13 +117,13 @@ usernameInput.addEventListener('input', () => {
                     usernameStatus.style.color = 'green';
                     usernameAvailable = true;
                 }
-                checkSignUpFormValidity();
             });
     } else {
         usernameStatus.textContent = '';
         usernameAvailable = false;
-        checkSignUpFormValidity();
     }
+
+    checkSignUpFormValidity();
 });
 
 nameInput.addEventListener('input', checkSignUpFormValidity);
@@ -117,6 +131,11 @@ nameInput.addEventListener('input', checkSignUpFormValidity);
 function checkEmailRequirements(email) {
 
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function checkNameRequirements(name) {
+
+    return name.length >= 1;
 }
 
 function checkPasswordRequirements(password) {
@@ -155,18 +174,27 @@ function updateRequirement(id, isValid) {
     }
 }
 
-function checkSignUpFormValidity() {
-    const isNameValid = nameInput.value.trim();
-    const isUsernameValid = usernameInput.value.trim();
+function checkSignInFormValidity() {
     const email = emailInput.value.trim();
     const password = passwordInput.value;
 
     const isEmailValid = checkEmailRequirements(email);
+
+    if (isEmailValid && password.length >= 1) {
+        Btn.removeAttribute('disabled');
+    } else {
+        Btn.setAttribute('disabled', 'true');
+    }
+}
+
+function checkSignUpFormValidity() {
+    const name = nameInput.value.trim();
+    const password = passwordInput.value;
+
+    const isNameValid = checkNameRequirements(name);
     const isPasswordValid = checkPasswordRequirements(password);
 
-    if (isNameValid && isUsernameValid && isEmailValid && isPasswordValid && 
-        emailAvailable && usernameAvailable
-    ) {
+    if (isNameValid  && usernameAvailable && isPasswordValid && emailAvailable) {
         Btn.removeAttribute('disabled');
     } else {
         Btn.setAttribute('disabled', 'true');

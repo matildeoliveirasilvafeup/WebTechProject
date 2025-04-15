@@ -45,7 +45,7 @@ require '../templates/common/header.php';
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
 
-<div class="sign-up-container">
+<div class="sign-up-container" data-form-type="signup">
     <h2>Create an Account</h2>
 
     <?php if ($error): ?>
