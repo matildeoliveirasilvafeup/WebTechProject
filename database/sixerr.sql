@@ -63,6 +63,13 @@ CREATE TABLE categories (
     name TEXT UNIQUE NOT NULL
 );
 
+CREATE TABLE subcategories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    UNIQUE(category_id, name)
+);
+
 CREATE TABLE conversations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user1_id INTEGER REFERENCES users(id),
@@ -105,28 +112,105 @@ INSERT INTO categories (name, icon) VALUES
 ('Business', 'fas fa-briefcase'),
 ('Consulting', 'fas fa-users-cog');
 
+INSERT INTO subcategories (category_id, name) VALUES
+(1, 'Logos'),
+(1, 'Business Cards'),
+(1, 'Brand Identity'),
+(1, 'Social Media Design'),
+(1, 'Flyers & Posters'),
+(1, 'Illustration'),
+(1, 'Presentation Design'),
+
+(2, 'Landing Pages'),
+(2, 'Email Marketing'),
+(2, 'SEO'),
+(2, 'Online Advertising'),
+(2, 'Social Media Strategy'),
+(2, 'Content Marketing'),
+
+(3, 'Creative Writing'),
+(3, 'Translations'),
+(3, 'Proofreading & Editing'),
+(3, 'Technical Writing'),
+(3, 'Copywriting'),
+(3, 'Product Descriptions'),
+
+(4, 'Web Development'),
+(4, 'Mobile Apps'),
+(4, 'Automation'),
+(4, 'Scripts & Bots'),
+(4, 'API Integration'),
+(4, 'Database Development'),
+
+(5, 'Explainer Videos'),
+(5, '2D Animation'),
+(5, '3D Animation'),
+(5, 'Video Editing'),
+(5, 'Logo Animation'),
+(5, 'Subtitles & Captions'),
+
+(6, 'Image Generation'),
+(6, 'Chatbots'),
+(6, 'Machine Learning Models'),
+(6, 'AI Data Analysis'),
+(6, 'Voice Cloning'),
+(6, 'AI Assistants'),
+
+(7, 'Voice Over'),
+(7, 'Music Production'),
+(7, 'Mixing & Mastering'),
+(7, 'Podcast Editing'),
+(7, 'Sound Effects'),
+(7, 'Jingles & Intros'),
+
+(8, 'Business Plans'),
+(8, 'Market Research'),
+(8, 'Financial Consulting'),
+(8, 'Pitch Decks'),
+(8, 'Virtual Assistant'),
+(8, 'Data Entry'),
+
+(9, 'Career Coaching'),
+(9, 'Startup Consulting'),
+(9, 'Legal Consulting'),
+(9, 'Marketing Strategy'),
+(9, 'Tech Consulting'),
+(9, 'HR & Recruiting');
+
 INSERT INTO services (freelancer_id, title, description, category_id, price, delivery_time) VALUES
-(1, 'Criação de logotipos únicos', 'Logo personalizado para a sua marca.', 1, 75.00, 3),
-(3, 'Landing Page Profissional', 'Página de captura moderna e responsiva.', 2, 150.00, 5),
-(1, 'Design de cartão de visita profissional', 'Crio cartões de visita modernos e elegantes para sua marca.', 1, 40.00, 2),
-(3, 'Website institucional em HTML/CSS', 'Desenvolvimento de site responsivo com até 5 páginas.', 2, 200.00, 7),
-(1, 'Template para redes sociais', 'Pack com 10 templates personalizáveis para Instagram.', 1, 60.00, 3),
-(3, 'Landing page com formulário de contacto', 'Landing otimizada para captação de leads com formulário funcional.', 2, 130.00, 4),
-(1, 'Manual de identidade visual', 'Criação de um guia completo com cores, tipografia e aplicação da marca.', 1, 120.00, 6);
+(1, 'Unique Logo Design', 'Custom logo tailored to your brand identity.', 1, 75.00, 3),
+(3, 'Professional Landing Page', 'Modern, responsive landing page design.', 2, 150.00, 5),
+(1, 'Business Card Design', 'Stylish and modern business cards for your brand.', 1, 40.00, 2),
+(3, 'Company Website in HTML/CSS', 'Responsive website with up to 5 pages.', 2, 200.00, 7),
+(1, 'Social Media Template Pack', 'Set of 10 customizable Instagram templates.', 1, 60.00, 3),
+(3, 'Landing Page with Contact Form', 'Lead-optimized landing page with working contact form.', 2, 130.00, 4),
+(1, 'Brand Identity Manual', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6);
 
 
 INSERT INTO service_images (service_id, media_url) VALUES
 (1, 'https://picsum.photos/300?logo1'),
-(1, 'https://picsum.photos/300?logo2'),
-(2, 'https://picsum.photos/300?landing1');
+(2, 'https://picsum.photos/300?landing1'),
+(3, 'https://picsum.photos/300?card1'),
+(4, 'https://picsum.photos/300?website1'),
+(5, 'https://picsum.photos/300?template1'),
+(6, 'https://picsum.photos/300?landing2'),
+(7, 'https://picsum.photos/300?identity1');
 
 INSERT INTO orders_services (client_id, freelancer_id, service_id, total_price, status) VALUES
 (4, 1, 1, 75.00, 'completed'),
 (2, 3, 2, 150.00, 'in_progress');
 
 INSERT INTO reviews (service_id, client_id, rating, comment) VALUES
-(1, 4, 5, 'Serviço excelente, recomendo!'),
-(2, 2, 4, 'Muito profissional, mas podia ser mais rápido.');
+(1, 4, 5, 'Excellent service, highly recommended!'),
+(2, 2, 4, 'Very professional, but could be a bit faster.'),
+(3, 4, 5, 'Loved the business card design, it’s exactly what I needed.'),
+(4, 2, 3, 'Good work, but took longer than expected.'),
+(5, 4, 4, 'Nice templates for Instagram, helped boost my brand.'),
+(6, 2, 5, 'Landing page looks great and works perfectly.'),
+(7, 4, 5, 'The brand guide was super useful, great attention to detail.'),
+(2, 4, 4, 'Clean layout, fits well on mobile devices.'),
+(3, 2, 5, 'Super fast delivery and great communication.'),
+(1, 2, 5, 'Amazing logo, captured my vision perfectly.');
 
 INSERT INTO conversations (user1_id, user2_id) VALUES
 (4, 1),
