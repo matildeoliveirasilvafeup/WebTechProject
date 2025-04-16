@@ -200,10 +200,14 @@ INSERT INTO service_images (service_id, media_url) VALUES
 
 INSERT INTO orders_services (client_id, freelancer_id, service_id, total_price, status) VALUES
 (4, 1, 1, 75.00, 'completed'),
-(2, 3, 2, 150.00, 'in_progress');
+(2, 3, 2, 150.00, 'in_progress'),
+(3, 1, 1, 75.00, 'in_progress'),
+(1, 1, 1, 75.00, 'in_progress');
 
 INSERT INTO reviews (service_id, client_id, rating, comment) VALUES
 (1, 4, 5, 'Excellent service, highly recommended!'),
+(1, 3, 5, 'Perfect service, amazing work!'),
+(1, 1, 4, 'Loved it!'),
 (2, 2, 4, 'Very professional, but could be a bit faster.'),
 (3, 4, 5, 'Loved the business card design, it’s exactly what I needed.'),
 (4, 2, 3, 'Good work, but took longer than expected.'),

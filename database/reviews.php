@@ -34,4 +34,18 @@ function getServiceRatingInfo(PDO $pdo, int $service_id): array {
     ];
 }
 
+function getServiceReviews(PDO $pdo, int $service_id): array {
+    $reviewsStmt = $pdo->prepare("
+        SELECT r.*, u.name AS client_name, p.profile_picture
+        FROM reviews r
+        JOIN users u ON u.id = r.client_id
+        LEFT JOIN profiles p ON p.user_id = u.id
+        WHERE r.service_id = ?
+        ORDER BY r.created_at DESC
+    ");
+    $reviewsStmt->execute([$service_id]);
+    return $reviewsStmt->fetchAll();
+}
+
+
 ?>
