@@ -62,4 +62,38 @@ function getServiceById(PDO $db, int $id): ?array {
     return $service ?: null;
 }
 
+function getMoreFromFreelancer(PDO $db, int $freelancerId, int $excludeId, int $limit = 4): array {
+    $stmt = $db->prepare("
+        SELECT s.*, si.media_url, u.name AS freelancer_name 
+        FROM services s
+        JOIN users u ON s.freelancer_id = u.id
+        LEFT JOIN service_images si ON si.service_id = s.id
+        WHERE s.freelancer_id = :freelancer_id AND s.id != :exclude_id
+        GROUP BY s.id
+        LIMIT :limit
+    ");
+    $stmt->bindValue(':freelancer_id', $freelancerId, PDO::PARAM_INT);
+    $stmt->bindValue(':exclude_id', $excludeId, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getRelatedServices(PDO $db, int $categoryId, int $excludeId, int $limit = 4): array {
+    $stmt = $db->prepare("
+        SELECT s.*, si.media_url, u.name AS freelancer_name 
+        FROM services s
+        JOIN users u ON s.freelancer_id = u.id
+        LEFT JOIN service_images si ON si.service_id = s.id
+        WHERE s.category_id = :category_id AND s.id != :exclude_id
+        GROUP BY s.id
+        LIMIT :limit
+    ");
+    $stmt->bindValue(':category_id', $categoryId, PDO::PARAM_INT);
+    $stmt->bindValue(':exclude_id', $excludeId, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 ?>

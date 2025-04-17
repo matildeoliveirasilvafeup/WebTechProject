@@ -297,6 +297,53 @@ nav a:hover {
     margin-top: 0.5em;
 }
 
+.services-slider-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.services-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 20px;
+    padding: 1em 0;
+}
+
+.service-card {
+    flex: 0 0 auto;
+    width: 15%;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    font-size: 2em;
+    padding: 0.5em 0.7em;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 50px;
+}
+
+.slider-btn.left {
+    margin-left: 1em;
+    left: 0;
+}
+
+.slider-btn.right {
+    margin-right: 1em;
+    right: 0;
+}
+
 .how-it-works {
     background-color: #f0f4f8;
     padding: 0 2em 2em 3em;
@@ -779,4 +826,15 @@ nav a:hover {
 
 .load-more-btn:hover {
     background-color: #333;
+}
+
+.freelancer-services,
+.related-services {
+    max-width: 80%;
+    margin: 3em auto;
+}
+
+.freelancer-services .service-card,
+.related-services .service-card {
+    width: 20%;
 }

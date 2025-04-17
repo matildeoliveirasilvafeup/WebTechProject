@@ -18,6 +18,8 @@
     $service = getServiceById($db, (int)$serviceId);
     $ratingInfo = getServiceRatingInfo($db, (int)$serviceId);
     $reviews = getServiceReviews($db, (int)$serviceId);
+    $moreFromFreelancer = getMoreFromFreelancer($db, $service['freelancer_id'], $service['id'], 100);
+    $relatedServices = getRelatedServices($db, $service['category_id'], $service['id']);
 
     if (!$service) {
         echo "Service not found.";
@@ -157,7 +159,61 @@
             </div>
         <?php endif; ?>
 
+    <?php if (!empty($moreFromFreelancer)): ?>
+        <div class="freelancer-services">
+            <h2>More Services from <?= htmlspecialchars($service['freelancer_name']) ?></h2>
+            
+            <div class="services-slider-wrapper">
+                <?php if (count(value: $moreFromFreelancer) > 4): ?>
+                    <button class="slider-btn left" onclick="scrollSlider(-1)">‹</button>
+                <?php endif; ?>    
+                <div class="services-slider" id="servicesSlider">
+                    <?php foreach ($moreFromFreelancer as $service): ?>
+                        <a href="service.php?id=<?= $service['id'] ?>" class="service-card">
+                            <img src="<?= htmlspecialchars($service['media_url'] ?? 'https://via.placeholder.com/300') ?>" alt="Service image">
+                            <div class="service-info">
+                                <h3><?= htmlspecialchars($service['title']) ?></h3>
+                                <p class="freelancer">By <?= htmlspecialchars($service['freelancer_name']) ?></p>
+                                <p class="price">€<?= number_format($service['price'], 2) ?></p>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+                <?php if (count(value: $moreFromFreelancer) > 4): ?>
+                    <button class="slider-btn right" onclick="scrollSlider(1)">›</button>
+                <?php endif; ?>    
+            </div>    
+        </div>
+    <?php endif; ?>
 
+    <?php if (!empty($relatedServices)): ?>
+        <div class="freelancer-services">
+            <h2>You may also like: </h2>
+            
+            <div class="services-slider-wrapper">
+                <?php if (count(value: $relatedServices) > 4): ?>
+                    <button class="slider-btn left" onclick="scrollSlider(-1)">‹</button>
+                <?php endif; ?>    
+                <div class="services-slider" id="servicesSlider">
+                    <?php foreach ($relatedServices as $service): ?>
+                        <a href="service.php?id=<?= $service['id'] ?>" class="service-card">
+                            <img src="<?= htmlspecialchars($service['media_url'] ?? 'https://via.placeholder.com/300') ?>" alt="Service image">
+                            <div class="service-info">
+                                <h3><?= htmlspecialchars($service['title']) ?></h3>
+                                <p class="freelancer">By <?= htmlspecialchars($service['freelancer_name']) ?></p>
+                                <p class="price">€<?= number_format($service['price'], 2) ?></p>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+                <?php if (count(value: $relatedServices) > 4): ?>
+                    <button class="slider-btn right" onclick="scrollSlider(1)">›</button>
+                <?php endif; ?>    
+            </div>
+        </div>
+    <?php endif; ?>
+
+        <script src="js/slider.js"></script>                 
         <script src="js/reviews.js"></script>    
         <script src="js/share.js"></script>
         <div id="toast" class="toast">Link copied to clipboard!</div>

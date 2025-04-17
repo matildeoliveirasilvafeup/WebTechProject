@@ -183,10 +183,12 @@ INSERT INTO services (freelancer_id, title, description, category_id, price, del
 (1, 'Unique Logo Design', 'Custom logo tailored to your brand identity.', 1, 75.00, 3, 2, 'Italian/French'),
 (3, 'Professional Landing Page', 'Modern, responsive landing page design.', 2, 150.00, 5, 3, 'English'),
 (1, 'Business Card Design', 'Stylish and modern business cards for your brand.', 1, 40.00, 2, 1, 'French'),
-(3, 'Company Website in HTML/CSS', 'Responsive website with up to 5 pages.', 2, 200.00, 7, 4, 'Spanish/English'),
+(1, 'Company Website in HTML/CSS', 'Responsive website with up to 5 pages.', 2, 200.00, 7, 4, 'Spanish/English'),
 (1, 'Social Media Template Pack', 'Set of 10 customizable Instagram templates.', 1, 60.00, 3, 2, 'Portuguese'),
 (3, 'Landing Page with Contact Form', 'Lead-optimized landing page with working contact form.', 2, 130.00, 4, 2, 'English'),
-(1, 'Brand Identity Manual', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6, 1, 'Portuguese');
+(1, 'Brand Identity Manual', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6, 1, 'Portuguese'),
+(1, 'Brand Identity Manual1', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6, 1, 'Portuguese'),
+(1, 'Brand Identity Manual2', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6, 1, 'Portuguese');
 
 
 INSERT INTO service_images (service_id, media_url) VALUES
