@@ -16,3 +16,36 @@ function getLatestReviews(PDO $db, int $limit = 3): array {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function getServiceRatingInfo(PDO $pdo, int $service_id): array {
+    $stmt = $pdo->prepare("
+        SELECT 
+            ROUND(AVG(rating), 1) AS avg_rating,
+            COUNT(*) AS total_reviews
+        FROM reviews
+        WHERE service_id = :service_id
+    ");
+    $stmt->execute([':service_id' => $service_id]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    return [
+        'avg' => $result['avg_rating'] ?? null,
+        'count' => $result['total_reviews'] ?? 0
+    ];
+}
+
+function getServiceReviews(PDO $pdo, int $service_id): array {
+    $reviewsStmt = $pdo->prepare("
+        SELECT r.*, u.name AS client_name, p.profile_picture
+        FROM reviews r
+        JOIN users u ON u.id = r.client_id
+        LEFT JOIN profiles p ON p.user_id = u.id
+        WHERE r.service_id = ?
+        ORDER BY r.created_at DESC
+    ");
+    $reviewsStmt->execute([$service_id]);
+    return $reviewsStmt->fetchAll();
+}
+
+
+?>

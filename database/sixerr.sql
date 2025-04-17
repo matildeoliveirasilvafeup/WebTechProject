@@ -26,6 +26,8 @@ CREATE TABLE services (
     category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
     price REAL NOT NULL,
     delivery_time INTEGER NOT NULL,
+    number_of_revisions INTEGER DEFAULT 1,
+    language TEXT DEFAULT 'English',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -177,14 +179,16 @@ INSERT INTO subcategories (category_id, name) VALUES
 (9, 'Tech Consulting'),
 (9, 'HR & Recruiting');
 
-INSERT INTO services (freelancer_id, title, description, category_id, price, delivery_time) VALUES
-(1, 'Unique Logo Design', 'Custom logo tailored to your brand identity.', 1, 75.00, 3),
-(3, 'Professional Landing Page', 'Modern, responsive landing page design.', 2, 150.00, 5),
-(1, 'Business Card Design', 'Stylish and modern business cards for your brand.', 1, 40.00, 2),
-(3, 'Company Website in HTML/CSS', 'Responsive website with up to 5 pages.', 2, 200.00, 7),
-(1, 'Social Media Template Pack', 'Set of 10 customizable Instagram templates.', 1, 60.00, 3),
-(3, 'Landing Page with Contact Form', 'Lead-optimized landing page with working contact form.', 2, 130.00, 4),
-(1, 'Brand Identity Manual', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6);
+INSERT INTO services (freelancer_id, title, description, category_id, price, delivery_time, number_of_revisions, language) VALUES
+(1, 'Unique Logo Design', 'Custom logo tailored to your brand identity.', 1, 75.00, 3, 2, 'Italian/French'),
+(3, 'Professional Landing Page', 'Modern, responsive landing page design.', 2, 150.00, 5, 3, 'English'),
+(1, 'Business Card Design', 'Stylish and modern business cards for your brand.', 1, 40.00, 2, 1, 'French'),
+(1, 'Company Website in HTML/CSS', 'Responsive website with up to 5 pages.', 2, 200.00, 7, 4, 'Spanish/English'),
+(1, 'Social Media Template Pack', 'Set of 10 customizable Instagram templates.', 1, 60.00, 3, 2, 'Portuguese'),
+(3, 'Landing Page with Contact Form', 'Lead-optimized landing page with working contact form.', 2, 130.00, 4, 2, 'English'),
+(1, 'Brand Identity Manual', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6, 1, 'Portuguese'),
+(1, 'Brand Identity Manual1', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6, 1, 'Portuguese'),
+(1, 'Brand Identity Manual2', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6, 1, 'Portuguese');
 
 
 INSERT INTO service_images (service_id, media_url) VALUES
@@ -198,10 +202,14 @@ INSERT INTO service_images (service_id, media_url) VALUES
 
 INSERT INTO orders_services (client_id, freelancer_id, service_id, total_price, status) VALUES
 (4, 1, 1, 75.00, 'completed'),
-(2, 3, 2, 150.00, 'in_progress');
+(2, 3, 2, 150.00, 'in_progress'),
+(3, 1, 1, 75.00, 'in_progress'),
+(1, 1, 1, 75.00, 'in_progress');
 
 INSERT INTO reviews (service_id, client_id, rating, comment) VALUES
 (1, 4, 5, 'Excellent service, highly recommended!'),
+(1, 3, 5, 'Perfect service, amazing work!'),
+(1, 1, 4, 'Loved it!'),
 (2, 2, 4, 'Very professional, but could be a bit faster.'),
 (3, 4, 5, 'Loved the business card design, it’s exactly what I needed.'),
 (4, 2, 3, 'Good work, but took longer than expected.'),
