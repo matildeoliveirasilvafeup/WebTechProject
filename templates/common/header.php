@@ -33,7 +33,6 @@
             <a href="/authentication/register.php">Register</a>
         <?php else: ?>
             <a href="/dashboard.php">Dashboard</a>
-            <!-- <a href="/authentication/logout.php">Logout</a> -->
         <?php endif; ?>
     </nav>
 </header>

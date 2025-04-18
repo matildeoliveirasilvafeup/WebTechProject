@@ -1,3 +1,7 @@
+:root {
+    --main-text-color: #3c3c3c;
+}
+
 body {
     margin: 0;
     font-family: 'Inter', Arial, sans-serif;

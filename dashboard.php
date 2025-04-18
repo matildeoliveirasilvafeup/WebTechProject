@@ -6,6 +6,32 @@ if (!isset($_SESSION['user']['id'])) {
     exit;
 }
 
+$db = new PDO('sqlite:database/sixerr.db');
+
+$userId = $_SESSION['user']['id'];
+
+$stmt = $db->prepare("SELECT * FROM profiles WHERE user_id = :user_id");
+$stmt->bindParam(':user_id', $userId);
+$stmt->execute();
+$profile = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $db->prepare("SELECT * FROM profiles_preferences WHERE user_id = :user_id");
+$stmt->bindParam(':user_id', $userId);
+$stmt->execute();
+$profile_preferences = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$profile) {
+
+    $insertStmt = $db->prepare("INSERT INTO profiles (user_id) VALUES (:user_id)");
+    $insertStmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    $insertStmt->execute();
+
+    $stmt = $db->prepare("SELECT * FROM profiles WHERE user_id = :user_id");
+    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    $profile = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 require 'templates/common/header.php';
 ?>
 
@@ -15,8 +41,8 @@ require 'templates/common/header.php';
     <div class="sidebar">
         <h3><i class="fa-solid fa-bars"></i><span>Menu</span></h3>
         <ul class="menu-content">
-            <li><a href="#" class="tab-link active" data-tab="personal-details"><i class="fa-solid fa-user"></i><span>Personal Details</span></a></li>
-            <li><a href="#" class="tab-link" data-tab="favorites"><i class="fa-solid fa-star"></i><span>Favorites</span></a></li>
+            <li><a href="#" class="tab-link active" data-tab="profile"><i class="fa-solid fa-user"></i><span>Personal Details</span></a></li>
+            <li><a href="#" class="tab-link" data-tab="favorites"><i class="fa-solid fa-heart"></i><span>Favorites</span></a></li>
             <li><a href="#" class="tab-link" data-tab="listings"><i class="fa-solid fa-clipboard"></i><span>Own Listings</span></a></li>            
             <li><a href="#" class="tab-link" data-tab="settings"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>            
             <li class="logout"><a href="/authentication/logout.php"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a></li>
@@ -24,9 +50,86 @@ require 'templates/common/header.php';
     </div>
     
     <div class="dashboard-content">
-        <div id="personal-details" class="tab-content active">
-            <h2>Hello, <?= htmlspecialchars($_SESSION['user']['name']) ?>!</h2>
-            <p>Welcome to your user dashboard. Here are your personal details:</p>
+        <div id="profile" class="tab-content active">
+            <div class="personal-details">
+                <div class="profile-header">
+                    <div class="profile-icon">
+                        <?php if (!empty($profile['profile_picture'])): ?>
+                            <img src="<?= htmlspecialchars($profile['profile_picture']) ?>" alt="Profile Picture">
+                        <?php else: ?>
+                            <i class="fa-solid fa-image-portrait"></i>
+                        <?php endif; ?>
+                    </div>
+                    <div class="profile-info">
+                        <h2><?= htmlspecialchars($_SESSION['user']['name']) ?></h2>
+                        <p class="username">@<?= htmlspecialchars($_SESSION['user']['username']) ?></p>
+                        <p><i class="fas fa-map-marker-alt"></i> Located in <?= htmlspecialchars($profile['location']) ?></p>
+                        <p><i class="fas fa-calendar-alt"></i> Joined in <?= date('F Y', strtotime($_SESSION['user']['created_at'])) ?></p>
+
+                    </div>
+
+                    <button id="editProfBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
+                </div>
+
+                <hr class="section-divider">
+
+                <div class="profile-body">
+                    <div class="profile-bio">
+                        <div class="content">
+                            <h3>Bio</h3>
+                            <p id="bioText"><?= htmlspecialchars($profile['bio'] ?? 'No bio available') ?></p>
+                        </div>
+
+                        <button id="editBioBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <div class="profile-preferences">
+                        <div class="content">
+                            <h3>Preferences</h3>
+                            <p><i class="fas fa-language"></i> <?= htmlspecialchars($profile_preferences['language'] ?? 'Language not set') ?> (<?= htmlspecialchars($profile_preferences['proficiency'] ?? 'N/A') ?>): <?= htmlspecialchars($profile_preferences['communication'] ?? 'Not set') ?></p>
+
+                            <p><?php
+                                $preferencesJson = $profile_preferences['preferred_days_times'] ?? '{}';
+                                $preferencesData = json_decode($preferencesJson, true);
+
+                                $grouped = [];
+
+                                foreach ($preferencesData['days'] as $dayInfo) {
+                                    $time = $dayInfo['time'];
+                                    if (!isset($grouped[$time])) {
+                                        $grouped[$time] = [];
+                                    }
+                                    $grouped[$time][] = $dayInfo['day'];
+                                }
+
+                                foreach ($grouped as $time => $days) {
+                                    $dayList = implode(', ', $days);
+                                    echo "<p><i class='fa-regular fa-calendar-days'></i> {$dayList}</p>";
+                                    echo "<p><i class='fa-solid fa-clock'></i> {$time}</p>";
+                                }
+                            ?></p>
+                        </div>
+
+                        <button id="editPrefsBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
+                    </div>
+                </div>
+
+                <div class="profile-controls">
+                    <a href="#" class="btn">Preview Profile</a>
+                    <a href="index.php" class="btn">Explore Platform</a>
+                </div>
+            </div>
+
+            <div class="extra-info">
+                <div class="reviews-list">
+                    <h3>Reviews from freelancers</h3>
+                    <div class="reviews">
+                    </div>
+                </div>
+            </div>
+
         </div>
         
         <div id="favorites" class="tab-content">
@@ -37,6 +140,147 @@ require 'templates/common/header.php';
         <div id="listings" class="tab-content">
             <h2>Your Listings</h2>
             <p>Manage your own posted services or offers here.</p>
+        </div>
+    </div>
+
+    <div id="editProfileModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Edit Profile</h3>
+            <form id="editProfileForm" method="POST" action="database/update_profile_details.php" enctype="multipart/form-data">
+                <label for="edit-name">Name:</label>
+                <input type="text" id="edit-name" name="name" value="<?= htmlspecialchars($_SESSION['user']['name']) ?>" required>
+
+                <label for="edit-username">Username:</label>
+                <input type="text" id="edit-username" name="username" value="<?= htmlspecialchars($_SESSION['user']['username']) ?>" required>
+
+                <label for="edit-location">Location:</label>
+                <select id="edit-location" name="location" required>
+                    <?php
+                    $countries = [
+                        "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina",
+                        "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados",
+                        "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina",
+                        "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
+                        "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros",
+                        "Congo (Congo-Brazzaville)", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+                        "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic",
+                        "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini",
+                        "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana",
+                        "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras",
+                        "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy",
+                        "Ivory Coast", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait",
+                        "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein",
+                        "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta",
+                        "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco",
+                        "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar (Burma)", "Namibia", "Nauru",
+                        "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea",
+                        "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea",
+                        "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda",
+                        "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa",
+                        "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles",
+                        "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia",
+                        "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname",
+                        "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste",
+                        "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu",
+                        "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay",
+                        "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+                    ];
+                    $selectedLocation = htmlspecialchars($profile['location'] ?? 'Portugal');
+
+                    foreach ($countries as $country) {
+                        $selected = ($country === $selectedLocation) ? 'selected' : '';
+                        echo "<option value=\"$country\" $selected>$country</option>";
+                    }
+                    ?>
+                </select>
+
+                <label for="edit-profile-picture">Profile Picture:</label>
+                <input type="file" id="edit-profile-picture" name="profile_picture" accept="image/*">
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn save">Save</button>
+                    <button type="button" id="cancelEditProfile" class="btn cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editBioModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Edit Bio</h3>
+            <form id="editBioForm">
+                <textarea id="editBio" name="bio" rows="4" placeholder="Enter your bio..."><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn save">Save</button>
+                    <button type="button" id="cancelEditBio" class="btn cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Edit Preferences</h3>
+            <form id="preferencesForm">
+                <label for="edit-language">Language:</label>
+                <select id="edit-language" name="language" required>
+                    <?php
+                    $languages = [
+                        "Afrikaans", "Albanian", "Arabic", "Armenian", "Basque", "Bengali", "Bosnian", "Bulgarian", "Catalan",
+                        "Chinese", "Croatian", "Czech", "Danish", "Dutch", "English", "Estonian", "Finnish", "French", "Georgian",
+                        "German", "Greek", "Gujarati", "Haitian Creole", "Hebrew", "Hindi", "Hungarian", "Icelandic", "Indonesian",
+                        "Irish", "Italian", "Japanese", "Javanese", "Kannada", "Kazakh", "Khmer", "Korean", "Kurdish", "Latvian",
+                        "Lithuanian", "Macedonian", "Malay", "Maltese", "Marathi", "Norwegian", "Persian", "Polish", "Portuguese",
+                        "Punjabi", "Romanian", "Russian", "Serbian", "Sindhi", "Sinhala", "Slovak", "Slovenian", "Spanish", "Swahili",
+                        "Swedish", "Tamil", "Telugu", "Thai", "Turkish", "Ukrainian", "Urdu", "Vietnamese", "Welsh", "Xhosa", "Yoruba",
+                        "Zulu"
+                    ];
+                    $selectedLanguage = htmlspecialchars($profile_preferences['language'] ?? 'English');
+
+                    foreach ($languages as $language) {
+                        $selected = ($language === $selectedLanguage) ? 'selected' : '';
+                        echo "<option value=\"$language\" $selected>$language</option>";
+                    }
+                    ?>
+                </select>
+
+                <label>Proficiency:
+                    <select name="proficiency" required>
+                    <option value="Basic" <?= $profile_preferences['proficiency'] === 'Basic' ? 'selected' : '' ?>>Basic</option>
+                    <option value="Conversational" <?= $profile_preferences['proficiency'] === 'Conversational' ? 'selected' : '' ?>>Conversational</option>
+                    <option value="Fluent" <?= $profile_preferences['proficiency'] === 'Fluent' ? 'selected' : '' ?>>Fluent</option>
+                    <option value="Native/Bilingual" <?= $profile_preferences['proficiency'] === 'Native/Bilingual' ? 'selected' : '' ?>>Native/Bilingual</option>
+                    </select>
+                </label>
+
+                <label>Communication Preference:
+                    <select name="communication" required>
+                    <option value="Messages Only" <?= $profile_preferences['communication'] === 'Messages Only' ? 'selected' : '' ?>>Messages Only</option>
+                    <option value="Calls and Messages" <?= $profile_preferences['communication'] === 'Calls and Messages' ? 'selected' : '' ?>>Calls and Messages</option>
+                    </select>
+                </label>
+
+                <fieldset>
+                    <legend>Preferred Days and Times</legend>
+                    <div class="day-time">
+                        <label><input type="checkbox" name="days" value="Monday"> Monday</label>
+                        <label><input type="checkbox" name="days" value="Tuesday"> Tuesday</label>
+                        <label><input type="checkbox" name="days" value="Wednesday"> Wednesday</label>
+                        <label><input type="checkbox" name="days" value="Thursday"> Thursday</label>
+                        <label><input type="checkbox" name="days" value="Friday"> Friday</label>
+                        <label><input type="checkbox" name="days" value="Saturday"> Saturday</label>
+                        <label><input type="checkbox" name="days" value="Sunday"> Sunday</label>
+                    </div>
+                    <div>
+                        <label>Start Time: <input type="time" name="start_time" required></label>
+                        <label>End Time: <input type="time" name="end_time" required></label>
+                    </div>
+                </fieldset>
+
+
+                <button type="submit">Save</button>
+                <button type="button" id="cancelEdit">Cancel</button>
+            </form>
         </div>
     </div>
 </div>

@@ -14,8 +14,17 @@ CREATE TABLE profiles (
     user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
     bio TEXT,
     profile_picture TEXT,
+    location TEXT DEFAULT 'Portugal',
     is_freelancer INTEGER DEFAULT 0,
     is_client INTEGER DEFAULT 1
+);
+
+CREATE TABLE profiles_preferences (
+    user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    language TEXT DEFAULT '',
+    proficiency TEXT DEFAULT '',
+    communication TEXT DEFAULT '',
+    preferred_days_times JSONB DEFAULT '{}'
 );
 
 CREATE TABLE services (
