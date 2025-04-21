@@ -4,7 +4,7 @@ const passwordInput = document.getElementById('password');
 const emailInput = document.getElementById('email');
 const Btn = document.getElementById('btn');
 
-const container = document.querySelector('.login-container') || document.querySelector('.sign-up-container');
+const container = document.querySelector('.auth-container');
 const signType = container?.dataset.formType || '';
 
 console.log()
