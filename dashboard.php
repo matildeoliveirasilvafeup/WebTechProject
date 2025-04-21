@@ -1,38 +1,20 @@
 <?php
 session_start();
+require_once 'database/connection.php';
+require_once 'database/profiles.php';
+require_once 'database/profile_preferences.php';
 
 if (!isset($_SESSION['user']['id'])) {
     header('Location: authentication/login.php');
     exit;
 }
-
-$db = new PDO('sqlite:database/sixerr.db');
-
 $userId = $_SESSION['user']['id'];
 
-$stmt = $db->prepare("SELECT * FROM profiles WHERE user_id = :user_id");
-$stmt->bindParam(':user_id', $userId);
-$stmt->execute();
-$profile = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$stmt = $db->prepare("SELECT * FROM profiles_preferences WHERE user_id = :user_id");
-$stmt->bindParam(':user_id', $userId);
-$stmt->execute();
-$profile_preferences = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$profile) {
-
-    $insertStmt = $db->prepare("INSERT INTO profiles (user_id) VALUES (:user_id)");
-    $insertStmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-    $insertStmt->execute();
-
-    $stmt = $db->prepare("SELECT * FROM profiles WHERE user_id = :user_id");
-    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-    $stmt->execute();
-    $profile = $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
 require 'templates/common/header.php';
+require 'templates/personal_details.tpl.php';
+
+$profile = getProfile($db, $userId);
+$profile_preferences = getProfilePreferences($db, $userId);
 ?>
 
 <link rel="stylesheet" href="css/dashboard.css">
@@ -50,87 +32,7 @@ require 'templates/common/header.php';
     </div>
     
     <div class="dashboard-content">
-        <div id="profile" class="tab-content active">
-            <div class="personal-details">
-                <div class="profile-header">
-                    <div class="profile-icon">
-                        <?php if (!empty($profile['profile_picture'])): ?>
-                            <img src="<?= htmlspecialchars($profile['profile_picture']) ?>" alt="Profile Picture">
-                        <?php else: ?>
-                            <i class="fa-solid fa-image-portrait"></i>
-                        <?php endif; ?>
-                    </div>
-                    <div class="profile-info">
-                        <h2><?= htmlspecialchars($_SESSION['user']['name']) ?></h2>
-                        <p class="username">@<?= htmlspecialchars($_SESSION['user']['username']) ?></p>
-                        <p><i class="fas fa-map-marker-alt"></i> Located in <?= htmlspecialchars($profile['location']) ?></p>
-                        <p><i class="fas fa-calendar-alt"></i> Joined in <?= date('F Y', strtotime($_SESSION['user']['created_at'])) ?></p>
-
-                    </div>
-
-                    <button id="editProfBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
-                </div>
-
-                <hr class="section-divider">
-
-                <div class="profile-body">
-                    <div class="profile-bio">
-                        <div class="content">
-                            <h3>Bio</h3>
-                            <p id="bioText"><?= htmlspecialchars($profile['bio'] ?? 'No bio available') ?></p>
-                        </div>
-
-                        <button id="editBioBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
-                    </div>
-
-                    <hr class="section-divider">
-
-                    <div class="profile-preferences">
-                        <div class="content">
-                            <h3>Preferences</h3>
-                            <p><i class="fas fa-language"></i> <?= htmlspecialchars($profile_preferences['language'] ?? 'Language not set') ?> (<?= htmlspecialchars($profile_preferences['proficiency'] ?? 'N/A') ?>): <?= htmlspecialchars($profile_preferences['communication'] ?? 'Not set') ?></p>
-
-                            <p><?php
-                                $preferencesJson = $profile_preferences['preferred_days_times'] ?? '{}';
-                                $preferencesData = json_decode($preferencesJson, true);
-
-                                $grouped = [];
-
-                                foreach ($preferencesData['days'] as $dayInfo) {
-                                    $time = $dayInfo['time'];
-                                    if (!isset($grouped[$time])) {
-                                        $grouped[$time] = [];
-                                    }
-                                    $grouped[$time][] = $dayInfo['day'];
-                                }
-
-                                foreach ($grouped as $time => $days) {
-                                    $dayList = implode(', ', $days);
-                                    echo "<p><i class='fa-regular fa-calendar-days'></i> {$dayList}</p>";
-                                    echo "<p><i class='fa-solid fa-clock'></i> {$time}</p>";
-                                }
-                            ?></p>
-                        </div>
-
-                        <button id="editPrefsBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
-                    </div>
-                </div>
-
-                <div class="profile-controls">
-                    <a href="#" class="btn">Preview Profile</a>
-                    <a href="index.php" class="btn">Explore Platform</a>
-                </div>
-            </div>
-
-            <div class="extra-info">
-                <div class="reviews-list">
-                    <h3>Reviews from freelancers</h3>
-                    <div class="reviews">
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        <?php drawProfile($profile, $profile_preferences); ?>
 
         <div class="tab-content" id="favorites">
             <div class="favourites-details">
@@ -297,7 +199,7 @@ require 'templates/common/header.php';
     </div>
 </div>
 
-<script src="scripts/dashboard.js" defer></script>
+<script src="js/dashboard.js" defer></script>
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
 <?php require 'templates/common/footer.php'; ?>

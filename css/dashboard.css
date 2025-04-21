@@ -148,7 +148,7 @@
 
 /* ===== PROFILE PAGE ===== */
 
-.extra-info {
+.reviews-section {
     display: flex;
     flex-direction: column;
     width: 700px;
@@ -164,13 +164,13 @@
     font-size: 1.2em;
 }
 
-.extra-info p {
+.reviews-section p {
     margin: 0;
     font-size: 1em;
 
 }
 
-.extra-info::after {
+.reviews-section::after {
     content: '';
     display: block;
     width: 100%;

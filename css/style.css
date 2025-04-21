@@ -2,6 +2,13 @@
     --main-text-color: #3c3c3c;
 }
 
+html, body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
 body {
     margin: 0;
     font-family: 'Inter', Arial, sans-serif;
