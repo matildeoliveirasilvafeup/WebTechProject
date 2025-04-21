@@ -128,10 +128,12 @@
 
 .tab-content {
     display: none;
+    width: 100%;
 }
 
 .tab-content.active {
-    display: block;
+    display: flex;
+    width: 100%;
 }
 
 .sidebar .menu-content {
@@ -175,12 +177,6 @@
     height: 1px;
     background: #adadad;
     margin-top: 1em;
-}
-
-#profile {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
 }
 
 .personal-details {

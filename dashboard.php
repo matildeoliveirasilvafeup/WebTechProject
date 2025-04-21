@@ -131,18 +131,30 @@ require 'templates/common/header.php';
             </div>
 
         </div>
-        
-        <div id="favorites" class="tab-content">
-            <h2>Your Favorites</h2>
-            <p>Here's a list of your favorite services or listings.</p>
-        </div>
-        
-        <div id="listings" class="tab-content">
-            <h2>Your Listings</h2>
-            <p>Manage your own posted services or offers here.</p>
-        </div>
-    </div>
 
+        <div class="tab-content" id="favorites">
+            <div class="favourites-details">
+                <h2>Your Favorites</h2>
+                <p>Here's a list of your favorite services or listings.</p>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="listings">
+            <div class="own-listings">
+                <h2>Your Listings</h2>
+                <p>Manage your own posted services or offers here.</p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="settings">
+            <div class="settings-details">
+                <h2>Settings</h2>
+                <p>Manage your account settings here.</p>
+            </div>
+        </div>
+
+    </div>
+    
     <div id="editProfileModal" class="modal hidden">
         <div class="modal-content">
             <h3>Edit Profile</h3>
@@ -204,7 +216,7 @@ require 'templates/common/header.php';
             </form>
         </div>
     </div>
-
+    
     <div id="editBioModal" class="modal hidden">
         <div class="modal-content">
             <h3>Edit Bio</h3>
