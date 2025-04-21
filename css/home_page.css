@@ -8,9 +8,9 @@
 }
 
 .hero {
-    background: #4db8ff;
+    background: var(--main-theme-darker);
     border-radius: 15px;
-    color: white;
+    color: var(--secondary);
     padding-top: 8em;
     padding-bottom: 3em;
     text-align: center;
@@ -34,15 +34,15 @@
 
 .hero button {
     padding: 10px 30px;
-    background: #1e3a5f;
-    color: white;
+    background: var(--button-background);
+    color: var(--secondary);
     border: none;
     border-radius: 0 5px 5px 0;
     cursor: pointer;
 }
 
 .hero button:hover {
-    background: #16324b;
+    background: var(--button-background);
 }
 
 .featured-services {
@@ -55,7 +55,7 @@
 }
 
 .how-it-works {
-    background-color: #f0f4f8;
+    background-color: var(--main-background);
     padding: 0 2em 2em 3em;
     text-align: center;
 }
@@ -74,7 +74,7 @@
 }
 
 .step {
-    background: white;
+    background: var(--secondary);
     border-radius: 15px;
     padding: 2em;
     width: 280px;
@@ -88,7 +88,7 @@
 
 .step i {
     font-size: 2.5em;
-    color: #00b4d8;
+    color: var(--main-theme);
     margin-bottom: 1em;
 }
 
@@ -100,7 +100,7 @@
 
 .step p {
     font-size: 0.95em;
-    color: #555
+    color: var(--text-lighter);
 }
 
 .testimonials {
@@ -122,7 +122,7 @@
 }
 
 .testimonial {
-    background: white;
+    background: var(--secondary);
     border-radius: 15px;
     padding: 1.5em;
     max-width: 300px;
@@ -132,7 +132,7 @@
 .comment {
     font-style: italic;
     margin-bottom: 1em;
-    color: #333;
+    color: var(--main-text-color);
 }
 
 .client {
@@ -141,12 +141,12 @@
 }
 
 .rating i {
-    color: #ffc107;
+    color: var(--star-yellow);
 }
 
 .final-cta {
-    background: #4db8ff;
-    color: white;
+    background: var(--main-theme-darker);
+    color: var(--secondary);
     padding: 4em 2em;
     text-align: center;
     border-radius: 30px 30px 0 0;
@@ -179,19 +179,19 @@
 }
 
 .cta-btn.primary {
-    background: #1e3a5f;
-    color: white;
+    background: var(--button-background);
+    color: var(--secondary);
 }
 
 .cta-btn.primary:hover {
-    background: #16324b;
+    background: var(--button-background-selected);
 }
 
 .cta-btn.secondary {
-    background: white;
-    color: #1e3a5f;
+    background: var(--secondary);
+    color: var(--button-background);
 }
 
 .cta-btn.secondary:hover {
-    background: #e1ecf4;
+    background: var(--button-secondary-selected);
 }

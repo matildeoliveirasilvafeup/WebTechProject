@@ -2,7 +2,7 @@
     max-width: 80%;
     margin: 3em auto;
     padding: 2em;
-    background: white;
+    background: var(--secondary);
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     display: flex;
@@ -54,20 +54,20 @@
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
-    border: 2px solid #ccc;
+    border: 2px solid var(--background-disabled);
 }
 
 .service-details .price {
     font-size: 1.4em;
-    color: #00b4d8;
+    color: var(--main-theme);
     font-weight: bold;
     margin: 0.5em 0;
 }
 
 .service-details .description {
     line-height: 1.6;
-    color: #444;
-    background: #f9f9f9;
+    color: var(--text-lighter);
+    background: var(--main-background-darker);
     padding: 1em;
     border-radius: 10px;
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
@@ -89,32 +89,32 @@
     font-weight: bold;
     width: fit-content;
     transition: background 0.3s ease;
-    border: 2px solid #1e3a5f;
+    border: 2px solid ;
 }
 
 .btn-hire {
-    background: #1e3a5f;
-    color: white;
+    background: var(--button-background);
+    color: var(--secondary);
 }
 
 .btn-add-cart {
-    background: white;
+    background: var(--secondary);
     color: var(--main-text-color);
 }
 
 .btn-hire:hover {
-    background: #3364a3;
+    background: var(--button-background-selected);
 }
 
 .btn-add-cart:hover {
-    background: #1e3a5f;
-    color: white;
+    background: var(--button-background);
+    color: var(--secondary);
 }
 
 .service-page .service-info {
     margin-top: 0;
-    background: linear-gradient(to bottom right, #ffffff, #f1f5f9);
-    border: 1px solid #d1d5db;
+    background: linear-gradient(to bottom right, var(--secondary), var(--main-background-darker));
+    border: 1px solid var(--soft-line);
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -124,9 +124,9 @@
 .service-page .service-info h3 {
     margin-bottom: 16px;
     font-size: 1.4rem;
-    color: #1e3a5f;
+    color: var(--button-background);
     font-weight: 600;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--soft-line);
     padding-bottom: 8px;
 }
 
@@ -141,12 +141,12 @@
     align-items: center;
     margin-bottom: 12px;
     font-size: 1rem;
-    color: #374151;
+    color: var(--main-text);
 }
 
 .service-page .service-info li i {
     margin-right: 10px;
-    color: #4db8ff;
+    color: var(--main-theme-darker);
     min-width: 20px;
 }
 
@@ -167,7 +167,7 @@
     border: none;
     cursor: pointer;
     font-size: 1.1rem;
-    color: #6b7280;
+    color: var(--text-lighter);
     display: flex;
     align-items: center;
     gap: 4px;
@@ -211,10 +211,10 @@
 }
 
 .review-card {
-    border: 1px solid #ddd;
+    border: 1px solid var(--soft-line);
     border-radius: 10px;
     padding: 20px;
-    background: white;
+    background: var(--secondary);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease;
 }
@@ -242,7 +242,7 @@
 }
 
 .review-date {
-    color: #888;
+    color: var(--text-lighter);
     font-size: 0.85rem;
 }
 
@@ -267,7 +267,7 @@
 }
 
 .rating-bar .bar {
-    background: #eee;
+    background: var(--soft-line);
     width: 200px;
     height: 8px;
     border-radius: 4px;
@@ -276,7 +276,7 @@
 
 .rating-bar .fill {
     height: 100%;
-    background: #f5b301;
+    background: var(--star-yellow);
 }
 
 .reviews-controls {
@@ -290,14 +290,14 @@
 .reviews-controls input[type="text"] {
     padding: 0.5em;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--background-disabled);
     width: 200px;
 }
 
 .reviews-controls select {
     padding: 0.5em;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--background-disabled);
 }
 
 .load-more-btn {
@@ -307,7 +307,7 @@
     margin-top: 2em;
     padding: 0.75em 1.5em;
     background-color: var(--main-text-color);
-    color: white;
+    color: var(--secondary);
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -315,7 +315,7 @@
 }
 
 .load-more-btn:hover {
-    background-color: #333;
+    background-color: var(--main-text-color);
 }
 
 .freelancer-services,

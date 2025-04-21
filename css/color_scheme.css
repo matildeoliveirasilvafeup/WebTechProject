@@ -1,0 +1,19 @@
+:root {
+    --main-text: #3c3c3c;
+    --text-lighter: #555;
+    --main-background: #f0f4f8;
+    --main-background-darker: #f9f9f9;
+    --secondary: #ffffff;
+    --main-theme: #00b4d8;
+    --main-theme-darker: #4db8ff;
+    --selected: #90e0ef;
+    --sucess: #00cd00;
+    --error: red;
+    --background-disabled: #ccc;
+    --text-disabled: #666;
+    --button-background: #1e3a5f;
+    --button-background-selected: #16324b;
+    --button-secondary-selected: #e1ecf4;
+    --star-yellow: #ffc107;
+    --soft-line: #ddd;
+}

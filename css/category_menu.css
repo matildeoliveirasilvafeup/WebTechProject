@@ -23,7 +23,7 @@
     border-radius: 10px;
     text-align: center;
     padding: 1em;
-    color: #333;
+    color: var(--main-text-color);
     text-decoration: none;
     scroll-snap-align: start;
     flex-shrink: 0;
@@ -48,7 +48,7 @@
     position: relative;
     z-index: 2;
     padding: 10px 0;
-    background-color: #f0f4f8;
+    background-color: var(--main-background);
 }
 
 .category-menu ul {
@@ -73,7 +73,7 @@
 }
 
 .category-menu .category-item:hover {
-    border-bottom: solid #00b4d8;
+    border-bottom: solid var(--main-theme);
     transition: border-color 0.3s ease;
 }
 
@@ -82,7 +82,7 @@
     position: absolute;
     top: 105%;
     left: 0;
-    background-color: #f0f4f8;
+    background-color: var(--main-background);
     padding: 10px 0;
     list-style-type: none;
     margin: 0;

@@ -4,7 +4,7 @@ header {
 }
 
 .logo a {
-    color: #00b4d8;
+    color: var(--main-theme);
     font-size: 1.8em;
     font-weight: bold;
     text-decoration: none;
@@ -12,7 +12,7 @@ header {
 }
 
 .logo a:hover {
-    color: #90e0ef;
+    color: var(--selected);
 }
 
 nav {
@@ -30,5 +30,5 @@ nav a {
 }
 
 nav a:hover {
-    color: #00b4d8;
+    color: var(--main-theme);
 }

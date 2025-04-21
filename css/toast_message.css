@@ -2,8 +2,8 @@
     position: fixed;
     bottom: 24px;
     right: 24px;
-    background-color: #4db8ff;
-    color: white;
+    background-color: var(--main-theme-darker);
+    color: var(--secondary);
     padding: 12px 16px;
     border-radius: 8px;
     font-size: 0.95rem;

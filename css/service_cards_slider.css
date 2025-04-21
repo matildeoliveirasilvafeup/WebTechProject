@@ -1,5 +1,5 @@
 .service-card {
-    background: #ffffff;
+    background: var(--secondary);
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     overflow: hidden;
@@ -29,12 +29,12 @@
 
 .service-info .freelancer {
     font-size: 0.9em;
-    color: #666;
+    color: var(--text-disabled);
 }
 
 .service-info .price {
     font-weight: bold;
-    color: #00b4d8;
+    color: var(--main-theme);
     margin-top: 0.5em;
 }
 

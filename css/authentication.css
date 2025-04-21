@@ -1,5 +1,5 @@
 .auth-container {
-    background-color: white;
+    background-color: var(--secondary);
     padding: 40px;
     margin: 50px auto;
     border-radius: 12px;
@@ -10,7 +10,7 @@
 }
 
 .auth-container h2 {
-    color: #00b4d8;
+    color: var(--main-theme);
     text-align: center;
     font-size: 2em;
     position: relative;
@@ -22,21 +22,17 @@
     padding: 10px;
     margin-top: 5px;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--background-disabled);
     font-size: 1em;
     box-sizing: border-box;
-}
-
-.auth-container button[type="submit"]:hover {
-    background-color: #0090ad;
 }
 
 .auth-container button[type="submit"] {
     width: 100%;
     margin-top: 20px;
     padding: 12px;
-    background-color: #00b4d8;
-    color: white;
+    background-color: var(--main-theme);
+    color: var(--secondary);
     font-weight: bold;
     border: none;
     border-radius: 6px;
@@ -54,7 +50,7 @@
 #password-requirements li {
     display: flex;
     align-items: center;
-    color: #666;
+    color: var(--text-disabled);
     margin-bottom: 8px;
 }
 
@@ -64,7 +60,7 @@
 }
 
 #password-requirements li.completed {
-    color: #00cd00;
+    color: var(--sucess);
 }
 
 label {
@@ -84,7 +80,7 @@ label {
 }
 
 .error {
-    color: red;
+    color: var(--error);
     text-align: center;
     margin-top: 10px;
 }
@@ -107,7 +103,7 @@ label {
 }
 
 .auth-link a {
-    color: #00b4d8;
+    color: var(--main-theme);
     text-decoration: none;
 }
 
@@ -115,8 +111,8 @@ label {
     width: 100%;
     margin-top: 20px;
     padding: 12px;
-    background-color: #00b4d8;
-    color: white;
+    background-color: var(--main-theme);
+    color: var(--secondary);
     font-weight: bold;
     border: none;
     border-radius: 6px;
@@ -125,7 +121,7 @@ label {
 }
 
 #btn:disabled {
-    background-color: #ccc;
-    color: #666;
+    background-color: var(--background-disabled);
+    color: var(--text-disabled);
     cursor: default;
 }
