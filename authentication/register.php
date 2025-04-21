@@ -85,7 +85,8 @@ require '../templates/common/header.php';
     <p class="login-link">Already have an account? <a href="login.php">Sign in</a></p>
 </div>
 
-<script src="/scripts/script.js"></script>
+<script src="/js/password.js"></script>
+<script src="/js/form.js"></script>
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
 <?php require '../templates/common/footer.php'; ?>
