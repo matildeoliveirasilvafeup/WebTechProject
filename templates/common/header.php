@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Sixerr</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" type="image/png" href="/images/sixerr_favicon.png">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/home_page.css">
@@ -20,7 +21,12 @@
 </head>
 <body>
 <header>
-    <div class="logo"><a href="/index.php">Sixerr</a></div>
+    <div class="logo">
+    <a href="/index.php">
+        <img src="/images/sixerr_logo.png" alt="Sixerr logo">
+    </a>
+</div>
+
     <nav>
         <?php if (!isset($_SESSION['user'])): ?>
             <a href="/authentication/login.php">Login</a>
