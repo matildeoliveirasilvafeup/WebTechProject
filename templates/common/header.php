@@ -5,12 +5,17 @@
     <meta charset="UTF-8">
     <title>Sixerr</title>
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/png" href="/images/sixerr_logo_tab.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
-    <div class="logo"><a href="/index.php">Sixerr</a></div>
+    <div class="logo">
+    <a href="/index.php">
+        <img src="/images/sixerr_logo.png" alt="Sixerr logo" height="100">
+    </a>
+</div>
+
     <nav>
         <?php if (!isset($_SESSION['user'])): ?>
             <a href="/authentication/login.php">Login</a>
