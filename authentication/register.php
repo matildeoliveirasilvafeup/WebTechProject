@@ -45,7 +45,7 @@ require '../templates/common/header.php';
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css">
 
-<div class="sign-up-container" data-form-type="signup">
+<div class="auth-container" data-form-type="signup">
     <h2>Create an Account</h2>
 
     <?php if ($error): ?>
@@ -82,10 +82,11 @@ require '../templates/common/header.php';
         <button type="submit" id="btn" disabled>Create Account</button>
     </form>
 
-    <p class="login-link">Already have an account? <a href="login.php">Sign in</a></p>
+    <p class="auth-link">Already have an account? <a href="login.php">Sign in</a></p>
 </div>
 
-<script src="/scripts/script.js"></script>
+<script src="/js/password.js"></script>
+<script src="/js/form.js"></script>
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
 <?php require '../templates/common/footer.php'; ?>
