@@ -23,7 +23,7 @@
 <header>
     <div class="logo">
     <a href="/index.php">
-        <img src="/images/sixerr_logo.png" alt="Sixerr logo" height="100">
+        <img src="/images/sixerr_logo.png" alt="Sixerr logo">
     </a>
 </div>
 
