@@ -107,8 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
     /* ===== PREFERENCES EDITING ===== */
 
     const editPrefsBtn = document.getElementById("editPrefsBtn");
-    const cancelPrefsBtn = document.getElementById("cancelEdit");
-    const modal = document.getElementById("editModal");
+    const cancelPrefsBtn = document.getElementById("cancelEditPrefs");
+    const modal = document.getElementById("editModalPrefs");
     const prefsForm = document.getElementById("preferencesForm");
 
     if (editPrefsBtn && cancelPrefsBtn && modal && prefsForm) {
