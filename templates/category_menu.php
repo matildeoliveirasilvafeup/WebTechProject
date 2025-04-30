@@ -1,5 +1,5 @@
 <?php
-$categories = getAllCategoriesWithSubcategories($db);
+$categories = Category::getAllWithSubcategories();
 ?>
 
 <div class="category-menu">

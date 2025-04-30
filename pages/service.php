@@ -1,7 +1,6 @@
 <?php
-    require_once '../database/connection.php';
     require_once '../database/service.class.php';
-    require_once '../database/categories.php';
+    require_once '../database/category.class.php';
     require_once '../database/review.class.php';
 
     $serviceId = $_GET['id'] ?? null;
@@ -33,7 +32,7 @@
     <head>
         <meta charset="UTF-8">
         <title><?= htmlspecialchars($service->title) ?> | Serviços</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="../style.css">
     </head>
     <body>
         <div class="service-page">  
@@ -174,11 +173,11 @@
         </div>
     <?php endif; ?>
 
-        <script src="js/slider.js"></script>                 
-        <script src="js/reviews.js"></script>    
-        <script src="js/share.js"></script>
+        <script src="../js/slider.js"></script>                 
+        <script src="../js/reviews.js"></script>    
+        <script src="../js/share.js"></script>
         <div id="toast" class="toast">Link copied to clipboard!</div>
     </body>
 </html>
 
-<?php require 'templates/common/footer.php'; ?>
+<?php require '../templates/common/footer.php'; ?>

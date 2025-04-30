@@ -1,6 +1,6 @@
 <?php
-require_once '../database/connection.php';
-require_once '../database/categories.php';
+require_once '../includes/database.php';
+require_once '../database/category.class.php';
 require_once '../database/service.class.php';
 require_once '../database/review.class.php';
 session_start();
@@ -9,7 +9,7 @@ require '../templates/category_menu.php';
 require '../templates/service_cards_slider.php';
 
 $testimonials = Review::getLatestReviews(3);
-$categories = getAllCategories($db);
+$categories = Category::getAll();
 $featuredServices = Service::getFeatured(100);
 ?>
 
@@ -88,6 +88,6 @@ $featuredServices = Service::getFeatured(100);
         <a href="search.php" class="cta-btn secondary">Browse Services</a>
     </div>
 </div>
-<script src="js/slider.js"></script>                 
+<script src="../js/slider.js"></script>                 
 
 <?php require '../templates/common/footer.php'; ?>
