@@ -18,7 +18,7 @@
     $service = Service::getById((int)$serviceId);
     $ratingInfo = Review::getServiceRatingInfo((int)$serviceId);
     $reviews = Review::getServiceReviews((int)$serviceId);
-    $moreFromFreelancer = Service::getMoreFromFreelancer((int)$service->freelancerName, (int)$service->id, 100);
+    $moreFromFreelancer = Service::getMoreFromFreelancer((int)$service->freelancerId, (int)$service->id, 100);
     $relatedServices = Service::getRelated($service->categoryId, $service->id, 100);
 
     if (!$service) {
@@ -32,7 +32,7 @@
     <head>
         <meta charset="UTF-8">
         <title><?= htmlspecialchars($service->title) ?> | Serviços</title>
-        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" href="../css/style.css">
     </head>
     <body>
         <div class="service-page">  
@@ -137,14 +137,14 @@
         <?php foreach ($reviews as $index => $review): ?>
             <div class="review-card" data-index="<?= $index ?>" style="<?= $index >= 3 ? 'display: none;' : '' ?>">
                 <div class="review-header">
-                    <img src="<?= htmlspecialchars($review['profile_picture'] ?? 'https://via.placeholder.com/40') ?>" alt="Foto do cliente">
+                    <img src="<?= htmlspecialchars($review->profilePicture ?? 'https://via.placeholder.com/40') ?>" alt="Foto do cliente">
                     <div>
-                        <strong><?= htmlspecialchars($review['client_name']) ?></strong><br>
-                        <?= renderStars($review['rating']) ?>
+                        <strong><?= htmlspecialchars($review->clientName) ?></strong><br>
+                        <?= renderStars($review->rating) ?>
                     </div>
                 </div>
-                <p class="review-comment">"<?= htmlspecialchars($review['comment']) ?>"</p>
-                <small class="review-date"><?= date('d M Y', strtotime($review['created_at'])) ?></small>
+                <p class="review-comment">"<?= htmlspecialchars($review->comment) ?>"</p>
+                <small class="review-date"><?= date('d M Y', strtotime($review->createdAt)) ?></small>
             </div>
         <?php endforeach; ?>
 

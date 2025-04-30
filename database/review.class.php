@@ -71,7 +71,9 @@ class Review {
             ORDER BY r.created_at DESC
         ");
         $reviewsStmt->execute([$service_id]);
-        return $reviewsStmt->fetchAll();
+        $rows = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return array_map(fn($row) => new Review($row), $rows);
     }
 }
 

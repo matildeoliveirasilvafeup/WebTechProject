@@ -6,11 +6,11 @@ $categories = Category::getAllWithSubcategories();
     <ul>
         <?php foreach ($categories as $category): ?>
             <li class="category-item">
-                <a href="#"><?php echo htmlspecialchars($category['name']); ?></a>
-                <?php if (!empty($category['subcategories'])): ?>
+                <a href="#"><?php echo htmlspecialchars($category->name); ?></a>
+                <?php if (!empty($category->subcategories)): ?>
                     <ul class="subcategories">
-                        <?php foreach ($category['subcategories'] as $subcategory): ?>
-                            <li><a href="#"><?php echo htmlspecialchars($subcategory['name']); ?></a></li>
+                        <?php foreach ($category->subcategories as $subcategory): ?>
+                            <li><a href="#"><?php echo htmlspecialchars($subcategory->name); ?></a></li>
                         <?php endforeach; ?>
                     </ul>
                 <?php endif; ?>

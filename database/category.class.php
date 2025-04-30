@@ -2,10 +2,23 @@
 declare(strict_types=1);
 require_once(__DIR__ . '/../includes/database.php');
 
+class Subcategory {
+    public int $id;
+    public string $name;
+    public int $categoryId;
+
+    public function __construct(array $data) {
+        $this->id = (int)$data['id'];
+        $this->name = $data['name'];
+        $this->categoryId = (int)$data['category_id'];
+    }
+}
+
 class Category {
     public int $id;
     public string $name;
     public string $icon;
+    public array $subcategories = [];
 
     public function __construct(array $data) {
         $this->id = (int)$data['id'];
@@ -16,26 +29,28 @@ class Category {
         $db = Database::getInstance();
         $stmt = $db->prepare("SELECT * FROM categories ORDER BY name ASC");
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return array_map(fn($row) => new Category($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     public static function getAllWithSubcategories() {
         $db = Database::getInstance();
         $stmt = $db->prepare("SELECT * FROM categories ORDER BY name ASC");
         $stmt->execute();
-        $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+        $categoriesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $categories = array_map(fn($row) => new Category($row), $categoriesData);
+
         $stmtSub = $db->prepare("SELECT * FROM subcategories ORDER BY name ASC");
         $stmtSub->execute();
-        $subcategories = $stmtSub->fetchAll(PDO::FETCH_ASSOC);
+        $subsData = $stmtSub->fetchAll(PDO::FETCH_ASSOC);
+        $subs = array_map(fn($row) => new Subcategory($row), $subsData);
     
-        $groupedSubs = [];
-        foreach ($subcategories as $sub) {
-            $groupedSubs[$sub['category_id']][] = $sub;
-        }
-    
-        foreach ($categories as &$cat) {
-            $cat['subcategories'] = $groupedSubs[$cat['id']] ?? [];
+        foreach ($categories as $category) {
+            foreach ($subs as $sub) {
+                if ($sub->categoryId === $category->id) {
+                    $category->subcategories[] = $sub;
+                }
+            }
         }
     
         return $categories;
