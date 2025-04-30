@@ -11,6 +11,12 @@ class Service {
     public ?string $profilePicture;
     public ?string $mediaUrl;
     public ?string $categoryName;
+    public ?int $categoryId;
+    public ?int $freelancerId;
+    public ?int $deliveryTime;     
+    public ?int $numberOfRevisions;
+    public ?string $language;
+    public int $favoritesCount;
 
     public function __construct(array $data) {
         $this->id = (int)$data['id'];
@@ -21,6 +27,12 @@ class Service {
         $this->profilePicture = $data['profile_picture'] ?? null;
         $this->mediaUrl = $data['media_url'] ?? null;
         $this->categoryName = $data['category_name'] ?? null;
+        $this->categoryId = isset($data['category_id']) ? (int)$data['category_id'] : null;
+        $this->freelancerId = (int)$data['freelancer_id'] ?? null;
+        $this->deliveryTime = isset($data['delivery_time']) ? (int)$data['delivery_time'] : null;
+        $this->numberOfRevisions = isset($data['number_of_revisions']) ? (int)$data['number_of_revisions'] : null;
+        $this->language = $data['language'] ?? null;
+        $this->favoritesCount = (int)($data['favorites_count'] ?? 0);
     }
 
     public static function getAll(): array {

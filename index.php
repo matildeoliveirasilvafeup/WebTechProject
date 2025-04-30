@@ -1,7 +1,7 @@
 <?php
 require_once 'database/connection.php';
 require_once 'database/categories.php';
-require_once 'database/services.php';
+require_once 'database/service.class.php';
 require_once 'database/reviews.php';
 session_start();
 require 'templates/common/header.php';
@@ -10,13 +10,13 @@ require 'templates/service_cards_slider.php';
 
 $testimonials = getLatestReviews($db);
 $categories = getAllCategories($db);
-$featuredServices = getFeaturedServices($db, 100);;
+$featuredServices = Service::getFeatured(100);
 ?>
 
 <div class="hero">
     <h1 id="typing-effect">Find the perfect freelancer for your project</h1>
     <form method="GET" action="search.php">
-        <input type="text" name="q" placeholder="Search services...">
+        <input type="text" id="search-service-input" placeholder="Search services...">
         <button type="submit"><i class="fas fa-search"></i></button>
     </form>
 </div>  

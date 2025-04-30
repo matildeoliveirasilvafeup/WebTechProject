@@ -11,12 +11,12 @@ function renderServiceSlider(array $services, int $minItemsToShowNav = 6): strin
 
         <div class="services-slider" id="servicesSlider">
             <?php foreach ($services as $service): ?>
-                <a href="service.php?id=<?= $service['id'] ?>" class="service-card">
-                    <img src="<?= htmlspecialchars($service['media_url'] ?? 'https://via.placeholder.com/300') ?>" alt="Service image">
+                <a href="service.php?id=<?= $service->id ?>" class="service-card">
+                    <img src="<?= htmlspecialchars($service->mediaUrl ?? 'https://via.placeholder.com/300') ?>" alt="Service image">
                     <div class="service-info">
-                        <h3><?= htmlspecialchars($service['title']) ?></h3>
-                        <p class="freelancer">By <?= htmlspecialchars($service['freelancer_name']) ?></p>
-                        <p class="price">€<?= number_format($service['price'], 2) ?></p>
+                        <h3><?= htmlspecialchars($service->title) ?></h3>
+                        <p class="freelancer">By <?= htmlspecialchars($service->freelancerName) ?></p>
+                        <p class="price">€<?= number_format($service->price, 2) ?></p>
                     </div>
                 </a>
             <?php endforeach; ?>

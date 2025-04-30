@@ -1,6 +1,6 @@
 <?php
     require_once 'database/connection.php';
-    require_once 'database/services.php';
+    require_once 'database/service.class.php';
     require_once 'database/categories.php';
     require_once 'database/reviews.php';
 
@@ -16,11 +16,11 @@
     require 'templates/reviews_stars.php';
     require 'templates/service_cards_slider.php';
 
-    $service = getServiceById($db, (int)$serviceId);
+    $service = Service::getById((int)$serviceId);
     $ratingInfo = getServiceRatingInfo($db, (int)$serviceId);
     $reviews = getServiceReviews($db, (int)$serviceId);
-    $moreFromFreelancer = getMoreFromFreelancer($db, $service['freelancer_id'], $service['id'], 100);
-    $relatedServices = getRelatedServices($db, $service['category_id'], $service['id']);
+    $moreFromFreelancer = Service::getMoreFromFreelancer((int)$service->freelancerName, (int)$service->id, 100);
+    $relatedServices = Service::getRelated($service->categoryId, $service->id, 100);
 
     if (!$service) {
         echo "Service not found.";
@@ -32,19 +32,19 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title><?= htmlspecialchars($service['title']) ?> | Serviços</title>
+        <title><?= htmlspecialchars($service->title) ?> | Serviços</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <div class="service-page">  
-            <img src="<?= htmlspecialchars($service['media_url'] ?? 'https://via.placeholder.com/480') ?>" alt="Imagem do serviço">
+            <img src="<?= htmlspecialchars($service->mediaUrl ?? 'https://via.placeholder.com/480') ?>" alt="Imagem do serviço">
 
             <div class="service-details">
-                <h1><?= htmlspecialchars($service['title']) ?></h1>
+                <h1><?= htmlspecialchars($service->title) ?></h1>
                 <div class="freelancer-box">
-                    <img src="<?= htmlspecialchars($service['profile_picture'] ?? 'https://via.placeholder.com/50') ?>" alt="Foto do freelancer">
+                    <img src="<?= htmlspecialchars($service->profilePicture ?? 'https://via.placeholder.com/50') ?>" alt="Foto do freelancer">
                     <p class="freelancer">
-                        By <strong><?= htmlspecialchars($service['freelancer_name']) ?></strong><br>
+                        By <strong><?= htmlspecialchars($service->freelancerName) ?></strong><br>
                         <?php if ($ratingInfo['avg']): ?>
                             <?= renderStars($ratingInfo['avg']) ?>
                             <?= $ratingInfo['avg'] ?> (<?= $ratingInfo['count'] ?> reviews)
@@ -53,12 +53,12 @@
                         <?php endif; ?>
                     </p>
                 </div>
-                <p class="price">€<?= number_format($service['price'], 2) ?></p>
+                <p class="price">€<?= number_format($service->price, 2) ?></p>
                 <div class="description">
-                    <?= nl2br(htmlspecialchars($service['description'])) ?>
+                    <?= nl2br(htmlspecialchars($service->description)) ?>
                 </div>
                 <div class="button-group">
-                    <a href="contact_freelancer.php?id=<?= $service['freelancer_id'] ?>" class="btn-hire">Contact</a>
+                    <a href="contact_freelancer.php?id=<?= $service->freelancerId ?>" class="btn-hire">Contact</a>
                     <a href="#" class="btn-add-cart">Add to Cart</a>
                 </div>
             </div>
@@ -66,12 +66,12 @@
             <div class="info-actions">
                 <button class="icon-btn favorite">
                     <i class="fas fa-heart"></i>
-                    <span><?= $service['favorites_count'] ?? 0 ?></span>
+                    <span><?= $service->favoritesCount?></span>
                 </button>
                 <button class="icon-btn share" onclick="shareService()">
                     <i class="fas fa-share-alt"></i>
                 </button>
-                <a href="report_service.php?id=<?= $service['id'] ?>" class="icon-btn report" title="Report this service">
+                <a href="report_service.php?id=<?= $service->id ?>" class="icon-btn report" title="Report this service">
                     <i class="fas fa-flag"></i>
                 </a>
             </div>
@@ -79,10 +79,10 @@
             <div class="service-info">
                 <h3>Service Information</h3>
                 <ul>
-                    <li><i class="fas fa-clock"></i><strong> Delivery: </strong> <?= $service['delivery_time'] ?> days</li>
-                    <li><i class="fas fa-tags"></i><strong> Category: </strong> <?= htmlspecialchars($service['category_name']) ?></li>
-                    <li><i class="fas fa-sync-alt"></i><strong> Included Revisions: </strong> Until <?= $service['number_of_revisions'] ?> revisions</li>
-                    <li><i class="fas fa-language"></i><strong> Language: </strong> <?= htmlspecialchars($service['language']) ?></li>
+                    <li><i class="fas fa-clock"></i><strong> Delivery: </strong> <?= $service->deliveryTime ?> days</li>
+                    <li><i class="fas fa-tags"></i><strong> Category: </strong> <?= htmlspecialchars($service->categoryName) ?></li>
+                    <li><i class="fas fa-sync-alt"></i><strong> Included Revisions: </strong> Until <?= $service->numberOfRevisions ?> revisions</li>
+                    <li><i class="fas fa-language"></i><strong> Language: </strong> <?= htmlspecialchars($service->language) ?></li>
                 </ul>
             </div>
         </div>
@@ -162,7 +162,7 @@
 
     <?php if (!empty($moreFromFreelancer)): ?>
         <div class="freelancer-services">
-            <h2>More Services from <?= htmlspecialchars($service['freelancer_name']) ?></h2>
+            <h2>More Services from <?= htmlspecialchars($service->freelancerName) ?></h2>
             <?= renderServiceSlider($moreFromFreelancer, 4) ?>
         </div>
     <?php endif; ?>
