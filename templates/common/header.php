@@ -32,7 +32,7 @@
             <a href="/authentication/login.php">Login</a>
             <a href="/authentication/register.php">Register</a>
         <?php else: ?>
-            <a href="/dashboard.php">Dashboard</a>
+            <a href="dashboard.php">Dashboard</a>
             <a href="/logout.php">Logout</a>
         <?php endif; ?>
     </nav>

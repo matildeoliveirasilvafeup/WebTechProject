@@ -1,8 +1,8 @@
 <?php
-    require_once 'database/connection.php';
-    require_once 'database/service.class.php';
-    require_once 'database/categories.php';
-    require_once 'database/reviews.php';
+    require_once '../database/connection.php';
+    require_once '../database/service.class.php';
+    require_once '../database/categories.php';
+    require_once '../database/reviews.php';
 
     $serviceId = $_GET['id'] ?? null;
 
@@ -11,10 +11,10 @@
         exit;
     }
 
-    require 'templates/common/header.php';
-    require 'templates/category_menu.php';
-    require 'templates/reviews_stars.php';
-    require 'templates/service_cards_slider.php';
+    require '../templates/common/header.php';
+    require '../templates/category_menu.php';
+    require '../templates/reviews_stars.php';
+    require '../templates/service_cards_slider.php';
 
     $service = Service::getById((int)$serviceId);
     $ratingInfo = getServiceRatingInfo($db, (int)$serviceId);

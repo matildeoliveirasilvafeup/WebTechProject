@@ -6,7 +6,7 @@ if (!isset($_SESSION['user']['id'])) {
     exit;
 }
 
-require 'templates/common/header.php';
+require '../templates/common/header.php';
 ?>
 
 <link rel="stylesheet" href="/css/style.css">
