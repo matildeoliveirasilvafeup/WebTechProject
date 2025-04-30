@@ -29,8 +29,8 @@
 
     <nav>
         <?php if (!isset($_SESSION['user'])): ?>
-            <a href="/authentication/login.php">Login</a>
-            <a href="/authentication/register.php">Register</a>
+            <a href="/pages/login.php">Login</a>
+            <a href="/pages/register.php">Register</a>
         <?php else: ?>
             <a href="dashboard.php">Dashboard</a>
             <a href="/logout.php">Logout</a>
