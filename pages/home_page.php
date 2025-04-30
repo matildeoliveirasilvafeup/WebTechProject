@@ -2,13 +2,13 @@
 require_once '../database/connection.php';
 require_once '../database/categories.php';
 require_once '../database/service.class.php';
-require_once '../database/reviews.php';
+require_once '../database/review.class.php';
 session_start();
 require '../templates/common/header.php';
 require '../templates/category_menu.php';
 require '../templates/service_cards_slider.php';
 
-$testimonials = getLatestReviews($db);
+$testimonials = Review::getLatestReviews(3);
 $categories = getAllCategories($db);
 $featuredServices = Service::getFeatured(100);
 ?>
@@ -65,13 +65,13 @@ $featuredServices = Service::getFeatured(100);
     <div class="testimonial-cards">
         <?php foreach ($testimonials as $review): ?>
             <div class="testimonial">
-                <p class="comment">"<?= htmlspecialchars($review['comment']) ?>"</p>
-                <p class="client">– <?= htmlspecialchars($review['client_name']) ?> on <strong><?= htmlspecialchars($review['service_title']) ?></strong></p>
+                <p class="comment">"<?= htmlspecialchars($review->comment) ?>"</p>
+                <p class="client">– <?= htmlspecialchars($review->clientName) ?> on <strong><?= htmlspecialchars($review->serviceTitle) ?></strong></p>
                 <div class="rating">
-                    <?php for ($i = 0; $i < $review['rating']; $i++): ?>
+                    <?php for ($i = 0; $i < $review->rating; $i++): ?>
                         <i class="fas fa-star"></i>
                     <?php endfor; ?>
-                    <?php for ($i = $review['rating']; $i < 5; $i++): ?>
+                    <?php for ($i = $review->rating; $i < 5; $i++): ?>
                         <i class="far fa-star"></i>
                     <?php endfor; ?>
                 </div>
@@ -90,4 +90,4 @@ $featuredServices = Service::getFeatured(100);
 </div>
 <script src="js/slider.js"></script>                 
 
-<?php require 'templates/common/footer.php'; ?>
+<?php require '../templates/common/footer.php'; ?>

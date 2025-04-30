@@ -2,7 +2,7 @@
     require_once '../database/connection.php';
     require_once '../database/service.class.php';
     require_once '../database/categories.php';
-    require_once '../database/reviews.php';
+    require_once '../database/review.class.php';
 
     $serviceId = $_GET['id'] ?? null;
 
@@ -17,8 +17,8 @@
     require '../templates/service_cards_slider.php';
 
     $service = Service::getById((int)$serviceId);
-    $ratingInfo = getServiceRatingInfo($db, (int)$serviceId);
-    $reviews = getServiceReviews($db, (int)$serviceId);
+    $ratingInfo = Review::getServiceRatingInfo((int)$serviceId);
+    $reviews = Review::getServiceReviews((int)$serviceId);
     $moreFromFreelancer = Service::getMoreFromFreelancer((int)$service->freelancerName, (int)$service->id, 100);
     $relatedServices = Service::getRelated($service->categoryId, $service->id, 100);
 
@@ -94,7 +94,7 @@
         $totalRating = 0;
 
         foreach ($reviews as $r) {
-            $rating = (int)$r['rating'];
+            $rating = (int)$r->rating;
             $totalRating += $rating;
             if ($rating >= 1 && $rating <= 5) {
                 $starCounts[$rating]++;

@@ -53,10 +53,7 @@ class Service {
         $db = Database::getInstance();
         $stmt = $db->prepare("
             SELECT 
-                services.id,
-                services.title,
-                services.description,
-                services.price,
+                services.*,
                 users.name AS freelancer_name,
                 (
                     SELECT media_url 
