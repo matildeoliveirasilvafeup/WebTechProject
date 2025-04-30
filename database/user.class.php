@@ -36,7 +36,7 @@ class User {
         ]);
     }
 
-    public static function get_customer_by_username_password($username, $password) {
+    public static function getByUsernameAndPassword($username, $password) {
         $db = Database::getInstance();
         $stmt = $db->prepare('SELECT * FROM users WHERE username = :username');
         $stmt->execute([':username' => $username]);
