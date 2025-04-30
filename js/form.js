@@ -29,7 +29,7 @@ emailInput.addEventListener('input', () => {
     const email = emailInput.value.trim();
     
     if (checkEmailRequirements(email)) {
-        fetch(`../database/register.php?email=${encodeURIComponent(email)}`)
+        fetch(`../api/validate_user.php?email=${encodeURIComponent(email)}`)
         .then(res => res.json())
         .then(data => {
             if (data.email?.used) {
@@ -58,7 +58,7 @@ usernameInput.addEventListener('input', () => {
     const username = usernameInput.value.trim();
 
     if (username) {
-        fetch(`../database/register.php?username=${encodeURIComponent(username)}`)
+        fetch(`../api/validate_user.php?username=${encodeURIComponent(username)}`)
             .then(res => res.json())
             .then(data => {
                 if (data.username?.used) {

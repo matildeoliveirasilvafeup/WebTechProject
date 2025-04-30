@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
+require_once __DIR__ . '/../includes/database.php';
 session_start();
 
-$db = new PDO('sqlite:../database/sixerr.db');
+$db = Database::getInstance();
 
 $error = '';
 
