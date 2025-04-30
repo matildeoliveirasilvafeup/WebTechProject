@@ -27,5 +27,18 @@ class Session {
     public function logout() {
         session_destroy();
     }
+
+    public function setError(string $message) {
+        $_SESSION["error"] = $message;
+    }
+
+    public function getError(): ?string {
+        if (isset($_SESSION["error"])) {
+            $error = $_SESSION["error"];
+            unset($_SESSION["error"]);
+            return $error;
+        }
+        return null;
+    }
 }
 ?>

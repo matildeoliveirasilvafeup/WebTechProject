@@ -11,13 +11,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $user = User::getByEmailAndPassword($email,$password);
 
-    if ($user !== null) {
+    if ($user != null) {
         Session::getInstance()->login($user);
 
         header('Location: ../pages/dashboard.php');
         exit;
     } else {
-        $error = 'Email or password is incorrect.';
+        Session::getInstance()->setError('Email or password is incorrect.');
+        header('Location: ../pages/login.php');
+        exit;
     }
 }
 

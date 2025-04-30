@@ -1,5 +1,8 @@
 <?php
-session_start();
+require_once __DIR__ . '/../includes/session.php';
+$session = Session::getInstance();
+$error = $session->getError();
+
 require '../templates/common/header.tpl.php';
 ?>
 

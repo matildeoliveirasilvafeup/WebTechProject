@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: ../pages/dashboard.php");
             exit;
         } else {
+            header("Location: ../pages/register.php");
             $error = 'User creation failed.';
         }
 
