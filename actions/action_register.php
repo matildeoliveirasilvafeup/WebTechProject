@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../includes/database.php';
-session_start();
-
-$db = Database::getInstance();
+require_once __DIR__ . '/../database/user.class.php';
+require_once __DIR__ . '/../includes/session.php';
 
 $error = '';
 
@@ -13,28 +11,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    $password_hash = password_hash($password, PASSWORD_DEFAULT);
-
+    
     try {
-        $stmt = $db->prepare("INSERT INTO users (name, username, email, password_hash) 
-                              VALUES (:name, :username, :email, :password_hash)");
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':username', $username);
+        User::create($name, $username, $email, $password);
+    
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password_hash', $password_hash);
         $stmt->execute();
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $user_id = $db->lastInsertId();
+        if ($userData) {
+            $user = new User($userData);
+            
+            $session = Session::getInstance();
+            $session->login($user);
 
-        $stmt = $db->prepare("SELECT * FROM users WHERE id = :id");
-        $stmt->bindParam(':id', $user_id);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        $_SESSION['user'] = $user;
-
-        header("Location: /index.php");
-        exit;
+            header("Location: ../pages/dashboard.php");
+            exit;
+        } else {
+            $error = 'User creation failed.';
+        }
 
     } catch (PDOException $e) {
         $error = 'Error registering: ' . $e->getMessage();

@@ -13,7 +13,7 @@ require '../templates/common/header.php';
         <p class="error"><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
 
-    <form method="POST" action="register.php">
+    <form method="POST" action="../actions/action_register.php">
 
         <label for="name">Name</label>
         <input type="name" name="name" id="name" required>
