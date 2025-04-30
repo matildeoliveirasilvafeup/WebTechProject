@@ -4,7 +4,7 @@ require_once '../database/category.class.php';
 require_once '../database/service.class.php';
 require_once '../database/review.class.php';
 session_start();
-require '../templates/common/header.php';
+require '../templates/common/header.tpl.php';
 require '../templates/category_menu.php';
 require '../templates/service_cards_slider.php';
 
@@ -90,4 +90,4 @@ $featuredServices = Service::getFeatured(100);
 </div>
 <script src="../js/slider.js"></script>                 
 
-<?php require '../templates/common/footer.php'; ?>
+<?php require '../templates/common/footer.tpl.php'; ?>

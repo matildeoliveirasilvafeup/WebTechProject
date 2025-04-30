@@ -11,6 +11,7 @@ class Review {
     public string $createdAt;
     public string $clientName;
     public string $serviceTitle;
+    public ?string $profilePicture;
 
     public function __construct(array $data) {
         $this->id = (int)$data['id'] ?? 0;
@@ -21,6 +22,7 @@ class Review {
         $this->createdAt = $data['created_at'] ?? date('Y-m-d H:i:s');
         $this->clientName = $data['client_name'] ?? '';
         $this->serviceTitle = $data['service_title'] ?? '';
+        $this->profilePicture = $data['profile_picture'] ?? null;
     }
     
     public static function getLatestReviews(int $limit = 3): array {

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../templates/common/header.php';
+require '../templates/common/header.tpl.php';
 ?>
 
 <link rel="stylesheet" href="/css/style.css">
@@ -50,4 +50,4 @@ require '../templates/common/header.php';
 <script src="/js/form.js"></script>
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
-<?php require '../templates/common/footer.php'; ?>
+<?php require '../templates/common/footer.tpl.php'; ?>

@@ -10,7 +10,7 @@
         exit;
     }
 
-    require '../templates/common/header.php';
+    require '../templates/common/header.tpl.php';
     require '../templates/category_menu.php';
     require '../templates/reviews_stars.php';
     require '../templates/service_cards_slider.php';
@@ -180,4 +180,4 @@
     </body>
 </html>
 
-<?php require '../templates/common/footer.php'; ?>
+<?php require '../templates/common/footer.tpl.php'; ?>
