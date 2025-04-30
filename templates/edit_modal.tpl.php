@@ -85,6 +85,59 @@ session_start();
     <input type="file" id="edit-profile-picture" name="profile_picture" accept="image/*">
 <?php } ?>
 
+<!-- Edit Authentication Modal -->
+
+<?php function drawEditAuthModal() { ?>
+    <div class="modal-content">
+        <h3>Edit Authentication Details</h3>
+
+        <div id="email-section" class="auth-section">
+            <form id="editEmailForm">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" value="<?= htmlspecialchars($_SESSION['user']['email'] ?? '') ?>" required>
+
+                <div class="modal-buttons">
+                    <button type="submit" id="save-btn" class="btn save" disabled>Save</button>
+                    <button type="button" id="cancelEditAuth" class="btn cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <hr class="section-divider">
+
+        <div id="pass-section" class="auth-section">
+            <form id="editPasswordForm">
+                <label for="password">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="password" required>
+                    <span class="eye-button" onclick="togglePassword(this, 'password')"><i class="fas fa-eye-slash"></i></span>
+                </div>
+
+                <label for="confirm-password">Confirm Password</label>
+                <div class="password-wrapper">
+                    <input type="password" name="confirm-password" id="confirm-password" required>
+                    <span class="eye-button" onclick="togglePassword(this, 'confirm-password')"><i class="fas fa-eye-slash"></i></span>
+                </div>
+
+                <ul id="password-requirements">
+                    <li id="min-length"><i class="fa-regular fa-circle-check"></i> At least 8 characters</li>
+                    <li id="uppercase"><i class="fa-regular fa-circle-check"></i> At least 1 uppercase letter</li>
+                    <li id="lowercase"><i class="fa-regular fa-circle-check"></i> At least 1 lowercase letter</li>
+                    <li id="number"><i class="fa-regular fa-circle-check"></i> At least 1 number</li>
+                    <li id="special-char"><i class="fa-regular fa-circle-check"></i> At least 1 special character</li>
+                </ul>
+
+                <!-- <div class="modal-buttons">
+                    <button type="submit" id="save-btn" class="btn save" disabled>Save</button>
+                    <button type="button" id="cancelEditAuth" class="btn cancel">Cancel</button>
+                </div> -->
+            </form>
+        </div>
+
+        
+    </div>
+<?php } ?>
+
 <!-- Edit Bio Modal -->
 
 <?php function drawEditBioModal($profile) { ?>
@@ -192,3 +245,6 @@ session_start();
         <button type="button" id="<?= htmlspecialchars($cancelButtonId) ?>" class="btn cancel">Cancel</button>
     </div>
 <?php } ?>
+
+<script src="/js/password.js"></script>
+<script type="module" src="/js/edit_auth.js"></script>

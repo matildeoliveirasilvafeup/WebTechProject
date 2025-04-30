@@ -1,7 +1,14 @@
-let showing = false;
+let showing;
 
-function togglePassword(icon) {
-    const input = document.getElementById('password');
+function togglePassword(icon, id) {
+
+    if (icon.querySelector('i')?.classList.contains('fa-eye-slash')) {
+        showing = false;
+    } else if (icon.querySelector('i')?.classList.contains('fa-eye')){
+        showing = true;
+    }
+
+    const input = document.getElementById(id);
     
     input.dataset.realValue = input.value; 
 

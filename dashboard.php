@@ -62,6 +62,10 @@ $profile_preferences = getProfilePreferences($db, $userId);
         <?php drawEditProfileModal($profile); ?>
     </div>
     
+    <div id="editAuthModal" class="modal hidden">
+        <?php drawEditAuthModal(); ?>
+    </div>
+
     <div id="editBioModal" class="modal hidden">
         <?php drawEditBioModal($profile); ?>
     </div>
@@ -71,7 +75,8 @@ $profile_preferences = getProfilePreferences($db, $userId);
     </div>
 </div>
 
-<script src="js/dashboard.js" defer></script>
+<script type="module" src="js/dashboard.js" defer></script>
+
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
 <?php require 'templates/common/footer.php'; ?>

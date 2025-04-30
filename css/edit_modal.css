@@ -39,6 +39,8 @@
 .modal-content input[type="text"],
 .modal-content input[type="time"],
 .modal-content input[type="file"],
+.modal-content input[type="password"],
+.modal-content input[type="email"],
 .modal-content select,
 .modal-content textarea {
     width: 100%;
@@ -69,10 +71,17 @@
 .btn.save:hover {
     background: #0077b6;
 }
+.modal-content button[type="submit"]:disabled,
+.btn.save:disabled {
+    background-color: var(--background-disabled);
+    color: var(--text-disabled);
+    cursor: default;
+}
 
-#cancelEditPrefs,
 #cancelEditProfile,
+#cancelEditAuth,
 #cancelEditBio,
+#cancelEditPrefs,
 .btn.cancel {
     background: #e5e7eb;
     color: #333;
@@ -80,9 +89,10 @@
     transition: background-color 0.3s ease;
 }
 
-#cancelEditPrefs:hover,
 #cancelEditProfile:hover,
+#cancelEditAuth:hover,
 #cancelEditBio:hover,
+#cancelEditPrefs:hover,
 .btn.cancel:hover {
     background-color: #d1d5db;
 }
@@ -133,3 +143,24 @@
     padding: 10px 20px;
     transition: background 0.2s ease-in-out;
 }
+
+.eye-button {
+    position: absolute;
+    right: 10px;
+    top: 55%;
+    transform: translateY(-75%);
+    cursor: pointer;
+    font-size: 1.2em;
+    user-select: none;
+}
+
+/* #save-btn:disabled {
+    background-color: var(--disabled-color);
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+} */

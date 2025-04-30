@@ -68,7 +68,7 @@ require '../templates/common/header.php';
         <label for="password">Password</label>
         <div class="password-wrapper">
             <input type="password" name="password" id="password" required>
-            <span class="eye-button" onclick="togglePassword(this)"><i class="fas fa-eye-slash"></i></span>
+            <span class="eye-button" onclick="togglePassword(this, 'password')"><i class="fas fa-eye-slash"></i></span>
         </div>
 
         <ul id="password-requirements">
@@ -86,7 +86,7 @@ require '../templates/common/header.php';
 </div>
 
 <script src="/js/password.js"></script>
-<script src="/js/form.js"></script>
+<script type="module" src="/js/form.js"></script>
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
 <?php require '../templates/common/footer.php'; ?>

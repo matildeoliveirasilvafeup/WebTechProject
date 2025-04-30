@@ -97,6 +97,7 @@
 }
 
 /* Profile Bio */
+.profile-auth,
 .profile-bio,
 .profile-preferences {
     display: flex;

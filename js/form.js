@@ -81,7 +81,7 @@ usernameInput.addEventListener('input', () => {
 
 nameInput.addEventListener('input', checkSignUpFormValidity);
 
-function checkEmailRequirements(email) {
+export function checkEmailRequirements(email) {
 
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -91,7 +91,7 @@ function checkNameRequirements(name) {
     return name.length >= 1;
 }
 
-function checkPasswordRequirements(password) {
+export function checkPasswordRequirements(password) {
     const requirements = {
         minLength: password.length >= 8,
         uppercase: /[A-Z]/.test(password),
