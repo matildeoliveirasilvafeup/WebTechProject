@@ -1,20 +1,18 @@
 <?php
-session_start();
+declare(strict_types=1);
 
-$db = new PDO('sqlite:../database/sixerr.db');
+require_once __DIR__ . '/../includes/session.php';
+
+require_once __DIR__ . '/../database/user.class.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
-    $stmt->bindParam(':email', $email);
-    $stmt->execute();
+    $user = User::getByEmailAndPassword($email,$password);
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($user && password_verify($password, $user['password_hash'])) {
-        $_SESSION['user'] = $user;
+    if ($user !== null) {
+        Session::getInstance()->login($user);
 
         header('Location: ../pages/dashboard.php');
         exit;
@@ -23,5 +21,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-require '../templates/common/header.php';
 ?>

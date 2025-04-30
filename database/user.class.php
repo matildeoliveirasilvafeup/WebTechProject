@@ -20,6 +20,10 @@ class User {
         $this->createdAt = $data['created_at'] ?? '';
     }
 
+    public function getName(): string {
+        return $this->name;
+    }
+
     public static function create(string $name, string $username, string $email, string $password) {
         $db = Database::getInstance();
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -36,10 +40,10 @@ class User {
         ]);
     }
 
-    public static function getByUsernameAndPassword($username, $password) {
+    public static function getByEmailAndPassword($email, $password) {
         $db = Database::getInstance();
-        $stmt = $db->prepare('SELECT * FROM users WHERE username = :username');
-        $stmt->execute([':username' => $username]);
+        $stmt = $db->prepare('SELECT * FROM users WHERE email = :email');
+        $stmt->execute([':email' => $email]);
 
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($userData && password_verify($password, $userData['password_hash'])) {
