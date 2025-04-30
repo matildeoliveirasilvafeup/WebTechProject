@@ -11,8 +11,12 @@
     }
 
     require '../templates/common/header.tpl.php';
+    require '../templates/category.tpl.php';
+
+    $categories = Category::getAllWithSubcategories();
+
     drawHeader();
-    require '../templates/category_menu.php';
+    drawCategoryMenu($categories);
     require '../templates/reviews_stars.php';
     require '../templates/service_cards_slider.php';
 

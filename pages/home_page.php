@@ -1,12 +1,16 @@
 <?php
 require_once '../includes/database.php';
-require_once '../database/category.class.php';
 require_once '../database/service.class.php';
 require_once '../database/review.class.php';
-session_start();
+
 require '../templates/common/header.tpl.php';
+require '../templates/category.tpl.php';
+
+$categories = Category::getAllWithSubcategories();
+
 drawHeader();
-require '../templates/category_menu.php';
+drawCategoryMenu($categories);
+
 require '../templates/service_cards_slider.php';
 
 $testimonials = Review::getLatestReviews(3);
