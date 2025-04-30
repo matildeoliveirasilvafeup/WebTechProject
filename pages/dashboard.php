@@ -13,6 +13,7 @@ if (!$session || !$session->getUser()) {
 }
 
 require '../templates/common/header.tpl.php';
+drawHeader();
 ?>
 
 <link rel="stylesheet" href="/css/style.css">
@@ -22,4 +23,7 @@ require '../templates/common/header.tpl.php';
     <p>Welcome to your user dashboard.</p>
 </div>
 
-<?php require '../templates/common/footer.tpl.php'; ?>
+<?php 
+    require '../templates/common/footer.tpl.php'; 
+    drawFooter(); 
+?>

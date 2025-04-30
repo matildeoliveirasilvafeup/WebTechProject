@@ -4,6 +4,7 @@ $session = Session::getInstance();
 $error = $session->getError();
 
 require '../templates/common/header.tpl.php';
+drawHeader();
 ?>
 
 <link rel="stylesheet" href="/css/style.css">
@@ -53,4 +54,7 @@ require '../templates/common/header.tpl.php';
 <script src="/js/form.js"></script>
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
-<?php require '../templates/common/footer.tpl.php'; ?>
+<?php 
+    require '../templates/common/footer.tpl.php'; 
+    drawFooter()
+?>

@@ -11,6 +11,7 @@
     }
 
     require '../templates/common/header.tpl.php';
+    drawHeader();
     require '../templates/category_menu.php';
     require '../templates/reviews_stars.php';
     require '../templates/service_cards_slider.php';
@@ -180,4 +181,7 @@
     </body>
 </html>
 
-<?php require '../templates/common/footer.tpl.php'; ?>
+<?php 
+    require '../templates/common/footer.tpl.php'; 
+    drawFooter();
+?>

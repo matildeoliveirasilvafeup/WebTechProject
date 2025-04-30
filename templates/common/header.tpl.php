@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-require_once(__DIR__ . '/../includes/session.php');
+require_once(__DIR__ . '/../../includes/session.php');
 ?>
 
 <?php function drawHeader() { ?>
@@ -12,17 +12,7 @@ require_once(__DIR__ . '/../includes/session.php');
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Sixerr</title>
         <link rel="icon" type="image/png" href="/images/sixerr_favicon.png">
-        <link rel="stylesheet" href="/css/style.css">
-        <link rel="stylesheet" href="/css/header.css">
-        <link rel="stylesheet" href="/css/footer.css">
-        <link rel="stylesheet" href="/css/home_page.css">
-        <link rel="stylesheet" href="/css/typing_effect.css">
-        <link rel="stylesheet" href="/css/category_menu.css">
-        <link rel="stylesheet" href="/css/service_cards_slider.css">
-        <link rel="stylesheet" href="/css/service_page.css">
-        <link rel="stylesheet" href="/css/authentication.css">
-        <link rel="stylesheet" href="/css/color_scheme.css">
-        <link rel="stylesheet" href="/css/toast_message.css">
+        <link rel="stylesheet" href="/css/main.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
     </head>
