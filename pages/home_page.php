@@ -12,7 +12,7 @@ $categories = Category::getAllWithSubcategories();
 drawHeader();
 drawCategoryMenu($categories);
 
-require '../templates/service_cards_slider.php';
+require '../templates/service.tpl.php';
 
 $testimonials = Review::getLatestReviews(3);
 $categories = Category::getAll();
@@ -27,12 +27,12 @@ $featuredServices = Service::getFeatured(100);
     </form>
 </div>  
 
-<?php drawCategorySection($categories) ?>
+<?php 
+    drawCategorySection($categories); 
+    drawFeaturedServices($featuredServices);
+?>
 
-<div class="featured-services">
-    <h2>Featured Services</h2>
-    <?= renderServiceSlider($featuredServices) ?>
-</div>
+
 
 <div class="how-it-works">
     <h2>How It Works</h2>
