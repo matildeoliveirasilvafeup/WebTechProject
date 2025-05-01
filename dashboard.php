@@ -49,9 +49,8 @@ $profile_preferences = getProfilePreferences($db, $userId);
                 <p>Manage your own posted services or offers here.</p>
             </div>
         </div>
-
-        <?php drawSettings($profile, $profile_preferences); ?>
-
+        
+        <?php drawSettings(); ?>
     </div>
     
     <div id="editProfileModal" class="modal hidden">
@@ -61,7 +60,7 @@ $profile_preferences = getProfilePreferences($db, $userId);
     <div id="editAuthModal" class="modal hidden">
         <?php drawEditAuthModal(); ?>
     </div>
-
+    
     <div id="editBioModal" class="modal hidden">
         <?php drawEditBioModal($profile); ?>
     </div>

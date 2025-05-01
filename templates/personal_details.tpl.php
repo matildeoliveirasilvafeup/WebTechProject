@@ -5,7 +5,7 @@ session_start();
 <link rel="stylesheet" href="css/personal_details.css">
 
 <?php function drawProfile($profile, $profile_preferences) { ?>
-    <div  id="profile" class="tab-content active">
+    <div id="profile" class="tab-content active">
         <div class="personal-details">
             <div class="profile-header">
 
