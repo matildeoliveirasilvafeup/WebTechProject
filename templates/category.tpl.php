@@ -22,4 +22,17 @@ require_once '../database/category.class.php';
     </div>
 <?php } ?>
 
-
+<?php function drawCategorySection($categories) { ?>
+    <div class="category-section">
+    <div class="carousel-wrapper">
+        <div class="category-carousel">
+            <?php foreach ($categories as $category): ?>
+                <a href="search.php?category=<?= $category->id ?>" class="category-card">
+                    <i class="icon <?= htmlspecialchars($category->icon) ?>"></i>
+                    <p><?= htmlspecialchars($category->name) ?></p>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>    
+</div>
+<?php } ?>
