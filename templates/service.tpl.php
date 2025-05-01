@@ -4,17 +4,17 @@ require_once '../database/service.class.php';
 ?>
 
 <?php
-function renderServiceSlider(array $services, int $minItemsToShowNav = 6): string {
+function renderServiceSlider(array $services, int $minItemsToShowNav = 6, string $sliderId = 'servicesSlider'): string {
     if (empty($services)) return '';
 
     ob_start();
     ?>
     <div class="services-slider-wrapper">
         <?php if (count($services) > $minItemsToShowNav): ?>
-            <button class="slider-btn left" onclick="scrollSlider(-1)">‹</button>
+            <button class="slider-btn left" onclick="scrollSlider(this, -1)">‹</button>
         <?php endif; ?>    
 
-        <div class="services-slider" id="servicesSlider">
+        <div class="services-slider" id="<?= htmlspecialchars($sliderId) ?>">
             <?php foreach ($services as $service): ?>
                 <a href="service.php?id=<?= $service->id ?>" class="service-card">
                     <img src="<?= htmlspecialchars($service->mediaUrl ?? 'https://via.placeholder.com/300') ?>" alt="Service image">
@@ -28,7 +28,7 @@ function renderServiceSlider(array $services, int $minItemsToShowNav = 6): strin
         </div>
 
         <?php if (count($services) > $minItemsToShowNav): ?>
-            <button class="slider-btn right" onclick="scrollSlider(1)">›</button>
+            <button class="slider-btn right" onclick="scrollSlider(this, 1)">›</button>
         <?php endif; ?>    
     </div>
     <script src="../js/slider.js"></script>
@@ -101,7 +101,7 @@ function renderServiceSlider(array $services, int $minItemsToShowNav = 6): strin
     <?php if (!empty($moreFromFreelancer)): ?>
         <div class="freelancer-services">
             <h2>More Services from <?= htmlspecialchars($service->freelancerName) ?></h2>
-            <?= renderServiceSlider($moreFromFreelancer, 4) ?>
+            <?= renderServiceSlider($moreFromFreelancer, 4, 'freelancerSlider') ?>
         </div>
     <?php endif; ?>
 <?php } ?>
@@ -110,7 +110,7 @@ function renderServiceSlider(array $services, int $minItemsToShowNav = 6): strin
     <?php if (!empty($relatedServices)): ?>
         <div class="freelancer-services">
             <h2>You may also like: </h2>
-            <?= renderServiceSlider($relatedServices, 4) ?>
+            <?= renderServiceSlider($relatedServices, 4, 'relatedSlider') ?>
         </div>
     <?php endif; ?>
 <?php } ?>
