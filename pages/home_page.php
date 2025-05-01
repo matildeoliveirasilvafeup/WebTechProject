@@ -5,6 +5,7 @@ require_once '../database/review.class.php';
 
 require '../templates/common/header.tpl.php';
 require '../templates/category.tpl.php';
+require '../templates/review.tpl.php';
 
 $categories = Category::getAllWithSubcategories();
 
@@ -65,25 +66,7 @@ $featuredServices = Service::getFeatured(100);
     </div>
 </div>
 
-<div class="testimonials">
-    <h2>What Clients Are Saying</h2>
-    <div class="testimonial-cards">
-        <?php foreach ($testimonials as $review): ?>
-            <div class="testimonial">
-                <p class="comment">"<?= htmlspecialchars($review->comment) ?>"</p>
-                <p class="client">– <?= htmlspecialchars($review->clientName) ?> on <strong><?= htmlspecialchars($review->serviceTitle) ?></strong></p>
-                <div class="rating">
-                    <?php for ($i = 0; $i < $review->rating; $i++): ?>
-                        <i class="fas fa-star"></i>
-                    <?php endfor; ?>
-                    <?php for ($i = $review->rating; $i < 5; $i++): ?>
-                        <i class="far fa-star"></i>
-                    <?php endfor; ?>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
-</div>
+<?php drawTestimonials($testimonials); ?>
 
 <div class="final-cta">
     <h2>Ready to join our freelance marketplace?</h2>

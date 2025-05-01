@@ -77,6 +77,27 @@ class Review {
 
         return array_map(fn($row) => new Review($row), $rows);
     }
-}
 
+    public static function getAverageRating(array $reviews): array {
+        $totalReviews = count($reviews);
+        $totalRating = 0;
+        $starCounts = array_fill(1, 5, 0);
+    
+        foreach ($reviews as $r) {
+            $rating = (int)$r->rating;
+            if ($rating >= 1 && $rating <= 5) {
+                $totalRating += $rating;
+                $starCounts[$rating]++;
+            }
+        }
+    
+        $averageRating = round($totalRating / $totalReviews, 1);
+    
+        return [
+            'average' => $averageRating,
+            'counts' => $starCounts,
+            'total' => $totalReviews
+        ];
+    }
+}
 ?>

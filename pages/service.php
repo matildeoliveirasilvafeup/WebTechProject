@@ -17,7 +17,7 @@
 
     drawHeader();
     drawCategoryMenu($categories);
-    require '../templates/reviews_stars.php';
+    require '../templates/review.tpl.php';
     require '../templates/service_cards_slider.php';
 
     $service = Service::getById((int)$serviceId);
@@ -25,6 +25,7 @@
     $reviews = Review::getServiceReviews((int)$serviceId);
     $moreFromFreelancer = Service::getMoreFromFreelancer((int)$service->freelancerId, (int)$service->id, 100);
     $relatedServices = Service::getRelated($service->categoryId, $service->id, 100);
+    $averageRating = Review::getAverageRating($reviews);
 
     if (!$service) {
         echo "Service not found.";
@@ -91,78 +92,12 @@
             </div>
         </div>
 
-        <?php if (count($reviews) > 0): ?>
-    <?php
-        $totalReviews = count($reviews);
-        $starCounts = array_fill(1, 5, 0);
-        $totalRating = 0;
-
-        foreach ($reviews as $r) {
-            $rating = (int)$r->rating;
-            $totalRating += $rating;
-            if ($rating >= 1 && $rating <= 5) {
-                $starCounts[$rating]++;
-            }
-        }
-
-        $averageRating = round($totalRating / $totalReviews, 1);
-    ?>
-
-    <div class="reviews-summary">
-        <h2>Reviews</h2>
-        <p><strong><?= $averageRating ?>★</strong> out of 5 — <?= $totalReviews ?> reviews</p>
-        
-        <div class="rating-bars">
-            <?php for ($i = 5; $i >= 1; $i--): 
-                $count = $starCounts[$i];
-                $percent = $totalReviews > 0 ? ($count / $totalReviews) * 100 : 0;
-            ?>
-                <div class="rating-bar">
-                    <span><?= $i ?>★</span>
-                    <div class="bar">
-                        <div class="fill" style="width: <?= $percent ?>%;"></div>
-                    </div>
-                    <span><?= $count ?></span>
-                </div>
-            <?php endfor; ?>
-        </div>
-
-        <div class="reviews-controls">
-            <input type="text" placeholder="Search in reviews...">
-            <select>
-                <option value="latest">Newest</option>
-                <option value="oldest">Oldest</option>
-                <option value="highest">Best rating</option>
-                <option value="lowest">Worst rating</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="reviews-section">
-        <?php foreach ($reviews as $index => $review): ?>
-            <div class="review-card" data-index="<?= $index ?>" style="<?= $index >= 3 ? 'display: none;' : '' ?>">
-                <div class="review-header">
-                    <img src="<?= htmlspecialchars($review->profilePicture ?? 'https://via.placeholder.com/40') ?>" alt="Foto do cliente">
-                    <div>
-                        <strong><?= htmlspecialchars($review->clientName) ?></strong><br>
-                        <?= renderStars($review->rating) ?>
-                    </div>
-                </div>
-                <p class="review-comment">"<?= htmlspecialchars($review->comment) ?>"</p>
-                <small class="review-date"><?= date('d M Y', strtotime($review->createdAt)) ?></small>
-            </div>
-        <?php endforeach; ?>
-
-        <?php if (count($reviews) > 3): ?>
-            <button class="load-more-btn" onclick="loadMoreReviews()">Load more</button>
-        <?php endif; ?>
-    </div>
-        <?php else: ?>
-            <div class="reviews-section">
-                <h2>Reviews</h2>
-                <p>This service doesn't have reviews yet.</p>
-            </div>
-        <?php endif; ?>
+    <?php if (count($reviews) > 0) { 
+        drawReviewsSummary($averageRating);
+        drawReviewSection($reviews);    
+    } else {
+        drawEmptyReviewSection();
+    } ?>
 
     <?php if (!empty($moreFromFreelancer)): ?>
         <div class="freelancer-services">
