@@ -7,6 +7,7 @@
     require '../templates/review.tpl.php';
     require '../templates/service.tpl.php';
     require '../templates/common/footer.tpl.php';
+    require '../templates/common/copytoast.tpl.php';
 
     $serviceId = $_GET['id'] ?? null;
     if (!$serviceId || !is_numeric($serviceId)) {
