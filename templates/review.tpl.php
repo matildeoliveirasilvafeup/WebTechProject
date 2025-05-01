@@ -66,6 +66,7 @@ function renderStars(float $rating): string {
             <button class="load-more-btn" onclick="loadMoreReviews()">Load more</button>
         <?php endif; ?>
     </div>
+    <script src="../js/reviews.js"></script>    
 <?php } ?>
 
 <?php function drawEmptyReviewSection() { ?>
@@ -96,3 +97,12 @@ function renderStars(float $rating): string {
         </div>
     </div>
 <?php } ?>
+
+<?php function drawReviewBlock($reviews, $averageRating) {
+    if (count($reviews) > 0) { 
+        drawReviewsSummary($averageRating);
+        drawReviewSection($reviews);    
+    } else {
+        drawEmptyReviewSection();
+    }
+} ?>    
