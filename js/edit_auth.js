@@ -2,38 +2,29 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const editAuthBtn = document.getElementById("editAuthBtn");
-    const editAuthModal = document.getElementById("editAuthModal");
-    const cancelEditAuth = document.getElementById("cancelEditAuth");
+    const notification = document.getElementById("notification");
     
     const editEmailForm = document.getElementById("editEmailForm");
+    const saveBtnEmail = document.getElementById('save-btn email');
     const editPasswordForm = document.getElementById("editPasswordForm");
-    const saveBtn = document.getElementById('save-btn');
+    const saveBtnPassword = document.getElementById('save-btn password');
 
     const passwordInput = document.getElementById('password');
+    const newPasswordInput = document.getElementById('new-password');
     const confirmPasswordInput = document.getElementById('confirm-password');
     const emailInput = document.getElementById('email');
 
-    if (editAuthBtn && editAuthModal) {
-        editAuthBtn.addEventListener("click", () => {
-            editAuthModal.classList.remove("hidden");
-        });
-    }
-
-    if (cancelEditAuth) {
-        cancelEditAuth.addEventListener("click", () => {
-            editAuthModal.classList.add("hidden");
-        });
-    }
-
     passwordInput.addEventListener('input', () => {
-        checkFormValidity();
+        checkFormValidityPassword();
+    });
+    newPasswordInput.addEventListener('input', () => {
+        checkFormValidityPassword();
     });
     confirmPasswordInput.addEventListener('input', () => {
-        checkFormValidity();
+        checkFormValidityPassword();
     });
     emailInput.addEventListener('input', () => {        
-        checkFormValidity();
+        checkFormValidityEmail();
     });
 
     if (editEmailForm) {
@@ -62,7 +53,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
     
                 if (response.ok && result.success) {
-                    location.reload();
+                    notification.classList.remove("hidden");
+                
+                    setTimeout(() => {
+                        notification.classList.add("hidden");
+                        location.reload();
+                    }, 1000);
                 } else {
                     alert(result.message || "Failed to update auth.");
                 }
@@ -73,19 +69,29 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function checkFormValidity() {
+    function checkFormValidityEmail() {
         const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
-        const confirmPassword = confirmPasswordInput.value.trim();
 
         const validEmail = checkEmailRequirements(email);
+
+        if (validEmail) {
+            saveBtnEmail.removeAttribute('disabled');
+        } else {
+            saveBtnEmail.setAttribute('disabled', 'true');
+        }
+    }
+
+    function checkFormValidityPassword() {
+        const password = passwordInput.value.trim();
+        const confirmPassword = confirmPasswordInput.value.trim();
+        
         const validPassword = checkPasswordRequirements(password);
         const passwordsMatch = password === confirmPassword;
 
-        if ((validEmail) || (validPassword && passwordsMatch)) {
-            saveBtn.removeAttribute('disabled');
+        if (validPassword && passwordsMatch) {
+            saveBtnPassword.removeAttribute('disabled');
         } else {
-            saveBtn.setAttribute('disabled', 'true');
+            saveBtnPassword.setAttribute('disabled', 'true');
         }
     }
 

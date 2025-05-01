@@ -245,6 +245,3 @@ session_start();
         <button type="button" id="<?= htmlspecialchars($cancelButtonId) ?>" class="btn cancel">Cancel</button>
     </div>
 <?php } ?>
-
-<script src="/js/password.js"></script>
-<script type="module" src="/js/edit_auth.js"></script>

@@ -12,6 +12,7 @@ $userId = $_SESSION['user']['id'];
 
 require 'templates/common/header.php';
 require 'templates/personal_details.tpl.php';
+require 'templates/settings.tpl.php';
 require 'templates/edit_modal.tpl.php';
 
 $profile = getProfile($db, $userId);
@@ -49,12 +50,7 @@ $profile_preferences = getProfilePreferences($db, $userId);
             </div>
         </div>
 
-        <div class="tab-content" id="settings">
-            <div class="settings-details">
-                <h2>Settings</h2>
-                <p>Manage your account settings here.</p>
-            </div>
-        </div>
+        <?php drawSettings($profile, $profile_preferences); ?>
 
     </div>
     

@@ -153,14 +153,3 @@
     font-size: 1.2em;
     user-select: none;
 }
-
-/* #save-btn:disabled {
-    background-color: var(--disabled-color);
-    color: white;
-    font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-} */
