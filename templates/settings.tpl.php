@@ -8,14 +8,14 @@ session_start();
     <div id="settings" class="tab-content">
         <div id="settings-body">
             <div class="account-details">
+                <div id="notification" class="notification hidden">
+                    <p>Your changes have been updated successfully.</p>
+                </div>
+
                 <div id="email-section" class="auth-section">
                     <form id="editEmailForm">
                         <label for="email">Email</label>
                         <input type="email" name="email" id="email" placeholder="<?= htmlspecialchars(encodeEmail($_SESSION['user']['email'] ?? '')) ?>" required>
-                        
-                        <div id="notification" class="notification hidden">
-                            <p>Your changes have been updated successfully.</p>
-                        </div>
                         
                         <div class="modal-buttons">
                             <button type="submit" id="save-btn email" class="btn save" disabled>Save</button>
@@ -52,10 +52,6 @@ session_start();
                             <li id="number"><i class="fa-regular fa-circle-check"></i> At least 1 number</li>
                             <li id="special-char"><i class="fa-regular fa-circle-check"></i> At least 1 special character</li>
                         </ul>
-
-                        <div id="notification" class="notification hidden">
-                            <p>Your changes have been updated successfully.</p>
-                        </div>
 
                         <div class="modal-buttons">
                             <button type="submit" id="save-btn password" class="btn save" disabled>Save</button>

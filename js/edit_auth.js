@@ -60,7 +60,52 @@ document.addEventListener('DOMContentLoaded', function () {
                         location.reload();
                     }, 1000);
                 } else {
-                    alert(result.message || "Failed to update auth.");
+                    alert(result.message || "Failed to update email.");
+                }
+            } catch (err) {
+                alert("An error occurred. Please try again.");
+                console.error(err);
+            }
+        });
+    }
+
+    if (editPasswordForm) {
+        editPasswordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+    
+            const password = document.getElementById("password").value;
+            const newPassword = document.getElementById("new-password").value;
+    
+            const data = new FormData();
+            data.append('password', password);
+            data.append('newPassword', newPassword);
+    
+            try {
+                const response = await fetch("/database/update_authentication.php", {
+                    method: "POST",
+                    body: data
+                });
+    
+                const text = await response.text();
+                let result;
+    
+                try {
+                    result = JSON.parse(text);
+                } catch (err) {
+                    console.error("Invalid JSON:", text);
+                    alert("Unexpected server response.");
+                    return;
+                }
+    
+                if (response.ok && result.success) {
+                    notification.classList.remove("hidden");
+                
+                    setTimeout(() => {
+                        notification.classList.add("hidden");
+                        location.reload();
+                    }, 1000);
+                } else {
+                    alert(result.message || "Failed to update password.");
                 }
             } catch (err) {
                 alert("An error occurred. Please try again.");
@@ -83,12 +128,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function checkFormValidityPassword() {
         const password = passwordInput.value.trim();
+        const newPassword = newPasswordInput.value.trim();
         const confirmPassword = confirmPasswordInput.value.trim();
         
-        const validPassword = checkPasswordRequirements(password);
-        const passwordsMatch = password === confirmPassword;
+        const validPassword = checkPasswordRequirements(newPassword);
+        const differentPasswords = newPassword !== password;
+        const passwordsMatch = confirmPassword === newPassword;
 
-        if (validPassword && passwordsMatch) {
+        if (validPassword && passwordsMatch && differentPasswords) {
             saveBtnPassword.removeAttribute('disabled');
         } else {
             saveBtnPassword.setAttribute('disabled', 'true');
