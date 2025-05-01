@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once '../database/review.class.php';
+require_once '../database/service.class.php';
 ?>
 
 <?php
@@ -31,6 +31,7 @@ function renderServiceSlider(array $services, int $minItemsToShowNav = 6): strin
             <button class="slider-btn right" onclick="scrollSlider(1)">›</button>
         <?php endif; ?>    
     </div>
+    <script src="../js/slider.js"></script>
     <?php
     return ob_get_clean();
 }
