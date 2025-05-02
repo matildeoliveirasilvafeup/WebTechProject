@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once '../database/category.class.php';
+require_once(__DIR__ .  '/../database/category.class.php');
 ?>
 
 <?php function drawCategoryMenu(array $categories): void { ?>

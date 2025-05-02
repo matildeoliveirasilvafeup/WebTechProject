@@ -1,14 +1,14 @@
 <?php
-    require_once '../includes/database.php';
-    require_once '../database/service.class.php';
-    require_once '../database/review.class.php';
+    require_once(__DIR__ .  '/../includes/database.php');
+    require_once(__DIR__ .  '/../database/service.class.php');
+    require_once(__DIR__ .  '/../database/review.class.php');
 
-    require '../templates/common/header.tpl.php';
-    require '../templates/category.tpl.php';
-    require '../templates/review.tpl.php';
-    require '../templates/common/footer.tpl.php'; 
-    require '../templates/service.tpl.php';
-    require '../templates/home.tpl.php';
+    require_once(__DIR__ .  '/../templates/common/header.tpl.php');
+    require_once(__DIR__ .  '/../templates/category.tpl.php');
+    require_once(__DIR__ .  '/../templates/review.tpl.php');
+    require_once(__DIR__ .  '/../templates/common/footer.tpl.php'); 
+    require_once(__DIR__ .  '/../templates/service.tpl.php');
+    require_once(__DIR__ .  '/../templates/home.tpl.php');
 
     $categories = Category::getAllWithSubcategories();
     $testimonials = Review::getLatestReviews(3);
