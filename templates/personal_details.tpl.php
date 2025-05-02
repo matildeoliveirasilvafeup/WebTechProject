@@ -118,6 +118,9 @@ session_start();
     <div class="reviews-section">
         <div class="reviews-list">
             <h3>Reviews from freelancers</h3>
+
+            <hr class="section-divider">
+
             <div class="reviews">
                 <!-- TODO -->
             </div>

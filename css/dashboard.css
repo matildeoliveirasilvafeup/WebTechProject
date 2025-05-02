@@ -1,8 +1,4 @@
 :root {
-    --main-text-color: #3c3c3c;
-    --primary-color: #00b4d8;
-    --bg-color: #f0f4f8;
-    --accent-light: #e1ecf4;
     --sidebar-width: 250px;
     --icon-width: 50px;
     --text-offset: 20px;
@@ -12,8 +8,8 @@
     display: flex;
     min-height: 590px;
     font-family: 'Inter', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--main-text-color);
+    background-color: var(--main-background);
+    color: var(--main-text);
     position: relative;
 }
 
@@ -22,7 +18,7 @@
     overflow: hidden;
     background-color: white;
     padding: 2em 1em;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 2px 0 10px var(--box-shadow);
     top: 0;
     bottom: 0;
     z-index: 10;
@@ -38,7 +34,7 @@
 .sidebar h3 {
     width: 100%;
     font-size: 2em;
-    color: var(--main-text-color);
+    color: var(--main-text);
     margin-bottom: 1em;
     text-align: center;
     transition: opacity 0.3s ease;
@@ -46,7 +42,7 @@
 
 .sidebar h3 span {
     font-size: 1em;
-    color: var(--primary-color);
+    color: var(--main-theme);
     margin-bottom: 1em;
     text-align: center;
     display: none;
@@ -54,7 +50,7 @@
 
 .sidebar h3 i {
     font-size: 1em;
-    color: var(--primary-color);
+    color: var(--main-theme);
 }
 
 .sidebar ul {
@@ -71,7 +67,7 @@
 
 .sidebar ul li a {
     text-decoration: none;
-    color: var(--main-text-color);
+    color: var(--main-text);
     font-weight: 500;
     display: flex;
     align-items: center;
@@ -83,7 +79,7 @@
 .sidebar ul li a:hover,
 .sidebar ul li a.active {
     background-color: var(--accent-light);
-    color: var(--primary-color);
+    color: var(--main-theme);
 }
 
 .sidebar a i {
@@ -122,7 +118,7 @@
 }
 
 .dashboard-content h2 {
-    color: var(--primary-color);
+    color: var(--main-theme);
     margin-bottom: 1em;
 }
 

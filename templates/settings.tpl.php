@@ -82,26 +82,30 @@ session_start();
                     <li>Any pending or active projects will be canceled without payment.</li>
                     <li>You won't be able to reactivate the same account or retrieve deleted data.</li>
                 </ul>
-        
-                <label for="reason">I'm leaving because...</label>
-                <select id="reason" name="reason">
-                    <option disabled selected>Choose a reason</option>
 
-                    <optgroup label="Account">
-                        <option value="duplicate-account">I have another account</option>
-                        <option value="account-other">Other account-related reason</option>
-                    </optgroup>
+                <br>
+                
+                <div class="reason">
+                    <label for="reason">I'm leaving because...</label>
+                    <select id="reason" name="reason">
+                        <option disabled selected>Choose a reason</option>
 
-                    <optgroup label="Buying">
-                        <option value="cant-find">I can't find what I need</option>
-                        <option value="too-complicated">The platform is too complicated</option>
-                        <option value="negative-experience">Negative experience with sellers</option>
-                        <option value="buying-other">Other buying-related reason</option>
-                    </optgroup>
+                        <optgroup label="Account">
+                            <option value="duplicate-account">I have another account</option>
+                            <option value="account-other">Other account-related reason</option>
+                        </optgroup>
 
-                    <option value="something-else">Something else</option>
-                </select>
-        
+                        <optgroup label="Buying">
+                            <option value="cant-find">I can't find what I need</option>
+                            <option value="too-complicated">The platform is too complicated</option>
+                            <option value="negative-experience">Negative experience with sellers</option>
+                            <option value="buying-other">Other buying-related reason</option>
+                        </optgroup>
+
+                        <option value="something-else">Something else</option>
+                    </select>
+                </div>
+            
                 <button id="deactivate-btn" class="btn danger">Deactivate Account</button>
             </div>
         </div>

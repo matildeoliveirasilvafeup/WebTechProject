@@ -3,7 +3,7 @@
     padding: 40px;
     margin: 50px auto;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px var(--box-shadow);
     width: 100%;
     max-width: 400px;
     font-family: 'Inter', sans-serif;
