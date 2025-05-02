@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once '../database/service.class.php';
+require_once(__DIR__ .  '../database/service.class.php');
 ?>
 
 <?php

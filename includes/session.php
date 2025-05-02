@@ -18,7 +18,6 @@ class Session {
 
     public function getUser() {
         return isset($_SESSION['user']) ? $_SESSION['user'] : null;
-
     }
 
     public function login($user) {

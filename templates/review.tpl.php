@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once '../database/review.class.php';
+require_once(__DIR__ .  '../database/review.class.php');
 
 function renderStars(float $rating): string {
     $fullStars = floor($rating);
