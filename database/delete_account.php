@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user']['id'])) {
@@ -13,25 +12,45 @@ if (!isset($_SESSION['user']['id'])) {
 }
 
 require_once 'connection.php';
-$userId = $_SESSION['user']['id'];
-$reason = trim($_POST['email'] ?? '');
 
-$sql = "INSERT INTO deleted_users (name, username, email, password_hash, role, created_at, deleted_at, reason) VALUES
-($_SESSION[user]['name'], $_SESSION[user]['username'], $_SESSION[user]['email'], $_SESSION[user]['password_hash'], $_SESSION[user]['role'], NOW(), ?)";
-$stmt = $db->prepare($sql);
-$stmt->execute([$reason]);
+$user = $_SESSION['user'];
+$reason = trim($_POST['reason'] ?? '');
 
-if ($stmt->execute([$reason])) {
+try {
+    $db->beginTransaction();
+
+    $sql = "INSERT INTO deleted_users (name, username, email, role, created_at, reason) 
+            VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([
+        $user['name'],
+        $user['username'],
+        $user['email'],
+        $user['role'],
+        $user['created_at'],
+        $reason
+    ]);
+
+    $deleteSql = "DELETE FROM users WHERE id = ?";
+    $deleteStmt = $db->prepare($deleteSql);
+    $deleteStmt->execute([$user['id']]);
+
+    $db->commit();
+
+    session_destroy();
+
     http_response_code(200);
     echo json_encode([
         "success" => true,
-        "message" => "Password updated successfully."
+        "message" => "User deactivated successfully."
     ]);
-} else {
+
+} catch (Exception $e) {
+    $db->rollBack();
     http_response_code(500);
     echo json_encode([
         "success" => false,
-        "message" => "Error updating password."
+        "message" => "Error deactivating user: " . $e->getMessage()
     ]);
 }
 ?>

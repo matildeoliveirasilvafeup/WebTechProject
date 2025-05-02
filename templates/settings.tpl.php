@@ -102,7 +102,7 @@ session_start();
                     <option value="something-else">Something else</option>
                 </select>
         
-                <button id="deactivate-btn" class="btn danger" disabled>Deactivate Account</button>
+                <button id="deactivate-btn" class="btn danger">Deactivate Account</button>
             </div>
         </div>
     </div>

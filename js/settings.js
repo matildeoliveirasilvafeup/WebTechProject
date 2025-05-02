@@ -32,6 +32,11 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
     
         const reason = document.getElementById("reason").value;
+        if (!reason || reason === "Choose a reason") {
+            alert("Please select a reason before continuing.");
+            return;
+        }
+
         const data = new FormData();
         data.append('reason', reason);
 
@@ -53,12 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (response.ok && result.success) {
-                // notification.classList.remove("hidden");
-            
-                // setTimeout(() => {
-                //     notification.classList.add("hidden");
-                    location.reload();
-                // }, 1000);
+                window.location.href = '/index.php';
             } else {
                 alert(result.message || "Failed to deactivate account.");
             }
