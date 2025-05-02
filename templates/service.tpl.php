@@ -117,56 +117,59 @@ function renderServiceSlider(array $services, int $minItemsToShowNav = 6, string
 
 <?php function drawListServicesForm() { ?>
     <section class="service-page">
-     <form action="create_listing.php" method="POST" enctype="multipart/form-data" class="create-form">
-         <h1>List New Service</h1>
+        <form action="create_listing.php" method="POST" enctype="multipart/form-data" class="create-form">
+            <h1>List New Service</h1>
  
-         <label for="title">Service Title</label>
-         <input type="text" id="title" name="title" required>
+            <label for="title">Service Title</label>
+            <input type="text" id="title" name="title" required>
  
-         <label for="description">Description</label>
-         <textarea id="description" name="description" rows="6" required></textarea>
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="6" required></textarea>
  
-         <div class="form-grid">
-             <div>
-                 <label for="price">Price (€)</label>
-                 <input type="number" id="price" name="price" min="0" step="0.01" required>
-             </div>
+            <div class="form-grid">
+                <div>
+                    <label for="price">Price (€)</label>
+                    <input type="number" id="price" name="price" min="0" step="0.01" required>
+                </div>
              
-             <div>
-                 <label for="delivery">Delivery Time (in days)</label>
-                 <input type="number" id="delivery" name="delivery" min="0" step="1" required>
-             </div>
+                <div>
+                    <label for="delivery">Delivery Time (in days)</label>
+                    <input type="number" id="delivery" name="delivery" min="0" step="1" required>
+                </div>
  
-             <div>
-                 <label for="category">Category</label>
-                 <select id="category" name="category" required>
-                     <option value="" disabled selected>Select a category</option>
-                     <option value="ai_services">AI Services</option>
-                     <option value="business">Business</option>
-                     <option value="consulting">Consulting</option>
-                     <option value="digital_marketing">Digital Marketing</option>
-                     <option value="graphics_design">Graphic & Design</option>
-                     <option value="music_audio">Music & Audio</option>
-                     <option value="programming_tech">Programming & Tech</option>
-                     <option value="video_animation">Video & Animation</option>
-                     <option value="writing_translation">Writing & Translation</option>
-                     <option value="other">Other</option>
-                 </select>
-             </div>        
+                <div>
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="" disabled selected>Select a category</option>
+                        <option value="ai_services">AI Services</option>
+                        <option value="business">Business</option>
+                        <option value="consulting">Consulting</option>
+                        <option value="digital_marketing">Digital Marketing</option>
+                        <option value="graphics_design">Graphic & Design</option>
+                        <option value="music_audio">Music & Audio</option>
+                        <option value="programming_tech">Programming & Tech</option>
+                        <option value="video_animation">Video & Animation</option>
+                        <option value="writing_translation">Writing & Translation</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>        
  
-             <div>
-                 <label for="revisions">Included Revisions</label>
-                 <input type="number" id="revisions" name="revisions" min="0" step="1" required>    
-             </div>    
-         </div>
+                <div>
+                    <label for="revisions">Included Revisions</label>
+                    <input type="number" id="revisions" name="revisions" min="0" step="1" required>    
+                </div>    
+            </div>
  
-         <label for="image">Image</label>
-         <input type="file" id="image" name="image" accept="image/*" required>
+            <div class="form-group">
+                <label for="images">Images</label>
+                <input type="file" id="images" name="images[]" accept="image/*" multiple>
+                <button class="upload-button" type="button">Upload Images</button>
+            </div>
  
-         <div class="button-group">
-             <button type="submit" class="btn-hire">Publish</button>
-             <a href="index.php" class="btn-add-cart">Cancel</a>
-         </div>
-     </form>
- </section>
+            <div class="button-group">
+                <button type="submit" class="btn-hire">Publish</button>
+                <a href="index.php" class="btn-add-cart">Cancel</a>
+            </div>
+        </form>
+    </section>
 <?php } ?>
