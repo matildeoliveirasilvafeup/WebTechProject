@@ -54,7 +54,7 @@ require '../templates/common/header.php';
 </div>
 
 <script src="/js/password.js"></script>
-<script type="module" src="/js/form.js"></script>
+<script type="module" src="../js/form.js"></script>
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
 <?php require '../templates/common/footer.php'; ?>

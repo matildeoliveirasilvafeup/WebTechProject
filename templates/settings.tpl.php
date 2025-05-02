@@ -63,7 +63,7 @@ session_start();
                 <div class="status-control">
                     <span class="online-dot"></span> 
                     <select id="status">
-                        <option>GO OFFLIE</option>
+                        <option>GO OFFLINE</option>
                         <option>Go offline for 1 hours</option>
                         <option>Go offline for 24 hours</option>
                     </select>
@@ -85,7 +85,7 @@ session_start();
         
                 <label for="reason">I'm leaving because...</label>
                 <select id="reason" name="reason">
-                    <option selected>Choose a reason</option>
+                    <option disabled selected>Choose a reason</option>
 
                     <optgroup label="Account">
                         <option value="duplicate-account">I have another account</option>
@@ -102,7 +102,7 @@ session_start();
                     <option value="something-else">Something else</option>
                 </select>
         
-                <button class="btn danger" disabled>Deactivate Account</button>
+                <button id="deactivate-btn" class="btn danger" disabled>Deactivate Account</button>
             </div>
         </div>
     </div>
@@ -125,4 +125,4 @@ session_start();
 } ?>
 
 <script src="/js/password.js"></script>
-<script type="module" src="/js/edit_auth.js"></script>
+<script type="module" src="./js/settings.js"></script>

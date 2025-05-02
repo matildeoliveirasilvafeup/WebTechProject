@@ -17,10 +17,6 @@ session_start();
             <hr class="section-divider">
             
             <div class="profile-body">
-            
-                <?php drawAuth(); ?>
-    
-                <hr class="section-divider">
                 
                 <?php drawBio($profile); ?>
                 
@@ -57,18 +53,6 @@ session_start();
     </div>
 
     <button id="editProfBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
-<?php } ?>
-
-<?php function drawAuth() { ?>
-    <div class="profile-auth">
-        <div class="content">
-            <h3>Authentication</h3>
-            <p id="authEmail"><i class="fas fa-envelope"></i> Email: <?= htmlspecialchars($_SESSION['user']['email']) ?></p>
-            <p id="authPassword"><i class="fas fa-lock"></i> Password: ••••••••</p>
-        </div>
-
-        <button id="editAuthBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
-    </div>
 <?php } ?>
 
 <?php function drawBio($profile) { ?>

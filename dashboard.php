@@ -56,11 +56,7 @@ $profile_preferences = getProfilePreferences($db, $userId);
     <div id="editProfileModal" class="modal hidden">
         <?php drawEditProfileModal($profile); ?>
     </div>
-    
-    <div id="editAuthModal" class="modal hidden">
-        <?php drawEditAuthModal(); ?>
-    </div>
-    
+
     <div id="editBioModal" class="modal hidden">
         <?php drawEditBioModal($profile); ?>
     </div>

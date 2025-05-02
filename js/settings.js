@@ -1,4 +1,4 @@
-// import { checkEmailRequirements, checkPasswordRequirements } from './form.js';
+import { checkEmailRequirements, checkPasswordRequirements } from './form_utils.js';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const saveBtnEmail = document.getElementById('save-btn email');
     const editPasswordForm = document.getElementById("editPasswordForm");
     const saveBtnPassword = document.getElementById('save-btn password');
+    const deactivateBtn = document.getElementById('deactivate-btn');
 
     const passwordInput = document.getElementById('password');
     const newPasswordInput = document.getElementById('new-password');
@@ -27,9 +28,50 @@ document.addEventListener('DOMContentLoaded', function () {
         checkFormValidityEmail();
     });
 
+    deactivateBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+    
+        const reason = document.getElementById("reason").value;
+        const data = new FormData();
+        data.append('reason', reason);
+
+        try {
+            const response = await fetch("/database/delete_account.php", {
+                method: "POST",
+                body: data
+            });
+
+            const text = await response.text();
+            let result;
+
+            try {
+                result = JSON.parse(text);
+            } catch (err) {
+                console.error("Invalid JSON:", text);
+                alert("Unexpected server response.");
+                return;
+            }
+
+            if (response.ok && result.success) {
+                // notification.classList.remove("hidden");
+            
+                // setTimeout(() => {
+                //     notification.classList.add("hidden");
+                    location.reload();
+                // }, 1000);
+            } else {
+                alert(result.message || "Failed to deactivate account.");
+            }
+        } catch (err) {
+            alert("An error occurred. Please try again.");
+            console.error(err);
+        }
+    });
+    
     if (editEmailForm) {
         editEmailForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            console.log("yay");
     
             const email = document.getElementById("email").value;
             const data = new FormData();
@@ -116,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function checkFormValidityEmail() {
         const email = emailInput.value.trim();
-
+        
         const validEmail = checkEmailRequirements(email);
 
         if (validEmail) {
@@ -128,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function checkFormValidityPassword() {
         const password = passwordInput.value.trim();
-        const newPassword = newPasswordInput.value.trim();
+        const newPassword = newPasswordInput.value;
         const confirmPassword = confirmPasswordInput.value.trim();
         
         const validPassword = checkPasswordRequirements(newPassword);
@@ -142,44 +184,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function checkEmailRequirements(email) {
-
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    function checkPasswordRequirements(password) {
-        const requirements = {
-            minLength: password.length >= 8,
-            uppercase: /[A-Z]/.test(password),
-            lowercase: /[a-z]/.test(password),
-            number: /[0-9]/.test(password),
-            specialChar: /[!@#$%^&*(),.?":{}|<>_-]/.test(password)
-        };
-
-        updateRequirement('min-length', requirements.minLength);
-        updateRequirement('uppercase', requirements.uppercase);
-        updateRequirement('lowercase', requirements.lowercase);
-        updateRequirement('number', requirements.number);
-        updateRequirement('special-char', requirements.specialChar);
-
-        return Object.values(requirements).every(Boolean);
-    }
-
-    function updateRequirement(id, isValid) {
-        const item = document.getElementById(id);
-        if (item) {
-            const icon = item.querySelector('i');
-            if (isValid) {
-                item.classList.add('completed');
-                item.classList.remove('failed');
-                icon.classList.remove('fa-regular', 'fa-circle-check');
-                icon.classList.add('fa-solid', 'fa-circle-check');
-            } else {
-                item.classList.add('failed');
-                item.classList.remove('completed');
-                icon.classList.remove('fa-solid', 'fa-circle-check');
-                icon.classList.add('fa-regular', 'fa-circle-check');
-            }
-        }
-    }
 });
