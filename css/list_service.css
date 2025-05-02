@@ -1,0 +1,63 @@
+.create-form {
+    flex: 1 1 100%;
+    background: var(--secondary);
+    padding: 1em 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    color: var(--main-text-color);
+}
+
+.create-form h1 {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    color: var(--button-background);
+}
+
+.create-form label {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 1em;
+    display: block;
+}
+
+.create-form input,
+.create-form select,
+.create-form textarea {
+    padding: 0.75em;
+    border: 1px solid var(--background-disabled);
+    border-radius: 10px;
+    background: var(--main-background-darker);
+    color: var(--main-text-color);
+    font-size: 1rem;
+    width: 100%;
+}
+
+.form-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    column-gap: 3em;
+    row-gap: 1.5em;
+}
+
+.create-form input[type="file"] {
+    background: none;
+    border: none;
+}
+
+.create-form textarea {
+    resize: vertical;
+    min-height: 15%;
+}
+
+.create-form select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='none' stroke='currentColor' stroke-width='.8' d='M2 0L0 2h4L2 0zM2 5L0 3h4l-2 2z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7em top 50%;
+    background-size: 0.65em auto;
+    width: 103%;
+    cursor: pointer;
+}
