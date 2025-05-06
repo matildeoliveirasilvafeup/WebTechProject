@@ -1,10 +1,23 @@
 <?php
 declare(strict_types=1);
 require_once(__DIR__ .  '/../database/service.class.php');
-?>
 
-<?php
-function renderServiceSlider(array $services, int $minItemsToShowNav = 6, string $sliderId = 'servicesSlider'): string {
+function renderServiceCard(Service $service): string {
+    ob_start();
+    ?>
+    <a href="service.php?id=<?= $service->id ?>" class="service-card">
+        <img src="<?= htmlspecialchars($service->mediaUrl ?? 'https://via.placeholder.com/300') ?>" alt="Service image">
+        <div class="service-info">
+            <h3><?= htmlspecialchars($service->title) ?></h3>
+            <p class="freelancer">By <?= htmlspecialchars($service->freelancerName) ?></p>
+            <p class="price">€<?= number_format($service->price, 2) ?></p>
+        </div>
+    </a>
+    <?php
+    return ob_get_clean();
+}
+?>
+<?php function renderServiceSlider(array $services, int $minItemsToShowNav = 6, string $sliderId = 'servicesSlider'): string {
     if (empty($services)) return '';
 
     ob_start();
@@ -15,16 +28,9 @@ function renderServiceSlider(array $services, int $minItemsToShowNav = 6, string
         <?php endif; ?>    
 
         <div class="services-slider" id="<?= htmlspecialchars($sliderId) ?>">
-            <?php foreach ($services as $service): ?>
-                <a href="service.php?id=<?= $service->id ?>" class="service-card">
-                    <img src="<?= htmlspecialchars($service->mediaUrl ?? 'https://via.placeholder.com/300') ?>" alt="Service image">
-                    <div class="service-info">
-                        <h3><?= htmlspecialchars($service->title) ?></h3>
-                        <p class="freelancer">By <?= htmlspecialchars($service->freelancerName) ?></p>
-                        <p class="price">€<?= number_format($service->price, 2) ?></p>
-                    </div>
-                </a>
-            <?php endforeach; ?>
+            <?php foreach ($services as $service): 
+                echo renderServiceCard($service);
+            endforeach; ?>
         </div>
 
         <?php if (count($services) > $minItemsToShowNav): ?>
@@ -36,6 +42,20 @@ function renderServiceSlider(array $services, int $minItemsToShowNav = 6, string
     return ob_get_clean();
 }
 ?>
+
+<?php function renderServiceGrid(array $services): string {
+    if (empty($services)) return '';
+
+    ob_start();
+    ?>
+    <div class="services-grid">
+        <?php foreach ($services as $service): 
+            renderServiceCard($service);
+        endforeach; ?>
+    </div>
+    <?php
+    return ob_get_clean();
+} ?>
 
 <?php function drawServicePage($service, $ratingInfo) { ?>
     <div class="service-page">  
