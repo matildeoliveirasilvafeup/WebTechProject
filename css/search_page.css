@@ -1,0 +1,22 @@
+form.alt-style {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1.5em 0;
+}
+
+form.alt-style input[type="text"] {
+    width: 40%;
+    padding: 0.5rem;
+    border: none;
+    border-bottom: 2px solid var(--main-theme);
+    border-radius: 4px;
+    font-size: 1rem;
+    outline: none;
+}
+
+form.alt-style .search-icon {
+    color: var(--main-theme-darker);
+    font-size: 1.2rem;
+}
