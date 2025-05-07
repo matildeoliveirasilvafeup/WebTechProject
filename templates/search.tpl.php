@@ -2,8 +2,7 @@
 declare(strict_types=1);
 
 function drawSearchForm(string $action = 'search.php', string $placeholder = 'Search services...', bool $isButton = true, string $extraClass = '', 
-    string $initialValue = ''): string {
-        ob_start();
+    string $initialValue = '') {
 ?>
     <form method="GET" action="<?= htmlspecialchars($action) ?>" class="<?= htmlspecialchars($extraClass) ?>">
         <?php if (!$isButton): ?>
@@ -17,7 +16,4 @@ function drawSearchForm(string $action = 'search.php', string $placeholder = 'Se
             <button type="submit"><i class="fas fa-search"></i></button>
         <?php endif; ?>
     </form>
-<?php
-    return ob_get_clean();
-}
-?>
+<?php } ?>
