@@ -11,7 +11,6 @@
 
     drawHeader();
     drawCategoryMenu($categories);
-    drawSearchForm('search.php', 'Search services...', false, 'alt-style', $searchQuery);
-    drawServiceGrid($services);
+    drawSearchPage('search.php', 'Search services...', false, 'alt-style', $searchQuery, $categories, $services);
     drawFooter();
 ?>

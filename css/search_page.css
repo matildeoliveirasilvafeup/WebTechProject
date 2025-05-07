@@ -20,3 +20,27 @@ form.alt-style .search-icon {
     color: var(--main-theme-darker);
     font-size: 1.2rem;
 }
+
+.search-page {
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    gap: 3em;
+    margin: 2em;
+}
+
+.search-page .filters {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-page .services-grid {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2em;
+}
+
+.search-page .services-grid .service-card {
+    width: 100%;
+}

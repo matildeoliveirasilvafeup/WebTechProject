@@ -36,11 +36,11 @@ function renderServiceCard(Service $service) { ?>
 <?php function drawServiceGrid(array $services) {
     if (empty($services)) return;
 ?>
-    <div class="services-grid">
+    <section class="services-grid">
         <?php foreach ($services as $service):
             renderServiceCard($service);
         endforeach; ?>
-    </div>
+    </section>
 <?php } ?>
 
 <?php function drawServicePage($service, $ratingInfo) { ?>

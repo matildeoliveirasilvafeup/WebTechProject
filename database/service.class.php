@@ -160,7 +160,7 @@ class Service {
             LIMIT :limit
         ");
         
-        $stmt->bindValue(':search', "$search%", PDO::PARAM_STR);
+        $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
     
