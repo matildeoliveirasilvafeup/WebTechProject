@@ -14,6 +14,7 @@ form.alt-style input[type="text"] {
     border-radius: 4px;
     font-size: 1rem;
     outline: none;
+    background-color: var(--main-background);
 }
 
 form.alt-style .search-icon {
@@ -23,15 +24,92 @@ form.alt-style .search-icon {
 
 .search-page {
     display: grid;
-    grid-template-columns: 1fr 6fr;
+    grid-template-columns: 1fr 4fr;
     gap: 3em;
     margin: 2em;
 }
 
-.search-page .filters {
+.filters {
     grid-column: 1;
     display: flex;
     flex-direction: column;
+    background-color: var(--secondary);
+    border: 1px solid var(--soft-line);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    width: 90%;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.filters .title {
+    color: black;
+    font-size: 1.5em;
+    font-weight: 800;
+}
+  
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+  
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+  
+.filter-group label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--main-text);
+    font-size: 0.95rem;
+    position: relative;
+    padding-bottom: 0.3rem;
+}
+  
+.filter-group select,
+.filter-group input {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--soft-line);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
+}
+  
+.filter-group select:focus,
+.filter-group input:focus {
+    border-color: var(--main-theme);
+    outline: none;
+}
+  
+#subcategory-checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+    color: var(--main-text);
+}
+  
+#subcategory-checkboxes input[type="checkbox"] {
+    accent-color: var(--main-theme);
+}
+  
+.btn-filter {
+    background-color: var(--main-theme);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+  
+.btn-filter:hover {
+    background-color: var(--button-background-selected);
 }
 
 .search-page .services-grid {
@@ -43,4 +121,26 @@ form.alt-style .search-icon {
 
 .search-page .services-grid .service-card {
     width: 100%;
+}
+
+.price-input-container {
+    width: 100%;
+}
+
+.price-field {
+    display: flex;
+    margin-bottom: 0.8em;
+}
+
+.price-field input {
+    flex: 1;
+    height: 2em;
+    border-radius: 6px;
+    text-align: center;
+    background: var(--button-secondary-selected);
+}
+
+.price-input {
+    width: 100%;
+    color: var(--text-lighter);
 }

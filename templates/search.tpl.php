@@ -22,7 +22,23 @@ function drawSearchForm(string $action = 'search.php', string $placeholder = 'Se
 function drawFilters(array $categories) {
 ?>
     <aside class="filters">
+        <div class="title">
+            <p>Filters</p>
+        </div>
+
         <form method="GET" action="search.php" class="filter-form">
+            <div class="filter-group">
+                <label for="sort">Sort by</label>
+                <select name="sort">
+                    <option value="newest">Newest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="lowest_price">Lowest Price</option>
+                    <option value="highest_price">Highest Price</option>
+                    <option value="lowest_rating">Lowest Rating</option>
+                    <option value="highest_rating">Highest Rating</option>
+                </select>
+            </div>
+
             <div class="filter-group">
                 <label for="category">Category</label>
                 <select name="category" id="category">
@@ -42,25 +58,32 @@ function drawFilters(array $categories) {
             </div>
 
             <div class="filter-group">
-                <label for="min_price">Min Price (€)</label>
-                <input type="number" name="min_price" min="0" placeholder="0">
+                <label for="price-range">Price Range (€)</label>
+                <div class="price-input-container">
+                    <div class="price-field">
+                        <span>Minimum Price</span>
+                        <input type="number" class="min-input" value="2500">
+                    </div>
+                    <div class="price-field">
+                        <span>Maximum Price</span>
+                        <input type="number" class="max-input" value="8500">
+                    </div>
+                </div>
+            </div>  
+
+            <div class="filter-group">
+                <label for="delivery_time">Max Delivery Time (days)</label>
+                <input type="number" name="delivery_time" min="1" placeholder="Infinite">
             </div>
 
             <div class="filter-group">
-                <label for="max_price">Max Price (€)</label>
-                <input type="number" name="max_price" min="0" placeholder="500">
+                <label for="number_of_revisions">Min Revisions</label>
+                <input type="number" name="number_of_revisions" min="0" placeholder="0">
             </div>
 
             <div class="filter-group">
-                <label for="sort">Sort by</label>
-                <select name="sort">
-                    <option value="newest">Newest</option>
-                    <option value="oldest">Oldest</option>
-                    <option value="lowest_price">Lowest Price</option>
-                    <option value="highest_price">Highest Price</option>
-                    <option value="lowest_rating">Lowest Rating</option>
-                    <option value="highest_rating">Highest Rating</option>
-                </select>
+                <label for="language">Language</label>
+                <input type="text" name="language" placeholder="English">
             </div>
         </form>
     </aside>
