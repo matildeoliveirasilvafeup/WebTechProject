@@ -50,7 +50,7 @@ function renderServiceCard(Service $service): string {
     ?>
     <div class="services-grid">
         <?php foreach ($services as $service): 
-            renderServiceCard($service);
+            echo renderServiceCard($service);
         endforeach; ?>
     </div>
     <?php
