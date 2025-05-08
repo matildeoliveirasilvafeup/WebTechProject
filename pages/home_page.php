@@ -10,7 +10,6 @@
 
     $categories = Category::getAllWithSubcategories();
     $testimonials = Review::getLatestReviews(3);
-    $categories = Category::getAll();
     $featuredServices = Service::getFeatured(100);
 
     drawHeader();

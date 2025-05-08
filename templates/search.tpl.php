@@ -62,11 +62,11 @@ function drawFilters(array $categories) {
                 <div class="price-input-container">
                     <div class="price-field">
                         <span>Minimum Price</span>
-                        <input type="number" class="min-input" value="2500">
+                        <input type="number" class="min-input" value="0">
                     </div>
                     <div class="price-field">
                         <span>Maximum Price</span>
-                        <input type="number" class="max-input" value="8500">
+                        <input type="number" class="max-input" value="9999">
                     </div>
                 </div>
             </div>  
