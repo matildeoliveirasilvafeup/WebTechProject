@@ -4,7 +4,7 @@ declare(strict_types=1);
 function drawSearchForm(string $action = 'search.php', string $placeholder = 'Search services...', bool $isButton = true, string $extraClass = '', 
     string $initialValue = '') {
 ?>
-    <form method="GET" action="<?= htmlspecialchars($action) ?>" class="<?= htmlspecialchars($extraClass) ?>">
+    <form method="GET" action="<?= htmlspecialchars($action) ?>" class="<?= htmlspecialchars($extraClass) ?>" id="search-form">
         <?php if (!$isButton): ?>
             <span class="search-icon"><i class="fas fa-search"></i></span>
         <?php endif; ?>

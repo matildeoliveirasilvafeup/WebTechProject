@@ -138,7 +138,7 @@ class Service {
         return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
-    public static function getServicesBySearch(string $search, int $limit = 10): array {
+    public static function getServicesBySearch(string $search, int $limit = 30): array {
         $db = Database::getInstance();
     
         $stmt = $db->prepare("

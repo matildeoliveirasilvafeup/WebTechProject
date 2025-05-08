@@ -21,6 +21,60 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-service-input');
+    const serviceGrid = document.querySelector('.services-grid');
+    let debounceTimeout;
+
+    const fetchServices = async (query) => {
+        try {
+            const response = await fetch(`../api/search_service.php?q=${encodeURIComponent(query)}`);
+            const services = await response.json();
+
+            console.log('Services fetched:', services);
+
+            serviceGrid.innerHTML = '';
+
+            services.forEach(service => {
+                const imageUrl = service.mediaUrl || 'https://via.placeholder.com/300';
+                const freelancerName = service.freelancerName || 'Unknown Freelancer';
+                const serviceCard = `
+                    <a href="service.php?id=${service.id}" class="service-card">
+                        <img src="${imageUrl}" alt="Service image">
+                        <div class="service-info">
+                            <h3>${service.title}</h3>
+                            <p class="freelancer">By ${freelancerName}</p>
+                            <p class="price">€${service.price.toFixed(2)}</p>
+                        </div>
+                    </a>
+                `;
+                serviceGrid.insertAdjacentHTML('beforeend', serviceCard);
+            });
+        } catch (error) {
+            console.error('Error fetching services:', error);
+        }
+    };
+
+    const debounce = (callback, delay) => {
+        return (...args) => {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => callback(...args), delay);
+        };
+    };
+
+    const handleInput = (event) => {
+        const query = event.target.value.trim();
+
+        const newUrl = new URL(window.location);
+        newUrl.searchParams.set('q', query);
+        window.history.replaceState({}, '', newUrl);
+
+        fetchServices(query);
+    };
+
+    searchInput.addEventListener('input', debounce(handleInput, 300)); 
+});
   
 function updateSlider() {
     const minSlider = document.getElementById('min-price')
