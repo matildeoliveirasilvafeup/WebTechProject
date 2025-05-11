@@ -73,5 +73,42 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchServices(query);
     };
 
-    searchInput.addEventListener('input', debounce(handleInput, 300)); 
+    searchInput.addEventListener('input', debounce(handleInput, 200)); 
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const filterForm = document.querySelector('.filter-form');
+    const serviceGrid = document.querySelector('.services-grid');
+
+    const fetchFilteredServices = async () => {
+        const formData = new FormData(filterForm);
+        const queryString = new URLSearchParams(formData).toString();
+
+        try {
+            const response = await fetch(`../api/search_service.php?${queryString}`);
+            const services = await response.json();
+
+            serviceGrid.innerHTML = '';
+
+            services.forEach(service => {
+                const imageUrl = service.mediaUrl || 'https://via.placeholder.com/300';
+                const freelancerName = service.freelancerName || 'Unknown Freelancer';
+                const serviceCard = `
+                    <a href="service.php?id=${service.id}" class="service-card">
+                        <img src="${imageUrl}" alt="Service image">
+                        <div class="service-info">
+                            <h3>${service.title}</h3>
+                            <p class="freelancer">By ${freelancerName}</p>
+                            <p class="price">€${service.price.toFixed(2)}</p>
+                        </div>
+                    </a>
+                `;
+                serviceGrid.insertAdjacentHTML('beforeend', serviceCard);
+            });
+        } catch (error) {
+            console.error('Error fetching services:', error);
+        }
+    };
+
+    filterForm.addEventListener('change', fetchFilteredServices);
 });

@@ -44,7 +44,7 @@ function drawFilters(array $categories) {
                 <select name="category" id="category">
                     <option value="">All Categories</option>
                     <?php foreach ($categories as $category): ?>
-                        <option value="<?= htmlspecialchars($category->name) ?>" 
+                        <option value="<?= htmlspecialchars((string)$category->id) ?>" 
                                 data-subcategories='<?= json_encode($category->subcategories ?? []) ?>'>
                             <?= htmlspecialchars($category->name) ?>
                         </option>
@@ -62,11 +62,11 @@ function drawFilters(array $categories) {
                 <div class="price-input-container">
                     <div class="price-field">
                         <span>Minimum Price</span>
-                        <input type="number" class="min-input" value="0">
+                        <input type="number" name="min_price" value="0">
                     </div>
                     <div class="price-field">
                         <span>Maximum Price</span>
-                        <input type="number" class="max-input" value="9999">
+                        <input type="number" name="max_price" value="9999">
                     </div>
                 </div>
             </div>  
