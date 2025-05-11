@@ -78,10 +78,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     const filterForm = document.querySelector('.filter-form');
+    const searchInput = document.getElementById('search-service-input');
     const serviceGrid = document.querySelector('.services-grid');
 
     const fetchFilteredServices = async () => {
         const formData = new FormData(filterForm);
+
+        const searchQuery = searchInput.value.trim();
+        if (searchQuery) {
+            formData.set('q', searchQuery);
+        }
+
         const queryString = new URLSearchParams(formData).toString();
 
         try {
@@ -110,5 +117,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    filterForm.addEventListener('change', fetchFilteredServices);
+    const addDynamicFilterListeners = () => {
+        const inputs = filterForm.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('input', fetchFilteredServices); 
+            input.addEventListener('change', fetchFilteredServices);
+        });
+
+        searchInput.addEventListener('input', fetchFilteredServices);
+    };
+
+    addDynamicFilterListeners();
 });
