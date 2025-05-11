@@ -80,6 +80,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterForm = document.querySelector('.filter-form');
     const searchInput = document.getElementById('search-service-input');
     const serviceGrid = document.querySelector('.services-grid');
+    const categorySelect = document.getElementById('category');
+    const subcategoryContainer = document.getElementById('subcategory-container');
+    const subcategoryCheckboxes = document.getElementById('subcategory-checkboxes');
+    let debounceTimeout;
+
+    const debounce = (callback, delay) => {
+        return (...args) => {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => callback(...args), delay);
+        };
+    };
 
     const fetchFilteredServices = async () => {
         const formData = new FormData(filterForm);
@@ -117,14 +128,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const addDynamicFilterListeners = () => {
-        const inputs = filterForm.querySelectorAll('input, select');
+    const resetFiltersUI = () => {
+        categorySelect.value = '';
+
+        subcategoryContainer.style.display = 'none';
+        subcategoryCheckboxes.innerHTML = '';
+
+        const inputs = filterForm.querySelectorAll('input');
         inputs.forEach(input => {
-            input.addEventListener('input', fetchFilteredServices); 
-            input.addEventListener('change', fetchFilteredServices);
+            if (input.name === 'min_price') {
+                input.value = '0';
+            } else if (input.name === 'max_price') {
+                input.value = '9999';
+            } else if (input.type === 'number') {
+                input.value = '';
+            } else if (input.type === 'text') {
+                input.value = '';
+            } else if (input.type === 'checkbox') {
+                input.checked = false; 
+            }
         });
 
-        searchInput.addEventListener('input', fetchFilteredServices);
+        const sortSelect = filterForm.querySelector('select[name="sort"]');
+        if (sortSelect) {
+            sortSelect.value = 'newest';
+        }
+    };
+
+    const addDynamicFilterListeners = () => {
+        const inputs = filterForm.querySelectorAll('input, select');
+        const debouncedFetch = debounce(fetchFilteredServices, 300);
+        inputs.forEach(input => {
+            input.addEventListener('input', debouncedFetch); 
+            input.addEventListener('change', debouncedFetch);
+        });
+
+        searchInput.addEventListener('input', () => {
+            resetFiltersUI();
+            fetchFilteredServices();
+        });
     };
 
     addDynamicFilterListeners();
