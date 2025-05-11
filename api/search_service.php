@@ -11,6 +11,7 @@ $maxPrice = $_GET['max_price'] ?? null;
 $deliveryTime = $_GET['delivery_time'] ?? null;
 $numberOfRevisions = $_GET['number_of_revisions'] ?? null;
 $language = $_GET['language'] ?? null;
+$sort = $_GET['sort'] ?? 'newest';
 
 $filters = [
     'category' => $category,
@@ -20,6 +21,7 @@ $filters = [
     'delivery_time' => $deliveryTime,
     'number_of_revisions' => $numberOfRevisions,
     'language' => $language,
+    'sort' => $sort,
 ];
 
 $services = Service::getFilteredServices($searchQuery, $filters, 30);

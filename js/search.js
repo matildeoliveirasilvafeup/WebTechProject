@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const categorySelect = document.getElementById('category');
     const subcategoryContainer = document.getElementById('subcategory-container');
     const subcategoryCheckboxes = document.getElementById('subcategory-checkboxes');
+    const sortSelect = filterForm.querySelector('select[name="sort"]');
     let debounceTimeout;
 
     const debounce = (callback, delay) => {
@@ -167,6 +168,10 @@ document.addEventListener('DOMContentLoaded', () => {
             resetFiltersUI();
             fetchFilteredServices();
         });
+
+        if (sortSelect) {
+            sortSelect.addEventListener('change', debouncedFetch);
+        }
     };
 
     addDynamicFilterListeners();

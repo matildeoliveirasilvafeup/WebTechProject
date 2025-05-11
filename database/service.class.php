@@ -209,8 +209,29 @@ class Service {
         if (!empty($filters['language'])) {
             $query .= " AND services.language LIKE :language";
         }
+
+        switch ($filters['sort'] ?? 'newest') {
+            case 'oldest':
+                $query .= " ORDER BY services.created_at ASC";
+                break;
+            case 'lowest_price':
+                $query .= " ORDER BY services.price ASC";
+                break;
+            case 'highest_price':
+                $query .= " ORDER BY services.price DESC";
+                break;
+            case 'lowest_rating':
+                $query .= " ORDER BY services.rating ASC"; 
+                break;
+            case 'highest_rating':
+                $query .= " ORDER BY services.rating DESC";
+                break;
+            default:
+                $query .= " ORDER BY services.created_at DESC";
+                break;
+        }
     
-        $query .= " ORDER BY services.created_at DESC LIMIT :limit";
+        $query .= " LIMIT :limit";
     
         $stmt = $db->prepare($query);
         $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
