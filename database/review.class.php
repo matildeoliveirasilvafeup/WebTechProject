@@ -79,21 +79,24 @@ class Review {
     }
 
     public static function getAverageRating(array $reviews): array {
-        if (empty($reviews)) {
-            return [
-                'average' => 0,
-                'counts' => array_fill(1, 5, 0),
-                'total' => 0
-            ];
+        $counts = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
+        $totalReviews = count($reviews);
+        $sumRatings = 0;
+    
+        foreach ($reviews as $review) {
+            $rating = (int)$review->rating;
+            if (isset($counts[$rating])) {
+                $counts[$rating]++;
+            }
+            $sumRatings += $rating;
         }
-
-        $serviceId = $reviews[0]->serviceId;
-        $ratingInfo = self::getServiceRatingInfo($serviceId);
-
+    
+        $average = $totalReviews > 0 ? $sumRatings / $totalReviews : 0;
+    
         return [
-            'average' => $ratingInfo['avg'],
-            'counts' => null,
-            'total' => $ratingInfo['count']
+            'average' => round($average, 2),
+            'total' => $totalReviews,
+            'counts' => $counts,
         ];
     }
 
