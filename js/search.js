@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         subcategoryContainer.style.display = 'block';
         subcategoryCheckboxes.innerHTML = subcategories.map(sub =>
           `<label>
-            <input type="checkbox" name="subcategory[]" value="${sub.name}">
+            <input type="checkbox" name="subcategory[]" value="${sub.id}">
             ${sub.name}
           </label>`
         ).join('');
@@ -31,8 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(`../api/search_service.php?q=${encodeURIComponent(query)}`);
             const services = await response.json();
-
-            console.log('Services fetched:', services);
 
             serviceGrid.innerHTML = '';
 
@@ -163,6 +161,8 @@ document.addEventListener('DOMContentLoaded', () => {
             input.addEventListener('input', debouncedFetch); 
             input.addEventListener('change', debouncedFetch);
         });
+
+        subcategoryCheckboxes.addEventListener('change', debouncedFetch);
 
         searchInput.addEventListener('input', () => {
             resetFiltersUI();

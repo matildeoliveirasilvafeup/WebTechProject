@@ -80,6 +80,7 @@ class Service {
                 users.name AS freelancer_name,
                 profiles.profile_picture,
                 categories.name AS category_name,
+                subcategories.name AS subcategory_name,
                 (
                     SELECT media_url 
                     FROM service_images 
@@ -90,6 +91,7 @@ class Service {
             JOIN users ON services.freelancer_id = users.id
             LEFT JOIN profiles ON users.id = profiles.user_id
             LEFT JOIN categories ON services.category_id = categories.id
+            LEFT JOIN subcategories ON services.subcategory_id = subcategories.id
             WHERE services.id = :id
             LIMIT 1
         ");
@@ -167,7 +169,7 @@ class Service {
         return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
-        public static function getFilteredServices(string $search, array $filters, int $limit = 30): array {
+    public static function getFilteredServices(string $search, array $filters, int $limit = 30): array {
         $db = Database::getInstance();
         $query = "
             SELECT 
@@ -190,9 +192,11 @@ class Service {
             $query .= " AND services.category_id = :category";
         }
         if (!empty($filters['subcategories'])) {
-            $query .= " AND services.category_id IN (
-                SELECT id FROM subcategories WHERE name IN (" . implode(',', array_fill(0, count($filters['subcategories']), '?')) . ")
-            )";
+            $subcatPlaceholders = [];
+            foreach ($filters['subcategories'] as $index => $subcategory) {
+                $subcatPlaceholders[] = ":subcat_$index";
+            }
+            $query .= " AND services.subcategory_id IN (" . implode(',', $subcatPlaceholders) . ")";
         }
         if (!empty($filters['min_price'])) {
             $query .= " AND services.price >= :min_price";
@@ -257,10 +261,10 @@ class Service {
     
         if (!empty($filters['subcategories'])) {
             foreach ($filters['subcategories'] as $index => $subcategory) {
-                $stmt->bindValue($index + 1, $subcategory, PDO::PARAM_STR);
+                $stmt->bindValue(":subcat_$index", $subcategory, PDO::PARAM_INT);
             }
         }
-    
+
         $stmt->execute();
     
         return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
