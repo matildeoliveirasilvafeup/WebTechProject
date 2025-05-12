@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 session_start();
 require_once 'database/connection.php';
 require_once 'database/profiles.php';
@@ -70,4 +70,4 @@ $profile_preferences = getProfilePreferences($db, $userId);
 
 <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 
-<?php require 'templates/common/footer.php'; ?>
+<?php require 'templates/common/footer.php'; ?> -->

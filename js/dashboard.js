@@ -33,10 +33,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (initialTab) showTab(initialTab);
 
     /* ===== PROFILE EDITING ===== */
-    
+
     const editProfBtn = document.getElementById("editProfBtn");
     const profileModal = document.getElementById("editProfileModal");
     const cancelEditProfile = document.getElementById("cancelEditProfile");
+    const editProfileForm = document.getElementById("editProfileForm");
 
     if (editProfBtn && profileModal) {
         editProfBtn.addEventListener("click", () => {
@@ -47,6 +48,52 @@ document.addEventListener("DOMContentLoaded", function () {
     if (cancelEditProfile && profileModal) {
         cancelEditProfile.addEventListener("click", () => {
             profileModal.classList.add("hidden");
+        });
+    }
+
+    if (editProfileForm) {
+        editProfileForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(editProfileForm);
+            const name = formData.get("name");
+            const loc = formData.get("location");
+            const profilePicture = formData.get("profile_picture");
+
+            console.log("Form data:", { name, loc, profilePicture });
+
+            try {
+                const response = await fetch("/actions/action_update_profile_details.php", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const text = await response.text();
+                console.log("Server response:", text);
+                
+                let result;
+                try {
+                    result = JSON.parse(text);
+                } catch (err) {
+                    console.error("Invalid JSON:", text);
+                    alert("Unexpected response from server.");
+                    return;
+                }
+
+                if (response.ok && result.success) {
+                    notification.classList.remove("hidden");
+                    setTimeout(() => {
+                        notification.classList.add("hidden");
+                        location.reload();
+                    }, 1000);
+                } else {
+                    alert(result.message || "Failed to update profile.");
+                }
+
+            } catch (err) {
+                console.error("Error submitting profile:", err);
+                alert("An error occurred. Please try again.");
+            }
         });
     }
 
@@ -73,33 +120,39 @@ document.addEventListener("DOMContentLoaded", function () {
     if (editBioForm) {
         editBioForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const bio = document.getElementById("editBio").value;
-
-            if (!bio.trim()) {
-                alert("Bio cannot be empty.");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("bio", bio);
+            const formData = new FormData(editBioForm);
+            const bio = formData.get("bio");
 
             try {
-                const response = await fetch("/database/update_bio.php", {
+                const response = await fetch("/actions/action_update_bio.php", {
                     method: "POST",
-                    body: formData
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ bio })
                 });
 
-                const result = await response.json();
+                const text = await response.text();
+                
+                let result;
+                try {
+                    result = JSON.parse(text);
+                } catch (jsonError) {
+                    console.error("Answer isn't JSON valid: ", text);
+                    alert("Unexpected response from server.");
+                    return;
+                }
 
-                if (response.ok && result.success) {
+                if (result.success) {
                     bioText.textContent = bio;
                     editBioModal.classList.add("hidden");
                 } else {
-                    alert(result.message || "Failed to update bio.");
+                    alert(result.message || "Error updating bio.");
                 }
-            } catch (err) {
+
+            } catch (error) {
+                console.error("Something went wrong: ", error);
                 alert("An error occurred. Please try again.");
-                console.error(err);
             }
         });
     }
@@ -144,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
             formData.append("preferred_days_times", JSON.stringify(preferredDaysTimes));
 
             try {
-                const response = await fetch("/database/update_preferences.php", {
+                const response = await fetch("/actions/action_update_preferences.php", {
                     method: "POST",
                     body: formData
                 });
@@ -172,6 +225,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function logout() {
     if (confirm("Are you sure you want to log out?")) {
-        window.location.href = "/authentication/logout.php";
+        window.location.href = "/actions/action_logout.php";
     }
 }

@@ -13,8 +13,8 @@ CREATE TABLE users (
 CREATE TABLE deleted_users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    username TEXT UNIQUE NOT NULL,
-    email TEXT UNIQUE NOT NULL,
+    username TEXT NOT NULL,
+    email TEXT NOT NULL,
     role TEXT NOT NULL,
     created_at TIMESTAMP,
     deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

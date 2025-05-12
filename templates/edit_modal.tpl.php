@@ -1,20 +1,15 @@
-<?php
-session_start();
-?>
-
-<link rel="stylesheet" href="css/edit_modal.css">
 
 <!-- Edit Profile Modal -->
 
-<?php function drawEditProfileModal($profile) { ?>
+<?php function drawEditProfileModal($profile, $user) { ?>
     <div class="modal-content">
         <h3>Edit Profile</h3>
-        <form id="editProfileForm" method="POST" action="database/update_profile_details.php" enctype="multipart/form-data">
+        <form id="editProfileForm">
             
             <?php
-            drawName();
+            drawName($user);
 
-            drawUsername();
+            drawUsername($user);
 
             drawLocation($profile);
 
@@ -27,14 +22,14 @@ session_start();
     </div>
 <?php } ?>
 
-<?php function drawName() { ?>
+<?php function drawName($user) { ?>
     <label for="edit-name">Name:</label>
-    <input type="text" id="edit-name" name="name" value="<?= htmlspecialchars($_SESSION['user']['name']) ?>" required>
+    <input type="text" id="edit-name" name="name" value="<?= htmlspecialchars($user->name) ?>" required>
 <?php } ?>
 
-<?php function drawUsername() { ?>
+<?php function drawUsername($user) { ?>
     <label for="edit-username">Username:</label>
-    <input type="text" id="edit-username" name="username" value="<?= htmlspecialchars($_SESSION['user']['username']) ?>" required>
+    <input type="text" id="edit-username" name="username" value="<?= htmlspecialchars($user->username) ?>" required>
 <?php } ?>
 
 <?php function drawLocation($profile) { ?>
@@ -70,7 +65,7 @@ session_start();
             "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay",
             "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
         ];
-        $selectedLocation = htmlspecialchars($profile['location'] ?? 'Portugal');
+        $selectedLocation = htmlspecialchars($profile->location ?? 'Portugal');
 
         foreach ($countries as $country) {
             $selected = ($country === $selectedLocation) ? 'selected' : '';
@@ -91,7 +86,7 @@ session_start();
     <div class="modal-content">
         <h3>Edit Bio</h3>
         <form id="editBioForm">
-            <textarea id="editBio" name="bio" rows="4" placeholder="Enter your bio..."><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
+            <textarea id="editBio" name="bio" rows="4" placeholder="Enter your bio..."><?= htmlspecialchars($profile->bio ?? '') ?></textarea>
             
             <?php drawButtons("cancelEditBio"); ?>
         </form>
@@ -135,7 +130,7 @@ session_start();
             "Swedish", "Tamil", "Telugu", "Thai", "Turkish", "Ukrainian", "Urdu", "Vietnamese", "Welsh", "Xhosa", "Yoruba", 
             "Zulu"
         ];
-        $selectedLanguage = htmlspecialchars($profile_preferences['language'] ?? 'English');
+        $selectedLanguage = htmlspecialchars($profile_preferences->language ?? 'English');
 
         foreach ($languages as $language) {
             $selected = ($language === $selectedLanguage) ? 'selected' : '';
@@ -148,10 +143,10 @@ session_start();
 <?php function drawProficiencyField() { ?>
     <label>Proficiency:
         <select name="proficiency" required>
-        <option value="Basic" <?= $profile_preferences['proficiency'] === 'Basic' ? 'selected' : '' ?>>Basic</option>
-        <option value="Conversational" <?= $profile_preferences['proficiency'] === 'Conversational' ? 'selected' : '' ?>>Conversational</option>
-        <option value="Fluent" <?= $profile_preferences['proficiency'] === 'Fluent' ? 'selected' : '' ?>>Fluent</option>
-        <option value="Native/Bilingual" <?= $profile_preferences['proficiency'] === 'Native/Bilingual' ? 'selected' : '' ?>>Native/Bilingual</option>
+        <option value="Basic" <?= $profile_preferences->proficiency === 'Basic' ? 'selected' : '' ?>>Basic</option>
+        <option value="Conversational" <?= $profile_preferences->proficiency === 'Conversational' ? 'selected' : '' ?>>Conversational</option>
+        <option value="Fluent" <?= $profile_preferences->proficiency === 'Fluent' ? 'selected' : '' ?>>Fluent</option>
+        <option value="Native/Bilingual" <?= $profile_preferences->proficiency === 'Native/Bilingual' ? 'selected' : '' ?>>Native/Bilingual</option>
         </select>
     </label>
 <?php } ?>
@@ -159,8 +154,8 @@ session_start();
 <?php function drawCommunicationPrefsField() { ?>
     <label>Communication Preference:
         <select name="communication" required>
-        <option value="Messages Only" <?= $profile_preferences['communication'] === 'Messages Only' ? 'selected' : '' ?>>Messages Only</option>
-        <option value="Calls and Messages" <?= $profile_preferences['communication'] === 'Calls and Messages' ? 'selected' : '' ?>>Calls and Messages</option>
+        <option value="Messages Only" <?= $profile_preferences->communication === 'Messages Only' ? 'selected' : '' ?>>Messages Only</option>
+        <option value="Calls and Messages" <?= $profile_preferences->communication === 'Calls and Messages' ? 'selected' : '' ?>>Calls and Messages</option>
         </select>
     </label>
 <?php } ?>

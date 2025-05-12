@@ -38,5 +38,4 @@ require_once(__DIR__ . '/../../includes/session.php');
 
 <?php function drawLogoutOptions() { ?>
     <a href="dashboard.php">Dashboard</a>
-    <a href="/actions/action_logout.php">Logout</a>
 <?php } ?>        

@@ -1,16 +1,12 @@
-<?php
-session_start();
-?>
 
-<link rel="stylesheet" href="css/personal_details.css">
 
-<?php function drawProfile($profile, $profile_preferences) { ?>
+<?php function drawProfile($profile, $profile_preferences, $user) { ?>
     <div id="profile" class="tab-content active">
         <div class="personal-details">
             <div class="profile-header">
 
                 <?php drawIcon($profile); ?>
-                <?php drawInfo($profile); ?>
+                <?php drawInfo($profile, $user); ?>
                 
             </div>
             
@@ -36,20 +32,20 @@ session_start();
 
 <?php function drawIcon($profile) { ?>
     <div class="profile-icon">
-        <?php if (!empty($profile['profile_picture'])): ?>
-            <img src="<?= htmlspecialchars($profile['profile_picture']) ?>" alt="Profile Picture">
+        <?php if (!empty($profile->profilePicture)): ?>
+            <img src="<?= htmlspecialchars($profile->profilePicture) ?>" alt="Profile Picture">
         <?php else: ?>
             <i class="fa-solid fa-image-portrait"></i>
         <?php endif; ?>
     </div>
 <?php } ?>
 
-<?php function drawInfo($profile) { ?>
+<?php function drawInfo($profile, $user) { ?>
     <div class="profile-info">
-        <h2><?= htmlspecialchars($_SESSION['user']['name']) ?></h2>
-        <p class="username">@<?= htmlspecialchars($_SESSION['user']['username']) ?></p>
-        <p><i class="fas fa-map-marker-alt"></i> Located in <?= htmlspecialchars($profile['location']) ?></p>
-        <p><i class="fas fa-calendar-alt"></i> Joined in <?= date('F Y', strtotime($_SESSION['user']['created_at'])) ?></p>
+        <h2><?= htmlspecialchars($user->name) ?></h2>
+        <p class="username">@<?= htmlspecialchars($user->username) ?></p>
+        <p><i class="fas fa-map-marker-alt"></i> Located in <?= htmlspecialchars($profile->location) ?></p>
+        <p><i class="fas fa-calendar-alt"></i> Joined in <?= date('F Y', $user->created_at) ?></p>
     </div>
 
     <button id="editProfBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
@@ -59,7 +55,7 @@ session_start();
     <div class="profile-bio">
         <div class="content">
             <h3>Bio</h3>
-            <p id="bioText"><?= htmlspecialchars($profile['bio'] ?? 'No bio available') ?></p>
+            <p id="bioText"><?= htmlspecialchars($profile->bio ?? 'No bio available') ?></p>
         </div>
         
         <button id="editBioBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
@@ -81,31 +77,33 @@ session_start();
 <?php } ?>
 
 <?php function drawLanguage($profile_preferences) { ?>
-    <p><i class="fas fa-language"></i> <?= htmlspecialchars($profile_preferences['language'] ?? 'Language not set') ?> (<?= htmlspecialchars($profile_preferences['proficiency'] ?? 'N/A') ?>): <?= htmlspecialchars($profile_preferences['communication'] ?? 'Not set') ?></p>
+    <p><i class="fas fa-language"></i> <?= htmlspecialchars($profile_preferences->language ?? 'Language not set') ?> (<?= htmlspecialchars($profile_preferences->proficiency ?? 'N/A') ?>): <?= htmlspecialchars($profile_preferences->communication ?? 'Not set') ?></p>
 <?php } ?>
 
-<?php function drawDateTime($profile_preferences) { ?>
-    <p><?php 
-        $preferencesJson = $profile_preferences['preferred_days_times'] ?? '{}';
-        $preferencesData = json_decode($preferencesJson, true);
-        
+<?php function drawDateTime($profile_preferences) { 
+    $preferencesData = $profile_preferences->preferredDaysTimes ?? ['days' => []];
+    
+    if (isset($preferencesData['days']) && is_array($preferencesData['days'])) {
         $grouped = [];
-        
+
         foreach ($preferencesData['days'] as $dayInfo) {
-            $time = $dayInfo['time'];
+            $time = $dayInfo['time'] ?? '';
             if (!isset($grouped[$time])) {
                 $grouped[$time] = [];
             }
             $grouped[$time][] = $dayInfo['day'];
         }
-        
+
         foreach ($grouped as $time => $days) {
             $dayList = implode(', ', $days);
             echo "<p><i class='fa-regular fa-calendar-days'></i> {$dayList}</p>";
             echo "<p><i class='fa-solid fa-clock'></i> {$time}</p>";
         }
-    ?></p>
-<?php } ?>
+    } else {
+        echo "<p>No preferences set for days and times.</p>";
+    }
+} ?>
+
     
 <?php function drawControls() { ?>
     <div class="profile-controls">

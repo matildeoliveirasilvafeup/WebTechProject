@@ -41,7 +41,7 @@
 }
 
 .sidebar h3 span {
-    font-size: 1em;
+    font-size: 0.83em;
     color: var(--main-theme);
     margin-bottom: 1em;
     text-align: center;
@@ -51,6 +51,9 @@
 .sidebar h3 i {
     font-size: 1em;
     color: var(--main-theme);
+    margin-bottom: 1em;
+    text-align: center;
+    display: block;
 }
 
 .sidebar ul {

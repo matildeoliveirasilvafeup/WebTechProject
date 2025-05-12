@@ -19,11 +19,7 @@ let usernameAvailable = false;
 
 passwordInput.addEventListener('input', () => {
 
-    if (signType == 'signin') {
-        checkSignInFormValidity();
-    } else if (signType == 'signup') {
-        checkSignUpFormValidity();
-    }
+    checkFormValidity();
 
 });
 
@@ -42,18 +38,15 @@ emailInput.addEventListener('input', () => {
                 emailStatus.textContent = '';
                 emailAvailable = true;
             }
+            checkFormValidity();
         });
     } else {
         emailStatus.textContent = 'Invalid email format';
         emailStatus.style.color = 'gray';
         emailAvailable = false;
+        checkFormValidity();
     }
     
-    if (signType == 'signin') {
-        checkSignInFormValidity();
-    } else if (signType == 'signup') {
-        checkSignUpFormValidity();
-    }
 });
 
 usernameInput.addEventListener('input', () => {
@@ -72,16 +65,17 @@ usernameInput.addEventListener('input', () => {
                     usernameStatus.style.color = 'green';
                     usernameAvailable = true;
                 }
+                checkFormValidity();
             });
     } else {
         usernameStatus.textContent = '';
         usernameAvailable = false;
+        checkFormValidity();
     }
 
-    checkSignUpFormValidity();
 });
 
-nameInput.addEventListener('input', checkSignUpFormValidity);
+nameInput.addEventListener('input', checkFormValidity);
 
 function checkNameRequirements(name) {
 
@@ -108,9 +102,17 @@ function checkSignUpFormValidity() {
     const isNameValid = checkNameRequirements(name);
     const isPasswordValid = checkPasswordRequirements(password);
 
-    if (isNameValid  && usernameAvailable && isPasswordValid && emailAvailable) {
+    if (isNameValid && usernameAvailable && isPasswordValid && emailAvailable) {
         Btn.removeAttribute('disabled');
     } else {
         Btn.setAttribute('disabled', 'true');
+    }
+}
+
+function checkFormValidity() {
+    if (signType == 'signin') {
+        checkSignInFormValidity();
+    } else if (signType == 'signup') {
+        checkSignUpFormValidity();
     }
 }

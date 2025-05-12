@@ -1,10 +1,6 @@
-<?php
-session_start();
-?>
 
-<link rel="stylesheet" href="css/settings.css">
 
-<?php function drawSettings() { ?>
+<?php function drawSettings($user) { ?>
     <div id="settings" class="tab-content">
         <div id="settings-body">
             <div class="account-details">
@@ -15,7 +11,7 @@ session_start();
                 <div id="email-section" class="auth-section">
                     <form id="editEmailForm">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" placeholder="<?= htmlspecialchars(encodeEmail($_SESSION['user']['email'] ?? '')) ?>" required>
+                        <input type="email" name="email" id="email" placeholder="<?= htmlspecialchars(encodeEmail($user->email ?? '')) ?>" required>
                         
                         <div class="modal-buttons">
                             <button type="submit" id="save-btn email" class="btn save" disabled>Save</button>
@@ -128,5 +124,5 @@ session_start();
     return $masked . '@' . $domain;
 } ?>
 
-<script src="/js/password.js"></script>
-<script type="module" src="./js/settings.js"></script>
+<script src="../js/password.js"></script>
+<script type="module" src="../js/settings.js"></script>

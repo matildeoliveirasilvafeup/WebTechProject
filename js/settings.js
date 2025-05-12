@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
         data.append('reason', reason);
 
         try {
-            const response = await fetch("/database/delete_account.php", {
+            const response = await fetch("/actions/action_delete_account.php", {
                 method: "POST",
                 body: data
             });
@@ -71,14 +71,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (editEmailForm) {
         editEmailForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            console.log("yay");
     
             const email = document.getElementById("email").value;
             const data = new FormData();
             data.append('email', email);
     
             try {
-                const response = await fetch("/database/update_authentication.php", {
+                const response = await fetch("/actions/action_update_authentication.php", {
                     method: "POST",
                     body: data
                 });
@@ -123,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
             data.append('newPassword', newPassword);
     
             try {
-                const response = await fetch("/database/update_authentication.php", {
+                const response = await fetch("/actions/action_update_authentication.php", {
                     method: "POST",
                     body: data
                 });
