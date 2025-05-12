@@ -221,10 +221,10 @@ class Service {
                 $query .= " ORDER BY services.price DESC";
                 break;
             case 'lowest_rating':
-                $query .= " ORDER BY services.rating ASC"; 
+                $query .= " ORDER BY services.average_rating ASC"; 
                 break;
             case 'highest_rating':
-                $query .= " ORDER BY services.rating DESC";
+                $query .= " ORDER BY services.average_rating DESC";
                 break;
             default:
                 $query .= " ORDER BY services.created_at DESC";

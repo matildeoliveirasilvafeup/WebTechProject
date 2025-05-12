@@ -48,10 +48,10 @@ class Review {
         $db = Database::getInstance();
         $stmt = $db->prepare("
             SELECT 
-                ROUND(AVG(rating), 1) AS avg_rating,
-                COUNT(*) AS total_reviews
-            FROM reviews
-            WHERE service_id = :service_id
+                average_rating AS avg_rating,
+                total_reviews
+            FROM services
+            WHERE id = :service_id
         ");
         $stmt->execute([':service_id' => $service_id]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -79,25 +79,50 @@ class Review {
     }
 
     public static function getAverageRating(array $reviews): array {
-        $totalReviews = count($reviews);
-        $totalRating = 0;
-        $starCounts = array_fill(1, 5, 0);
-    
-        foreach ($reviews as $r) {
-            $rating = (int)$r->rating;
-            if ($rating >= 1 && $rating <= 5) {
-                $totalRating += $rating;
-                $starCounts[$rating]++;
-            }
+        if (empty($reviews)) {
+            return [
+                'average' => 0,
+                'counts' => array_fill(1, 5, 0),
+                'total' => 0
+            ];
         }
-    
-        $averageRating = round($totalRating / $totalReviews, 1);
-    
+
+        $serviceId = $reviews[0]->serviceId;
+        $ratingInfo = self::getServiceRatingInfo($serviceId);
+
         return [
-            'average' => $averageRating,
-            'counts' => $starCounts,
-            'total' => $totalReviews
+            'average' => $ratingInfo['avg'],
+            'counts' => null,
+            'total' => $ratingInfo['count']
         ];
+    }
+
+    public static function updateServiceRating(int $serviceId): void {
+        $db = Database::getInstance();
+    
+        $stmt = $db->prepare("
+            SELECT 
+                ROUND(AVG(rating), 1) AS avg_rating,
+                COUNT(*) AS total_reviews
+            FROM reviews
+            WHERE service_id = :service_id
+        ");
+        $stmt->execute([':service_id' => $serviceId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        $avgRating = $result['avg_rating'] ?? 0;
+        $totalReviews = $result['total_reviews'] ?? 0;
+    
+        $updateStmt = $db->prepare("
+            UPDATE services
+            SET average_rating = :avg_rating, total_reviews = :total_reviews
+            WHERE id = :service_id
+        ");
+        $updateStmt->execute([
+            ':avg_rating' => $avgRating,
+            ':total_reviews' => $totalReviews,
+            ':service_id' => $serviceId
+        ]);
     }
 }
 ?>
