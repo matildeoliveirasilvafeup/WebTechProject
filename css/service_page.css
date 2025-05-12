@@ -89,7 +89,8 @@
     font-weight: bold;
     width: fit-content;
     transition: background 0.3s ease;
-    border: 2px solid ;
+    border: 2px solid var(--button-background);
+    font-size: medium;
 }
 
 .btn-hire {

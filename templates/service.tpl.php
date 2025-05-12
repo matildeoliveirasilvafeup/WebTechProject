@@ -115,7 +115,7 @@ function renderServiceSlider(array $services, int $minItemsToShowNav = 6, string
     <?php endif; ?>
 <?php } ?>
 
-<?php function drawListServicesForm() { ?>
+<?php function drawListServicesForm($categories) { ?>
     <section class="service-page">
         <form action="create_listing.php" method="POST" enctype="multipart/form-data" class="create-form">
             <h1>List New Service</h1>
@@ -141,35 +141,40 @@ function renderServiceSlider(array $services, int $minItemsToShowNav = 6, string
                     <label for="category">Category</label>
                     <select id="category" name="category" required>
                         <option value="" disabled selected>Select a category</option>
-                        <option value="ai_services">AI Services</option>
-                        <option value="business">Business</option>
-                        <option value="consulting">Consulting</option>
-                        <option value="digital_marketing">Digital Marketing</option>
-                        <option value="graphics_design">Graphic & Design</option>
-                        <option value="music_audio">Music & Audio</option>
-                        <option value="programming_tech">Programming & Tech</option>
-                        <option value="video_animation">Video & Animation</option>
-                        <option value="writing_translation">Writing & Translation</option>
-                        <option value="other">Other</option>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= htmlspecialchars((string)$category->id) ?>" 
+                                    data-subcategories='<?= json_encode($category->subcategories ?? []) ?>'>
+                                <?= htmlspecialchars($category->name) ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>        
- 
+
+                <div>
+                    <label for="subcategory">Subcategory</label>
+                    <select id="subcategory" name="subcategory" required disabled>
+                        <option value="" disabled selected>Select a subcategory</option>
+                    </select>
+                </div>
+
                 <div>
                     <label for="revisions">Included Revisions</label>
                     <input type="number" id="revisions" name="revisions" min="0" step="1" required>    
                 </div>    
-            </div>
- 
-            <div class="form-group">
-                <label for="images">Images</label>
-                <input type="file" id="images" name="images[]" accept="image/*" multiple>
-                <button class="upload-button" type="button">Upload Images</button>
+                
+                <div class="form-group">
+                    <label for="images">Images</label>
+                    <input type="file" id="images" name="images[]" accept="image/*" multiple>
+                    <button class="upload-button" type="button">Upload Images</button>
+                </div>
             </div>
  
             <div class="button-group">
-                <button type="submit" class="btn-hire">Publish</button>
-                <a href="index.php" class="btn-add-cart">Cancel</a>
+                <button type="submit" class="btn-add-cart">Publish</button>
+                <a href="index.php" class="btn-hire">Cancel</a>
             </div>
         </form>
     </section>
+
+    <script src="../js/list_service.js"></script>
 <?php } ?>

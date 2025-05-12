@@ -13,11 +13,11 @@
     require '../templates/service.tpl.php';
     require '../templates/common/footer.tpl.php'; 
 
-    $categoriesMenu = Category::getAllWithSubcategories();
+    $categories_sub = Category::getAllWithSubcategories();
 
     drawHeader();
-    drawCategoryMenu($categoriesMenu);
-    drawListServicesForm();
+    drawCategoryMenu($categories_sub);
+    drawListServicesForm($categories_sub);
     drawFooter();
 ?>    
 
