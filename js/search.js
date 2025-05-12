@@ -101,6 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const queryString = new URLSearchParams(formData).toString();
 
+        const newUrl = new URL(window.location);
+        newUrl.search = queryString;
+        window.history.replaceState({}, '', newUrl);
+
         try {
             const response = await fetch(`../api/search_service.php?${queryString}`);
             const services = await response.json();
