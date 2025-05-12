@@ -306,7 +306,7 @@
     justify-self: center;
     margin-top: 2em;
     padding: 0.75em 1.5em;
-    background-color: var(--main-text-color);
+    background-color: var(--main-text);
     color: var(--secondary);
     border: none;
     border-radius: 8px;
@@ -315,13 +315,13 @@
 }
 
 .load-more-btn:hover {
-    background-color: var(--main-text-color);
+    background-color: var(--main-text);
 }
 
 .freelancer-services,
 .related-services {
     max-width: 80%;
-    margin: 3em auto;
+    margin: 1em auto;
 }
 
 .freelancer-services .service-card,

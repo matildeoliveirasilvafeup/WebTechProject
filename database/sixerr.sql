@@ -24,11 +24,14 @@ CREATE TABLE services (
     title TEXT NOT NULL,
     description TEXT,
     category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
+    subcategory_id INTEGER REFERENCES subcategories(id) ON DELETE SET NULL,
     price REAL NOT NULL,
     delivery_time INTEGER NOT NULL,
     number_of_revisions INTEGER DEFAULT 1,
     language TEXT DEFAULT 'English',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    average_rating REAL DEFAULT 0,
+    total_reviews INTEGER DEFAULT 0
 );
 
 CREATE TABLE service_images (
@@ -179,16 +182,16 @@ INSERT INTO subcategories (category_id, name) VALUES
 (9, 'Tech Consulting'),
 (9, 'HR & Recruiting');
 
-INSERT INTO services (freelancer_id, title, description, category_id, price, delivery_time, number_of_revisions, language) VALUES
-(1, 'Unique Logo Design', 'Custom logo tailored to your brand identity.', 1, 75.00, 3, 2, 'Italian/French'),
-(3, 'Professional Landing Page', 'Modern, responsive landing page design.', 2, 150.00, 5, 3, 'English'),
-(1, 'Business Card Design', 'Stylish and modern business cards for your brand.', 1, 40.00, 2, 1, 'French'),
-(1, 'Company Website in HTML/CSS', 'Responsive website with up to 5 pages.', 2, 200.00, 7, 4, 'Spanish/English'),
-(1, 'Social Media Template Pack', 'Set of 10 customizable Instagram templates.', 1, 60.00, 3, 2, 'Portuguese'),
-(3, 'Landing Page with Contact Form', 'Lead-optimized landing page with working contact form.', 2, 130.00, 4, 2, 'English'),
-(1, 'Brand Identity Manual', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6, 1, 'Portuguese'),
-(1, 'Brand Identity Manual1', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6, 1, 'Portuguese'),
-(1, 'Brand Identity Manual2', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 120.00, 6, 1, 'Portuguese');
+INSERT INTO services (freelancer_id, title, description, category_id, subcategory_id, price, delivery_time, number_of_revisions, language, average_rating, total_reviews) VALUES
+(1, 'Unique Logo Design', 'Custom logo tailored to your brand identity.', 1, 1, 75.00, 3, 2, 'Italian/French', 4.75, 4),
+(3, 'Professional Landing Page', 'Modern, responsive landing page design.', 2, 8, 150.00, 5, 3, 'English', 4.00, 2),
+(1, 'Business Card Design', 'Stylish and modern business cards for your brand.', 1, 2, 40.00, 2, 1, 'French', 5.00, 2),
+(1, 'Company Website in HTML/CSS', 'Responsive website with up to 5 pages.', 2, 4, 200.00, 7, 4, 'Spanish/English', 3.00, 1),
+(1, 'Social Media Template Pack', 'Set of 10 customizable Instagram templates.', 1, 5, 60.00, 3, 2, 'Portuguese', 4.00, 1),
+(3, 'Landing Page with Contact Form', 'Lead-optimized landing page with working contact form.', 2, 9, 130.00, 4, 2, 'English', 5.00, 1),
+(1, 'Brand Identity Manual', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 6, 120.00, 6, 1, 'Portuguese', 5.00, 1),
+(1, 'Brand Identity Manual1', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 6, 120.00, 6, 1, 'Portuguese', 0.00, 0),
+(1, 'Brand Identity Manual2', 'Complete visual identity guide with colors, typography, and usage rules.', 1, 6, 120.00, 6, 1, 'Portuguese', 0.00, 0);
 
 
 INSERT INTO service_images (service_id, media_url) VALUES
