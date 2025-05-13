@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once(__DIR__ . '/../includes/database.php');
+require_once(__DIR__ . '/../database/profiles.class.php');
 
 class User {
     public int $id;
@@ -154,6 +155,8 @@ class User {
             $db->commit();
 
             $session->logout();
+
+            Profile::deleteProfileIcon($userId);
 
             return [
                 "success" => true,

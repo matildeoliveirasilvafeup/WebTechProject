@@ -63,10 +63,18 @@ select {
     box-sizing: border-box;
 }
 
+input[type="email"] {
+    margin-bottom: 0;
+}
+
 label {
     display: block;
     font-weight: bold;
-    margin-top: 0;
+    margin-top: 1em;
+}
+
+.reason label {
+    margin: 0;
 }
 
 .password-wrapper {
@@ -126,6 +134,19 @@ label {
 
 .btn.danger:hover {
     background-color: var(--button-danger-hover);
+}
+
+.btn:disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.btn.save:disabled:hover {
+    background-color: var(--main-theme);
+}
+
+.btn.danger:disabled:hover {
+    background-color: var(--button-danger);
 }
 
 #password-requirements {

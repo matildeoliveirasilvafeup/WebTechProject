@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Profile::create($user->id);
             ProfilePreferences::create($user->id);
             
-            Session::login($user);
+            Session::getInstance()->login($user);
 
             header("Location: ../pages/dashboard.php");
             exit;

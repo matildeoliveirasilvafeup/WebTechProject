@@ -15,58 +15,60 @@ document.addEventListener('DOMContentLoaded', function () {
     const confirmPasswordInput = document.getElementById('confirm-password');
     const emailInput = document.getElementById('email');
 
-    passwordInput.addEventListener('input', () => {
-        checkFormValidityPassword();
-    });
-    newPasswordInput.addEventListener('input', () => {
-        checkFormValidityPassword();
-    });
-    confirmPasswordInput.addEventListener('input', () => {
-        checkFormValidityPassword();
-    });
-    emailInput.addEventListener('input', () => {        
-        checkFormValidityEmail();
-    });
+    if (passwordInput) {
+        passwordInput.addEventListener('input', checkFormValidityPassword);
+    }
+    if (newPasswordInput) {
+        newPasswordInput.addEventListener('input', checkFormValidityPassword);
+    }
+    if (confirmPasswordInput) {
+        confirmPasswordInput.addEventListener('input', checkFormValidityPassword);
+    }
+    if (emailInput) {
+        emailInput.addEventListener('input', checkFormValidityEmail);
+    }
 
-    deactivateBtn.addEventListener('click', async (e) => {
-        e.preventDefault();
-    
-        const reason = document.getElementById("reason").value;
-        if (!reason || reason === "Choose a reason") {
-            alert("Please select a reason before continuing.");
-            return;
-        }
-
-        const data = new FormData();
-        data.append('reason', reason);
-
-        try {
-            const response = await fetch("/actions/action_delete_account.php", {
-                method: "POST",
-                body: data
-            });
-
-            const text = await response.text();
-            let result;
-
-            try {
-                result = JSON.parse(text);
-            } catch (err) {
-                console.error("Invalid JSON:", text);
-                alert("Unexpected server response.");
+    if (deactivateBtn) {
+        deactivateBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+        
+            const reason = document.getElementById("reason").value;
+            if (!reason || reason === "Choose a reason") {
+                alert("Please select a reason before continuing.");
                 return;
             }
 
-            if (response.ok && result.success) {
-                window.location.href = '/index.php';
-            } else {
-                alert(result.message || "Failed to deactivate account.");
+            const data = new FormData();
+            data.append('reason', reason);
+
+            try {
+                const response = await fetch("/actions/action_delete_account.php", {
+                    method: "POST",
+                    body: data
+                });
+
+                const text = await response.text();
+                let result;
+
+                try {
+                    result = JSON.parse(text);
+                } catch (err) {
+                    console.error("Invalid JSON:", text);
+                    alert("Unexpected server response.");
+                    return;
+                }
+
+                if (response.ok && result.success) {
+                    window.location.href = '/index.php';
+                } else {
+                    alert(result.message || "Failed to deactivate account.");
+                }
+            } catch (err) {
+                alert("An error occurred. Please try again.");
+                console.error(err);
             }
-        } catch (err) {
-            alert("An error occurred. Please try again.");
-            console.error(err);
-        }
-    });
+        });
+    }
     
     if (editEmailForm) {
         editEmailForm.addEventListener('submit', async (e) => {

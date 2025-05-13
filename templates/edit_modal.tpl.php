@@ -20,6 +20,8 @@
                     
         </form>
     </div>
+
+    <script src="../js/edit_modal.js"></script>
 <?php } ?>
 
 <?php function drawName($user) { ?>

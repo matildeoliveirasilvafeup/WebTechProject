@@ -1,5 +1,4 @@
 
-
 <?php function drawProfile($profile, $profile_preferences, $user) { ?>
     <div id="profile" class="tab-content active">
         <div class="personal-details">

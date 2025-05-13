@@ -108,16 +108,7 @@ class Profile {
                 mkdir($uploadDir, 0777, true);
             }
 
-            if (isset($profile->profilePicture) && !empty($profile->profilePicture)) {
-                $oldFilePath = __DIR__ . '/..' . $profile->profilePicture;
-                
-                if (file_exists($oldFilePath)) {
-                    unlink($oldFilePath);
-                    error_log("Old profile picture deleted: $oldFilePath");
-                } else {
-                    error_log("No old profile picture found.");
-                }
-            }
+            self::deleteProfileIcon($userId);
 
             $filename = uniqid('profile_', true) . '.' . $ext;
             $destination = $uploadDir . $filename;
@@ -144,6 +135,24 @@ class Profile {
             "success" => true,
             "message" => "Profile updated successfully.",
         ];
+    }
+
+    public static function deleteProfileIcon(int $userId): void {
+
+        self::ensureExists($userId);
+
+        $profile = self::getByUserId($userId);
+
+        if (isset($profile->profilePicture) && !empty($profile->profilePicture)) {
+            $oldFilePath = __DIR__ . '/..' . $profile->profilePicture;
+            
+            if (file_exists($oldFilePath)) {
+                unlink($oldFilePath);
+                error_log("Old profile picture deleted: $oldFilePath");
+            } else {
+                error_log("No old profile picture found.");
+            }
+        }
     }
 
 }

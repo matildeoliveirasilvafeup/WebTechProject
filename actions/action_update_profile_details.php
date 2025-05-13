@@ -17,7 +17,6 @@ try {
 
     error_log("Name: $name, Username: $username, Location: $location, File: " . json_encode($file));
 
-
     // Update name + username via User class
     $response = User::updateNameAndUsername($name, $username);
     if (!$response['success']) {
