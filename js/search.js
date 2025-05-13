@@ -158,6 +158,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const initializeFiltersFromURL = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+    
+        const searchQuery = urlParams.get('q') || '';
+        searchInput.value = searchQuery;
+    
+        const category = urlParams.get('category');
+        if (category) {
+            categorySelect.value = category;
+    
+            const selectedOption = categorySelect.selectedOptions[0];
+            const subcategories = JSON.parse(selectedOption?.dataset.subcategories || '[]');
+        
+            if (subcategories.length > 0) {
+                subcategoryContainer.style.display = 'block';
+    
+                subcategoryCheckboxes.innerHTML = subcategories.map(sub =>
+                    `<label>
+                        <input type="checkbox" name="subcategory[]" value="${sub.id}">
+                        ${sub.name}
+                    </label>`
+                ).join('');
+            } else {
+                subcategoryContainer.style.display = 'none';
+                subcategoryCheckboxes.innerHTML = '';
+            }
+
+            const selectedSubcategories = urlParams.getAll('subcategory[]');
+            selectedSubcategories.forEach(id => {
+                const checkbox = subcategoryCheckboxes.querySelector(`input[type="checkbox"][value="${id}"]`);
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+            });
+        } else {
+            categorySelect.value = '';
+            subcategoryContainer.style.display = 'none';
+            subcategoryCheckboxes.innerHTML = '';
+        }
+    
+        const inputs = filterForm.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            if (input.name !== 'subcategory[]') {
+                const value = urlParams.get(input.name);
+                if (value !== null) {
+                    if (input.type === 'checkbox') {
+                        input.checked = urlParams.getAll(input.name).includes(input.value);
+                    } else {
+                        input.value = value;
+                    }
+                }
+            }
+        });
+        fetchFilteredServices();
+    };
+
     const addDynamicFilterListeners = () => {
         const inputs = filterForm.querySelectorAll('input, select');
         const debouncedFetch = debounce(fetchFilteredServices, 300);
@@ -178,5 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    initializeFiltersFromURL();
     addDynamicFilterListeners();
 });

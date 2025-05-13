@@ -8,11 +8,17 @@ require_once(__DIR__ .  '/../database/category.class.php');
         <ul>
             <?php foreach ($categories as $category): ?>
                 <li class="category-item">
-                    <a href="#"><?php echo htmlspecialchars($category->name); ?></a>
+                    <a href="search.php?sort=newest&category=<?= $category->id ?>&min_price=0&max_price=9999&delivery_time=&number_of_revisions=&language=">
+                        <?= htmlspecialchars($category->name); ?>
+                    </a>
                     <?php if (!empty($category->subcategories)): ?>
                         <ul class="subcategories">
                             <?php foreach ($category->subcategories as $subcategory): ?>
-                                <li><a href="#"><?php echo htmlspecialchars($subcategory->name); ?></a></li>
+                                <li>
+                                    <a href="search.php?sort=newest&category=<?= $category->id ?>&subcategory[]=<?= $subcategory->id ?>&min_price=0&max_price=9999&delivery_time=&number_of_revisions=&language=">                                  
+                                        <?= htmlspecialchars($subcategory->name); ?>
+                                    </a>
+                                </li>
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
