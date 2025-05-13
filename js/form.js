@@ -30,6 +30,7 @@ emailInput.addEventListener('input', () => {
         fetch(`../api/validate_user.php?email=${encodeURIComponent(email)}`)
         .then(res => res.json())
         .then(data => {
+            checkFormValidity();
             if (data.email?.used) {
                 emailStatus.textContent = 'Email already in use';
                 emailStatus.style.color = 'red';
@@ -38,15 +39,15 @@ emailInput.addEventListener('input', () => {
                 emailStatus.textContent = '';
                 emailAvailable = true;
             }
-            checkFormValidity();
         });
     } else {
+        checkFormValidity();
         emailStatus.textContent = 'Invalid email format';
         emailStatus.style.color = 'gray';
         emailAvailable = false;
-        checkFormValidity();
     }
     
+    checkFormValidity();
 });
 
 usernameInput.addEventListener('input', () => {
@@ -72,7 +73,8 @@ usernameInput.addEventListener('input', () => {
         usernameAvailable = false;
         checkFormValidity();
     }
-
+    
+    checkFormValidity();
 });
 
 nameInput.addEventListener('input', checkFormValidity);
