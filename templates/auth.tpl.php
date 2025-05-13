@@ -76,3 +76,11 @@ declare(strict_types=1);
     <script type="module" src="/js/form.js"></script>
     <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 <?php } ?>
+
+<?php function drawAuthPageStart() { ?>
+    <div class="auth-page-wrapper">
+<?php } 
+
+function drawAuthPageEnd() { ?>
+    </div>
+<?php } ?>
