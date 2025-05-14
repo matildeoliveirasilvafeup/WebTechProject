@@ -1,19 +1,29 @@
 :root {
-    --main-text: #3c3c3c;
-    --text-lighter: #555;
+    --main-text: #333;
+    --text-light: #555;
+    --text-lighter: #777;
     --main-background: #f0f4f8;
     --main-background-darker: #f9f9f9;
     --secondary: #ffffff;
     --main-theme: #00b4d8;
-    --main-theme-darker: #4db8ff;
+    --main-theme-lighter: #4db8ff;
+    --main-theme-darker: #0077b6;
     --selected: #90e0ef;
-    --sucess: #00cd00;
+    --success: #00cd00;
     --error: red;
     --background-disabled: #ccc;
+    --icon-background: #dbfbfe;
     --text-disabled: #666;
     --button-background: #1e3a5f;
     --button-background-selected: #16324b;
     --button-secondary-selected: #e1ecf4;
+    --button-danger: #ff4d4d;
+    --button-danger-hover: #cc0000;
+    --button-cancel: #e5e7eb;
+    --button-cancel-hover: #d1d5db;
     --star-yellow: #ffc107;
     --soft-line: #ddd;
+    --accent-light: #e1ecf4;
+    --box-shadow: rgba(0, 0, 0, 0.05);
+    --section-divider: #adadad;
 }

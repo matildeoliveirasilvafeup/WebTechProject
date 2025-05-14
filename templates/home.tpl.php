@@ -1,14 +1,13 @@
 <?php
 declare(strict_types=1);
+
+require_once(__DIR__ . '/../templates/search.tpl.php');
 ?>
 
 <?php function drawHero() { ?>
     <div class="hero">
         <h1 id="typing-effect">Find the perfect freelancer for your project</h1>
-        <form method="GET" action="search.php">
-            <input type="text" id="search-service-input" placeholder="Search services...">
-            <button type="submit"><i class="fas fa-search"></i></button>
-        </form>
+        <?php drawSearchForm(); ?>
     </div>  
 <?php } ?>
 

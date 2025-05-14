@@ -80,6 +80,7 @@ class Service {
                 users.name AS freelancer_name,
                 profiles.profile_picture,
                 categories.name AS category_name,
+                subcategories.name AS subcategory_name,
                 (
                     SELECT media_url 
                     FROM service_images 
@@ -90,6 +91,7 @@ class Service {
             JOIN users ON services.freelancer_id = users.id
             LEFT JOIN profiles ON users.id = profiles.user_id
             LEFT JOIN categories ON services.category_id = categories.id
+            LEFT JOIN subcategories ON services.subcategory_id = subcategories.id
             WHERE services.id = :id
             LIMIT 1
         ");
@@ -138,7 +140,7 @@ class Service {
         return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
-    public static function getServicesBySearch(string $search, int $limit = 10): array {
+    public static function getServicesBySearch(string $search, int $limit = 30): array {
         $db = Database::getInstance();
     
         $stmt = $db->prepare("
@@ -160,8 +162,109 @@ class Service {
             LIMIT :limit
         ");
         
-        $stmt->bindValue(':search', "$search%", PDO::PARAM_STR);
+        $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    public static function getFilteredServices(string $search, array $filters, int $limit = 30): array {
+        $db = Database::getInstance();
+        $query = "
+            SELECT 
+                services.*,
+                users.name AS freelancer_name,
+                profiles.profile_picture,
+                (
+                    SELECT media_url 
+                    FROM service_images 
+                    WHERE service_id = services.id 
+                    ORDER BY id ASC LIMIT 1
+                ) AS media_url
+            FROM services
+            JOIN users ON services.freelancer_id = users.id
+            LEFT JOIN profiles ON users.id = profiles.user_id
+            WHERE (services.title LIKE :search OR users.name LIKE :search)
+        ";
+    
+        if (!empty($filters['category'])) {
+            $query .= " AND services.category_id = :category";
+        }
+        if (!empty($filters['subcategories'])) {
+            $subcatPlaceholders = [];
+            foreach ($filters['subcategories'] as $index => $subcategory) {
+                $subcatPlaceholders[] = ":subcat_$index";
+            }
+            $query .= " AND services.subcategory_id IN (" . implode(',', $subcatPlaceholders) . ")";
+        }
+        if (!empty($filters['min_price'])) {
+            $query .= " AND services.price >= :min_price";
+        }
+        if (!empty($filters['max_price'])) {
+            $query .= " AND services.price <= :max_price";
+        }
+        if (!empty($filters['delivery_time'])) {
+            $query .= " AND services.delivery_time <= :delivery_time";
+        }
+        if (!empty($filters['number_of_revisions'])) {
+            $query .= " AND services.number_of_revisions >= :number_of_revisions";
+        }
+        if (!empty($filters['language'])) {
+            $query .= " AND services.language LIKE :language";
+        }
+
+        switch ($filters['sort'] ?? 'newest') {
+            case 'oldest':
+                $query .= " ORDER BY services.created_at ASC";
+                break;
+            case 'lowest_price':
+                $query .= " ORDER BY services.price ASC";
+                break;
+            case 'highest_price':
+                $query .= " ORDER BY services.price DESC";
+                break;
+            case 'lowest_rating':
+                $query .= " ORDER BY services.average_rating ASC"; 
+                break;
+            case 'highest_rating':
+                $query .= " ORDER BY services.average_rating DESC";
+                break;
+            default:
+                $query .= " ORDER BY services.created_at DESC";
+                break;
+        }
+    
+        $query .= " LIMIT :limit";
+    
+        $stmt = $db->prepare($query);
+        $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+        if (!empty($filters['category'])) {
+            $stmt->bindValue(':category', $filters['category'], PDO::PARAM_INT);
+        }
+        if (!empty($filters['min_price'])) {
+            $stmt->bindValue(':min_price', $filters['min_price'], PDO::PARAM_STR);
+        }
+        if (!empty($filters['max_price'])) {
+            $stmt->bindValue(':max_price', $filters['max_price'], PDO::PARAM_STR);
+        }
+        if (!empty($filters['delivery_time'])) {
+            $stmt->bindValue(':delivery_time', $filters['delivery_time'], PDO::PARAM_INT);
+        }
+        if (!empty($filters['number_of_revisions'])) {
+            $stmt->bindValue(':number_of_revisions', $filters['number_of_revisions'], PDO::PARAM_INT);
+        }
+        if (!empty($filters['language'])) {
+            $stmt->bindValue(':language', "%{$filters['language']}%", PDO::PARAM_STR);
+        }
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    
+        if (!empty($filters['subcategories'])) {
+            foreach ($filters['subcategories'] as $index => $subcategory) {
+                $stmt->bindValue(":subcat_$index", $subcategory, PDO::PARAM_INT);
+            }
+        }
+
         $stmt->execute();
     
         return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
