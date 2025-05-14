@@ -294,4 +294,17 @@ class Service {
     
         return (int)$db->lastInsertId();
     }
+
+    public static function addMedia(int $serviceId, string $mediaUrl): bool {
+        $db = Database::getInstance();
+        
+        $stmt = $db->prepare("
+            INSERT INTO service_images (service_id, media_url)
+            VALUES (:service_id, :media_url)
+        ");
+        $stmt->bindValue(':service_id', $serviceId, PDO::PARAM_INT);
+        $stmt->bindValue(':media_url', $mediaUrl, PDO::PARAM_STR);
+    
+        return $stmt->execute();
+    }
 }

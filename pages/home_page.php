@@ -15,7 +15,7 @@
     drawHeader();
     drawCategoryMenu($categoriesMenu); 
     drawHero();
-    drawCategorySection($categories); 
+    drawCategorySection($categoriesMenu); 
     drawFeaturedServices($featuredServices);
     drawHowItWorks();
     drawTestimonials($testimonials);
