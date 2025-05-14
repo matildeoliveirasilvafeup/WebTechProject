@@ -30,6 +30,12 @@ CREATE TABLE profiles (
     is_client INTEGER DEFAULT 1
 );
 
+CREATE TABLE favorites (
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    listing_id INTEGER REFERENCES listings(id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, listing_id)
+);
+
 CREATE TABLE profiles_preferences (
     user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
     language TEXT DEFAULT '',
@@ -51,7 +57,8 @@ CREATE TABLE services (
     language TEXT DEFAULT 'English',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     average_rating REAL DEFAULT 0,
-    total_reviews INTEGER DEFAULT 0
+    total_reviews INTEGER DEFAULT 0,
+    favorites_count INTEGER DEFAULT 0
 );
 
 CREATE TABLE service_images (

@@ -353,4 +353,26 @@ class Service {
     
         return $stmt->execute();
     }
+
+    public static function increaseFavoriteCount(int $serviceId): void {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare('UPDATE services SET favorites_count = favorites_count + 1 WHERE id = ?');
+
+        $stmt->execute([$serviceId]);
+    }
+
+    public static function decreaseFavoriteCount(int $serviceId): void {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare('SELECT favorites_count FROM services WHERE id = ?');
+        $stmt->execute([$serviceId]);
+        $favoritesCount = $stmt->fetchColumn();
+
+        if ($favoritesCount > 0) {
+            $stmt = $db->prepare('UPDATE services SET favorites_count = favorites_count - 1 WHERE id = ?');
+            $stmt->execute([$serviceId]);
+        }
+    }
+
 }

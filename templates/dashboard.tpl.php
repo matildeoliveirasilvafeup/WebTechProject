@@ -1,10 +1,10 @@
-<?php function drawDashboard($profile, $user, $profile_preferences) { ?>
+<?php function drawDashboard($profile, $user, $profile_preferences, $favorites) { ?>
 
     <div class="dashboard">
         <?php 
             drawSidebar();
 
-            drawContent($profile, $user, $profile_preferences);
+            drawContent($profile, $user, $profile_preferences, $favorites);
 
             drawEditModal($profile, $user, $profile_preferences);
         ?>       
@@ -26,16 +26,11 @@
     </div>
 <?php } ?>
 
-<?php function drawContent($profile, $user, $profile_preferences) { ?>
+<?php function drawContent($profile, $user, $profile_preferences, $favorites) { ?>
     <div class="dashboard-content">
         <?php drawProfile($profile, $profile_preferences, $user); ?>
 
-        <div class="tab-content" id="favorites">
-            <div class="favourites-details">
-                <h2>Your Favorites</h2>
-                <p>Here's a list of your favorite services or listings.</p>
-            </div>
-        </div>
+        <?php drawFavorites($user, $favorites); ?>
         
         <div class="tab-content" id="listings">
             <div class="own-listings">
