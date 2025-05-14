@@ -81,17 +81,9 @@ label {
     position: relative;
 }
 
-.toggle-password {
-    position: absolute;
-    right: 10px;
-    top: 38px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
 .eye-button {
     position: absolute;
-    right: 10px;
+    right: 0.5em;
     top: 45%;
     transform: translateY(-50%);
     cursor: pointer;
@@ -148,30 +140,6 @@ label {
 .btn.danger:disabled:hover {
     background-color: var(--button-danger);
 }
-
-#password-requirements {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 15px;
-    font-size: 14px;
-}
-
-#password-requirements li {
-    display: flex;
-    align-items: center;
-    color: var(--text-disabled);
-    margin-bottom: 8px;
-}
-
-#password-requirements li i {
-    margin-right: 10px;
-    font-size: 18px;
-}
-
-#password-requirements li.completed {
-    color: var(--sucess);
-}
-
 
 @media (max-width: 900px) {
     #settings {

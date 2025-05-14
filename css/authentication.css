@@ -46,26 +46,26 @@ html, body {
     box-sizing: border-box;
 }
 
-.auth-container #password-requirements {
+#password-requirements {
     list-style: none;
     padding-left: 0;
     margin: 1em 0;
     font-size: 14px;
 }
 
-.auth-container #password-requirements li {
+#password-requirements li {
     display: flex;
     align-items: center;
     color: var(--text-disabled);
     margin-bottom: 0.5em;
 }
 
-.auth-container #password-requirements li i {
+#password-requirements li i {
     margin-right: 0.5em;
     font-size: 18px;
 }
 
-.auth-container #password-requirements li.completed {
+#password-requirements li.completed {
     color: var(--success);
 }
 

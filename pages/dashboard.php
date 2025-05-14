@@ -2,16 +2,13 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../includes/session.php';
-
 require_once __DIR__ . '/../database/user.class.php'; 
 require_once __DIR__ . '/../database/profiles.class.php';
 require_once __DIR__ . '/../database/profile_preferences.class.php';
-
 require_once __DIR__ . '/../templates/dashboard.tpl.php';
 require_once __DIR__ . '/../templates/personal_details.tpl.php';
 require_once __DIR__ . '/../templates/settings.tpl.php';
 require_once __DIR__ . '/../templates/edit_modal.tpl.php';
-
 require_once __DIR__ . '/../templates/common/header.tpl.php';
 require_once __DIR__ . '/../templates/common/footer.tpl.php'; 
 

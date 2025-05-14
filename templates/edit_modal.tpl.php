@@ -109,7 +109,7 @@
 
             drawCommunicationPrefsField($profile_preferences);
 
-            drawDateTimePrefsField($profile_preferences);
+            drawDateTimePrefsField();
 
             drawButtons("cancelEditPrefs");
             ?>
@@ -142,7 +142,7 @@
     </select>
 <?php } ?>
 
-<?php function drawProficiencyField() { ?>
+<?php function drawProficiencyField($profile_preferences) { ?>
     <label>Proficiency:
         <select name="proficiency" required>
         <option value="Basic" <?= $profile_preferences->proficiency === 'Basic' ? 'selected' : '' ?>>Basic</option>
@@ -153,7 +153,7 @@
     </label>
 <?php } ?>
 
-<?php function drawCommunicationPrefsField() { ?>
+<?php function drawCommunicationPrefsField($profile_preferences) { ?>
     <label>Communication Preference:
         <select name="communication" required>
         <option value="Messages Only" <?= $profile_preferences->communication === 'Messages Only' ? 'selected' : '' ?>>Messages Only</option>

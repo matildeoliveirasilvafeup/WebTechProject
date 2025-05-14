@@ -15,7 +15,7 @@
 .reviews-section {
     display: flex;
     flex-direction: column;
-    width: 700px;
+    width: 40vw;
     font-weight: bolder;
     font-size: 1.2em;
     text-align: center;
@@ -31,13 +31,13 @@
     align-items: center;
     justify-content: space-between;
     padding-bottom: 1em;
-    max-width: 800px;
+    max-width: 30vw;
     margin: 0 auto;
 }
 
 .profile-icon {
-    width: 100px;
-    height: 100px;
+    width: 5.5vw;
+    height: 5.5vw;
     border-radius: 50%;
     background: var(--icon-background);
     color: var(--main-theme);
@@ -45,7 +45,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 20px;
+    margin-right: 1.5em;
     flex-shrink: 0;
 }
 
@@ -74,11 +74,11 @@
 
 .profile-info .username {
     color: var(--text-light);
-    margin: 4px 0;
+    margin: 0.3em 0;
 }
 
 .profile-info p {
-    margin: 2px 0;
+    margin: 0.15em 0;
     color: var(--main-text);
 }
 

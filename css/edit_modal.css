@@ -20,7 +20,7 @@
     background: white;
     padding: 1.5em;
     border-radius: 10px;
-    max-width: 600px;
+    max-width: 35vw;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
@@ -50,7 +50,7 @@
 }
 
 .modal-content button {
-    padding: 10px;
+    padding: 1em;
     border-radius: 6px;
     border: none;
     cursor: pointer;
@@ -125,17 +125,12 @@
 /* Modal Buttons */
 .modal-buttons {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 1em;
+    margin-top: 0.5em;
     justify-content: flex-end;
 }
 
 /* Edit Bio Modal Specific Styles */
 #editBioModal textarea {
     resize: vertical;
-}
-
-#editBioModal .modal-buttons .btn {
-    padding: 10px 20px;
-    transition: background 0.2s ease-in-out;
 }

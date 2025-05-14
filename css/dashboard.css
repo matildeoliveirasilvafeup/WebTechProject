@@ -1,12 +1,12 @@
 :root {
-    --sidebar-width: 250px;
-    --icon-width: 50px;
-    --text-offset: 20px;
+    --sidebar-width: 20em;
+    --icon-width: 3em;
+    --text-offset: 1.5em;
 }
 
 .dashboard {
     display: flex;
-    min-height: 590px;
+    min-height: 80vh;
     font-family: 'Inter', sans-serif;
     background-color: var(--main-background);
     color: var(--main-text);
@@ -74,7 +74,7 @@
     font-weight: 500;
     display: flex;
     align-items: center;
-    padding: 10px 15px;
+    padding: 0.6em 1em;
     border-radius: 8px;
     transition: background-color 0.3s ease;
 }
@@ -90,16 +90,16 @@
 }
 
 .sidebar ul li a span {
-    width: 250px;
+    width: 16em;
     display: inline-block;
     position: absolute;
-    left: calc(var(--text-offset) + 25px);
+    left: calc(var(--text-offset) + 1.6em);
     opacity: 0;
     transition: left 0.3s ease;
 }
 
 .sidebar:hover ul li a span {
-    left: calc(var(--icon-width) + 10px);
+    left: calc(var(--icon-width) + 0.6em);
     opacity: 1;
 }
 
