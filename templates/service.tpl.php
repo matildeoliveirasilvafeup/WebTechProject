@@ -175,10 +175,11 @@ function renderServiceCard(Service $service) { ?>
             </div>
 
             <div class="form-group">
-                <label for="images">Images</label>
-                <input type="file" id="images" name="images[]" accept="image/*" multiple>
-                <button class="upload-button" type="button">Upload Images</button>
+                <label for="images">Images and Videos</label>
+                <input type="file" id="images" name="images[]" accept="image/*,video/*" multiple>
             </div>
+            
+            <div id="file-preview" class="file-preview"></div>
             
             <div class="button-group">
                 <button type="submit" class="btn-add-cart">Publish</button>

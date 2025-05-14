@@ -6,14 +6,22 @@
     justify-content: flex-end;
 }
 
+.service-page#new_service {
+    display: block;
+    height: auto;
+}
+
 .create-form {
-    flex: 1 1 100%;
+    flex: none;
     background: var(--secondary);
     padding: 1em 2em;
     display: flex;
     flex-direction: column;
     gap: 1.5em;
     color: var(--main-text-color);
+    overflow: visible;
+    min-height: auto;
+    height: auto;
 }
 
 .create-form h1 {
@@ -82,8 +90,36 @@
 }
 
 #create-form input[type="file"],
- .form-group input[type="file"] {
-    display: none;
+.form-group input[type="file"] {
+    padding: 0.75em;
+    border: 1px solid var(--background-disabled);
+    border-radius: 10px;
+    background: var(--main-background-darker);
+    color: var(--main-text-color);
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#create-form input[type="file"]::file-selector-button,
+.form-group input[type="file"]::file-selector-button {
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 5px;
+    background: var(--button-background);
+    color: var(--secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#create-form input[type="file"]::file-selector-button:hover,
+.form-group input[type="file"]::file-selector-button:hover {
+    background: var(--main-background-darker);
+    color: var(--main-text);
 }
  
 .form-group label[for="images"] {
@@ -92,29 +128,27 @@
     display: block;
 }
  
-.upload-button {
-    padding: 0.75em 1.5em;
-    background: var(--button-background);
-    color: white;
-    font-weight: 600;
-    border-radius: 8px;
-    cursor: pointer;
-    border: none;
-    transition: background 0.3s ease, transform 0.2s;
-    font-size: 1em;
-    display: inline-block;
-}
- 
-.upload-button:hover {
-    background: var(--button-background-selected);
-    transform: scale(1.05);
-}
- 
-.upload-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--button-background-selected);
-}
-
 .button-group {
     margin-bottom: 2em;
+}
+
+.file-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    gap: 1em;
+    margin: 1em 0;
+}
+
+.file-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.file-item img,
+.file-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
 }
