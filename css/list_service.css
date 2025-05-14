@@ -2,6 +2,10 @@
     margin: 0;
 }
 
+.service-page#new_service .button-group {
+    justify-content: flex-end;
+}
+
 .create-form {
     flex: 1 1 100%;
     background: var(--secondary);

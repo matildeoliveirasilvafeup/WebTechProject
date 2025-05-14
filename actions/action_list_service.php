@@ -13,7 +13,7 @@
         exit;
     }
 
-    if (empty($data['title']) || empty($data['description']) || $data['price'] <= 0) {
+    if (empty($_POST['title']) || empty($_POST['description']) || $_POST['price'] <= 0) {
         http_response_code(400);
         echo json_encode(['error' => 'Invalid input data']);
         exit;
@@ -42,11 +42,8 @@
     try {
         $newServiceId = Service::create($data);
 
-        echo json_encode([
-            'success' => true,
-            'message' => 'Service created sucessfully!',
-            'service_id' => $newServiceId
-        ]);
+        header('Location: /index.php');
+        exit;
     } catch (Exception $e) {
         http_response_code(500);
         echo json_encode(['error' => 'Error creating service: ' . $e->getMessage()]);

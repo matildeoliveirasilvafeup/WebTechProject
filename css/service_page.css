@@ -330,7 +330,3 @@
 .related-services .service-card {
     width: 20%;
 }
-
-.service-page .button-group {
-    justify-content: flex-end;
-}
