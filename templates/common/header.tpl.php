@@ -35,7 +35,7 @@ require_once(__DIR__ . '/../../includes/session.php');
 <?php } ?>
 
 <?php function drawMoreOptions() { ?>
-    <a href="/dashboard.php">
+    <a href="/pages/dashboard.php">
         <i class="fas fa-user-circle"></i> Dashboard
     </a>
     <a href="/pages/list_service.php">List Service</a>

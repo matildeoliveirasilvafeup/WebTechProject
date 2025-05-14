@@ -1,3 +1,7 @@
+.service-page#new_service input[type="text"] {
+    margin: 0;
+}
+
 .create-form {
     flex: 1 1 100%;
     background: var(--secondary);
@@ -10,14 +14,14 @@
 
 .create-form h1 {
     font-size: 2em;
-    margin-bottom: 0.5em;
+    margin-bottom: 0;
     color: var(--button-background);
 }
 
 .create-form label {
     font-weight: 600;
     font-size: 1rem;
-    margin-bottom: 1em;
+    margin-bottom: 0.3em;
     display: block;
 }
 
@@ -30,7 +34,7 @@
     background: var(--main-background-darker);
     color: var(--main-text-color);
     font-size: 1rem;
-    width: 100%;
+    margin: 0;
 }
 
 .form-grid {
@@ -58,8 +62,19 @@
     background-repeat: no-repeat;
     background-position: right 0.7em top 50%;
     background-size: 0.65em auto;
-    width: 103%;
     cursor: pointer;
+}
+
+.create-form input[type="number"] {
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 0.75em;
+}
+
+.create-form input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #create-form input[type="file"],

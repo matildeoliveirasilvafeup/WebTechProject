@@ -269,4 +269,29 @@ class Service {
     
         return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
     }
+
+    public static function create(array $data): int {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("
+            INSERT INTO services (title, description, price, freelancer_id, category_id, subcategory_id,
+                delivery_time, number_of_revisions, language
+            ) VALUES (:title, :description, :price, :freelancer_id, :category_id, :subcategory_id,
+                :delivery_time, :number_of_revisions, :language
+            )
+        ");
+    
+        $stmt->bindValue(':title', $data['title'], PDO::PARAM_STR);
+        $stmt->bindValue(':description', $data['description'], PDO::PARAM_STR);
+        $stmt->bindValue(':price', $data['price'], PDO::PARAM_STR);
+        $stmt->bindValue(':freelancer_id', $data['freelancer_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':category_id', $data['category_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':subcategory_id', $data['subcategory_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':delivery_time', $data['delivery_time'], PDO::PARAM_INT);
+        $stmt->bindValue(':number_of_revisions', $data['number_of_revisions'], PDO::PARAM_INT);
+        $stmt->bindValue(':language', $data['language'], PDO::PARAM_STR);
+    
+        $stmt->execute();
+    
+        return (int)$db->lastInsertId();
+    }
 }

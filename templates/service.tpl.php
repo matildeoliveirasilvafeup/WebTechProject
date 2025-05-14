@@ -122,8 +122,8 @@ function renderServiceCard(Service $service) { ?>
 <?php } ?>
 
 <?php function drawListServicesForm($categories) { ?>
-    <section class="service-page">
-        <form action="create_listing.php" method="POST" enctype="multipart/form-data" class="create-form">
+    <section class="service-page" id="new_service">
+        <form action="/actions/action_list_service.php" method="POST" enctype="multipart/form-data" class="create-form">
             <h1>List New Service</h1>
  
             <label for="title">Service Title</label>
@@ -166,18 +166,23 @@ function renderServiceCard(Service $service) { ?>
                 <div>
                     <label for="revisions">Included Revisions</label>
                     <input type="number" id="revisions" name="revisions" min="0" step="1" required>    
-                </div>    
+                </div>  
                 
-                <div class="form-group">
-                    <label for="images">Images</label>
-                    <input type="file" id="images" name="images[]" accept="image/*" multiple>
-                    <button class="upload-button" type="button">Upload Images</button>
-                </div>
+                <div>
+                    <label for="language">Language</label>
+                    <input type="text" id="language" name="language">    
+                </div> 
             </div>
- 
+
+            <div class="form-group">
+                <label for="images">Images</label>
+                <input type="file" id="images" name="images[]" accept="image/*" multiple>
+                <button class="upload-button" type="button">Upload Images</button>
+            </div>
+            
             <div class="button-group">
                 <button type="submit" class="btn-add-cart">Publish</button>
-                <a href="index.php" class="btn-hire">Cancel</a>
+                <a href="/index.php" class="btn-hire">Cancel</a>
             </div>
         </form>
     </section>
