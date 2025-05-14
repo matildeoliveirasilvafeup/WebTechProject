@@ -26,7 +26,7 @@ declare(strict_types=1);
             <label for="password">Password</label>
             <div class="password-wrapper">
                 <input type="password" name="password" id="password" required>
-                <span class="eye-button" onclick="togglePassword(this)"><i class="fas fa-eye-slash"></i></span>
+                <span class="eye-button" onclick="togglePassword(this, 'password')"><i class="fas fa-eye-slash"></i></span>
             </div>
 
             <ul id="password-requirements">
@@ -43,7 +43,7 @@ declare(strict_types=1);
         <p class="auth-link">Already have an account? <a href="login.php">Sign in</a></p>
     </div>
     <script src="/js/password.js"></script>
-    <script src="/js/form.js"></script>
+    <script type="module" src="/js/form.js"></script>
     <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
 <?php } ?>
 
@@ -63,7 +63,7 @@ declare(strict_types=1);
             <label for="password">Password</label>
             <div class="password-wrapper">
                 <input type="password" name="password" id="password" required>
-                <span class="eye-button" onclick="togglePassword(this)"><i class="fas fa-eye-slash"></i></span>
+                <span class="eye-button" onclick="togglePassword(this, 'password')"><i class="fas fa-eye-slash"></i></span>
             </div>
 
             <button type="submit" id="btn" disabled>Continue</button>
@@ -73,6 +73,14 @@ declare(strict_types=1);
     </div>
 
     <script src="/js/password.js"></script>
-    <script src="/js/form.js"></script>
+    <script type="module" src="/js/form.js"></script>
     <script src="https://kit.fontawesome.com/b427850aeb.js" crossorigin="anonymous"></script>
+<?php } ?>
+
+<?php function drawAuthPageStart() { ?>
+    <div class="auth-page-wrapper">
+<?php } 
+
+function drawAuthPageEnd() { ?>
+    </div>
 <?php } ?>

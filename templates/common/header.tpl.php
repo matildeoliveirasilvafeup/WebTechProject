@@ -13,8 +13,6 @@ require_once(__DIR__ . '/../../includes/session.php');
         <title>Sixerr</title>
         <link rel="icon" type="image/png" href="/images/sixerr_favicon.png">
         <link rel="stylesheet" href="/css/main.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
     </head>
     <body>
     <header>
@@ -25,7 +23,7 @@ require_once(__DIR__ . '/../../includes/session.php');
     </div>
 
         <nav>
-            <?php if (Session::getInstance()->getUser()) drawLogoutOptions(); else drawLoginOptions(); ?>       
+            <?php if (Session::getInstance()->getUser()) drawMoreOptions(); else drawLoginOptions(); ?>       
         </nav>
     </header>
     <main>
@@ -36,7 +34,6 @@ require_once(__DIR__ . '/../../includes/session.php');
     <a href="/pages/register.php">Register</a>
 <?php } ?>
 
-<?php function drawLogoutOptions() { ?>
+<?php function drawMoreOptions() { ?>
     <a href="dashboard.php">Dashboard</a>
-    <a href="/actions/action_logout.php">Logout</a>
 <?php } ?>        

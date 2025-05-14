@@ -10,12 +10,32 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE deleted_users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    username TEXT NOT NULL,
+    email TEXT NOT NULL,
+    role TEXT NOT NULL,
+    created_at TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reason TEXT NOT NULL
+);
+
 CREATE TABLE profiles (
     user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
     bio TEXT,
     profile_picture TEXT,
+    location TEXT DEFAULT 'Portugal',
     is_freelancer INTEGER DEFAULT 0,
     is_client INTEGER DEFAULT 1
+);
+
+CREATE TABLE profiles_preferences (
+    user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+    language TEXT DEFAULT '',
+    proficiency TEXT DEFAULT '',
+    communication TEXT DEFAULT '',
+    preferred_days_times JSONB DEFAULT '{}'
 );
 
 CREATE TABLE services (

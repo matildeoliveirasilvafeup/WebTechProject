@@ -17,8 +17,8 @@
 }
 
 .category-card {
-    width: 130px;
-    height: 110px;
+    width: 7vw;
+    height: 6vw;
     background: white;
     border-radius: 10px;
     text-align: center;
@@ -36,7 +36,7 @@
 
 .category-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px var(--box-shadow);
 }
 
 .category-icon {
@@ -87,7 +87,7 @@
     list-style-type: none;
     margin: 0;
     min-width: 200px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px var(--box-shadow);
 }
 
 .category-menu .category-item:hover .subcategories {

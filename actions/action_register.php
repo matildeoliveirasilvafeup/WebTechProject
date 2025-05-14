@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../database/user.class.php';
+require_once __DIR__ . '/../database/profiles.class.php';
+require_once __DIR__ . '/../database/profile_preferences.class.php';
 require_once __DIR__ . '/../includes/session.php';
 
 $error = '';
@@ -24,9 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($userData) {
             $user = new User($userData);
+
+            Profile::create($user->id);
+            ProfilePreferences::create($user->id);
             
-            $session = Session::getInstance();
-            $session->login($user);
+            Session::getInstance()->login($user);
 
             header("Location: ../pages/dashboard.php");
             exit;

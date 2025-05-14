@@ -8,9 +8,11 @@
     require_once(__DIR__ .  '/../templates/common/footer.tpl.php'); 
     require_once(__DIR__ .  '/../templates/auth.tpl.php');
 
+    drawAuthPageStart();
     drawHeader();
     drawRegister($error);
     drawFooter();
+    drawAuthPageEnd();
 ?>
 
 
