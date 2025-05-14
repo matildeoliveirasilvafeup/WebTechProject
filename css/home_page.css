@@ -30,6 +30,8 @@
     border: none;
     border-radius: 5px 0 0 5px;
     box-shadow: 0 2px 4px var(--box-shadow);
+    margin: 0;
+    height: 4vh;
 }
 
 .hero button {
@@ -39,6 +41,7 @@
     border: none;
     border-radius: 0 5px 5px 0;
     cursor: pointer;
+    height: 4vh;
 }
 
 .hero button:hover {

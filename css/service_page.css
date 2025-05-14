@@ -291,13 +291,14 @@
     padding: 0.5em;
     border-radius: 5px;
     border: 1px solid var(--background-disabled);
-    width: 200px;
+    width: 15vw;
 }
 
 .reviews-controls select {
     padding: 0.5em;
     border-radius: 5px;
     border: 1px solid var(--background-disabled);
+    max-width: 10vw;
 }
 
 .load-more-btn {

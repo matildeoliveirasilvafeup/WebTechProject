@@ -112,13 +112,13 @@
 <?php } ?>
 
 <?php function drawReviews() { ?>
-    <div class="reviews-section">
+    <div class="freelancer-reviews-section">
         <div class="reviews-list">
             <h3>Reviews from freelancers</h3>
 
             <hr class="section-divider">
 
-            <div class="reviews">
+            <div class="freelancer-reviews">
                 <!-- TODO -->
             </div>
         </div>
