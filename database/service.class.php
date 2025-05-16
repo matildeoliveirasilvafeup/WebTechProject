@@ -226,7 +226,6 @@ class Service {
             FROM services
             JOIN users ON services.freelancer_id = users.id
             WHERE (services.title LIKE :search OR users.name LIKE :search)
-            LIMIT :limit
         ";
     
         if (!empty($filters['category'])) {

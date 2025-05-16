@@ -4,21 +4,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const subcategoryCheckboxes = document.getElementById('subcategory-checkboxes');
   
     categorySelect.addEventListener('change', function () {
-      const selectedOption = this.selectedOptions[0];
-      const subcategories = JSON.parse(selectedOption.dataset.subcategories || '[]');
+        const selectedOption = this.selectedOptions[0];
+        const subcategories = JSON.parse(selectedOption.dataset.subcategories || '[]');
   
-      if (subcategories.length > 0) {
-        subcategoryContainer.style.display = 'block';
-        subcategoryCheckboxes.innerHTML = subcategories.map(sub =>
-          `<label>
-            <input type="checkbox" name="subcategory[]" value="${sub.id}">
-            ${sub.name}
-          </label>`
-        ).join('');
-      } else {
-        subcategoryContainer.style.display = 'none';
-        subcategoryCheckboxes.innerHTML = '';
-      }
+        if (subcategories.length > 0) {
+            subcategoryContainer.style.display = 'block';
+            subcategoryCheckboxes.innerHTML = subcategories.map(sub =>
+                `<label>
+                    <input type="checkbox" name="subcategory[]" value="${sub.id}">
+                    ${sub.name}
+                </label>`
+            ).join('');
+        } else {
+            subcategoryContainer.style.display = 'none';
+            subcategoryCheckboxes.innerHTML = '';
+        }
     });
 });
 
@@ -35,11 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
             serviceGrid.innerHTML = '';
 
             services.forEach(service => {
-                const imageUrl = service.mediaUrl || 'https://via.placeholder.com/300';
+                const images = service.mediaUrls || ['https://via.placeholder.com/300'];
                 const freelancerName = service.freelancerName || 'Unknown Freelancer';
+
                 const serviceCard = `
                     <a href="service.php?id=${service.id}" class="service-card">
-                        <img src="${imageUrl}" alt="Service image">
+                        <div class="service-images">
+                            ${images.map(imageUrl => `<img src="${imageUrl}" alt="Service image">`).join('')}
+                        </div>
                         <div class="service-info">
                             <h3>${service.title}</h3>
                             <p class="freelancer">By ${freelancerName}</p>
@@ -112,11 +115,14 @@ document.addEventListener('DOMContentLoaded', () => {
             serviceGrid.innerHTML = '';
 
             services.forEach(service => {
-                const imageUrl = service.mediaUrl || 'https://via.placeholder.com/300';
+                const images = service.mediaUrls || ['https://via.placeholder.com/300'];
                 const freelancerName = service.freelancerName || 'Unknown Freelancer';
+
                 const serviceCard = `
                     <a href="service.php?id=${service.id}" class="service-card">
-                        <img src="${imageUrl}" alt="Service image">
+                        <div class="service-images">
+                            ${images.map(imageUrl => `<img src="${imageUrl}" alt="Service image">`).join('')}
+                        </div>
                         <div class="service-info">
                             <h3>${service.title}</h3>
                             <p class="freelancer">By ${freelancerName}</p>
