@@ -3,6 +3,7 @@
     require_once(__DIR__ .  '/../templates/category.tpl.php');
     require_once(__DIR__ .  '/../templates/service.tpl.php');
     require_once(__DIR__ .  '/../templates/search.tpl.php');
+    require_once(__DIR__ .  '/../templates/chat.tpl.php');
     require_once(__DIR__ .  '/../templates/common/footer.tpl.php');
 
     $categories = Category::getAllWithSubcategories();
@@ -12,5 +13,6 @@
     drawHeader();
     drawCategoryMenu($categories);
     drawSearchPage('search.php', 'Search services...', false, 'alt-style', $searchQuery, $categories, $services);
+    drawChat();
     drawFooter();
 ?>

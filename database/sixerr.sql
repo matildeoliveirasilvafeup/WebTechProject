@@ -38,6 +38,30 @@ CREATE TABLE profiles_preferences (
     preferred_days_times JSONB DEFAULT '{}'
 );
 
+CREATE TABLE conversations (
+    id VARCHAR(50),
+    service_id INTEGER,
+    user1_id INTEGER NOT NULL,
+    user2_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id, service_id)
+);
+
+
+CREATE TABLE messages (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    conversation_id VARCHAR(50) NOT NULL,
+    service_id INTEGER NOT NULL,
+    sender_id INTEGER NOT NULL,
+    receiver_id INTEGER NOT NULL,
+    message TEXT NOT NULL,
+    is_read INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (conversation_id, service_id)
+        REFERENCES conversations(id, service_id)
+        ON DELETE CASCADE
+);
+
 CREATE TABLE services (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     freelancer_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -94,23 +118,6 @@ CREATE TABLE subcategories (
     name TEXT NOT NULL,
     UNIQUE(category_id, name)
 );
-
-CREATE TABLE conversations (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user1_id INTEGER REFERENCES users(id),
-    user2_id INTEGER REFERENCES users(id),
-    started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE messages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE,
-    sender_id INTEGER REFERENCES users(id),
-    message TEXT NOT NULL,
-    read INTEGER DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 
 INSERT INTO users (name, username, email, password_hash, role) VALUES
 ('João Silva', 'joaosilva', 'joao@example.com', 'hash1', 'user'),
@@ -243,12 +250,12 @@ INSERT INTO reviews (service_id, client_id, rating, comment) VALUES
 (3, 2, 5, 'Super fast delivery and great communication.'),
 (1, 2, 5, 'Amazing logo, captured my vision perfectly.');
 
-INSERT INTO conversations (user1_id, user2_id) VALUES
-(4, 1),
-(2, 3);
+INSERT INTO conversations (id, service_id, user1_id, user2_id) VALUES
+('5_6', 1, 5, 6),
+('5_7', 2, 5, 7);
 
-INSERT INTO messages (conversation_id, sender_id, message) VALUES
-(1, 4, 'Olá, estou interessada no teu serviço de design.'),
-(1, 1, 'Olá Ana! Claro, como posso ajudar?'),
-(2, 2, 'Preciso de ajuda com o site da empresa.'),
-(2, 3, 'Claro, posso marcar uma call para hoje.');
+INSERT INTO messages (conversation_id, service_id, sender_id, receiver_id, message) VALUES
+('5_6', 1, 6, 5, 'Olá, estou interessada no teu serviço de design.'),
+('5_6', 1, 5, 6, 'Olá Ana! Claro, como posso ajudar?');
+-- ('5_6', 2, 5, 6, 'Preciso de ajuda com o site da empresa.'),
+-- ('5_6', 2, 5, 6, 'Claro, posso marcar uma call para hoje.');
