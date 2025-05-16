@@ -33,18 +33,23 @@ class Chat {
         return $conversation_id;
     }
 
-    public static function sendMessage(string $conversation_id, int $service_id, int $sender_id, int $receiver_id, string $message): array {
+    public static function sendMessage(string $conversation_id, int $service_id, int $sender_id, int $receiver_id, ?string $message, ?string $file = null): array {
         $db = Database::getInstance();
 
-        $stmt = $db->prepare("INSERT INTO messages (conversation_id, service_id, sender_id, receiver_id, message) VALUES (?, ?, ?, ?, ?)");
-        $success = $stmt->execute([$conversation_id, $service_id, $sender_id, $receiver_id, $message]);
+        $stmt = $db->prepare("
+            INSERT INTO messages (conversation_id, service_id, sender_id, receiver_id, message, file)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
+        $success = $stmt->execute([
+            $conversation_id, $service_id, $sender_id, $receiver_id, $message, $file
+        ]);
 
         return [
             "success" => $success,
             "message" => $success ? "Message sent." : "Failed to send message."
         ];
     }
-
+    
     public static function getMessages(string $conversation_id, int $service_id, int $currentUserId): array {
         $db = Database::getInstance();
 
@@ -54,6 +59,7 @@ class Chat {
                 sender_id,
                 receiver_id,
                 message,
+                file,
                 created_at AS message_created_at
             FROM messages
             WHERE conversation_id = ? AND service_id = ?

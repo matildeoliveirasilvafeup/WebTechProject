@@ -55,6 +55,7 @@ CREATE TABLE messages (
     sender_id INTEGER NOT NULL,
     receiver_id INTEGER NOT NULL,
     message TEXT NOT NULL,
+    file TEXT,
     is_read INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (conversation_id, service_id)

@@ -29,6 +29,31 @@ document.addEventListener('DOMContentLoaded', () => {
         checkUnreadMessages();
     });
 
+    const fileInput = document.getElementById('chat-file');
+    const fileDisplay = document.getElementById('file-name-display');
+
+    fileInput.addEventListener('change', function () {
+        if (this.files.length > 0) {
+            const fileName = this.files[0].name;
+
+            fileDisplay.innerHTML = `
+                <div class="file-preview">
+                <i class="fa-solid fa-file"></i> ${fileName}
+                <button type="button" id="cancel-file-btn" title="Remove file">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                </div>
+            `;
+
+            document.getElementById('cancel-file-btn').addEventListener('click', () => {
+                fileInput.value = '';
+                fileDisplay.innerHTML = '';
+            });
+        } else {
+            fileDisplay.innerHTML = '';
+        }
+    });
+    
     const openChat = localStorage.getItem('openChat');
     if (openChat) {
         try {
@@ -67,8 +92,8 @@ function drawMessages(conversationId, serviceId, userId) {
             usernameSpan.textContent = data.receiver_username;
             usernameSpan.style.cursor = 'pointer';
             usernameSpan.onclick = () => {
-                // window.location.href = `/pages/profile.php?id=${data.receiver_id}`;
                 console.log('Go to user profile TODO');
+                // window.location.href = `/pages/profile.php?id=${data.receiver_id}`;
             };
 
             serviceTitleSpan.textContent = `Service #${data.service_id}`;
@@ -109,7 +134,33 @@ function drawMessages(conversationId, serviceId, userId) {
 
                 const msgText = document.createElement('div');
                 msgText.classList.add('msg-text');
-                msgText.textContent = msg.message;
+
+                if (msg.message) {
+                    const textEl = document.createElement('p');
+                    textEl.textContent = msg.message;
+                    msgText.appendChild(textEl);
+                }
+
+                if (msg.file) {
+                    const fileUrl = `/uploads/chat/${msg.file}`;
+                    const fileExt = msg.file.split('.').pop().toLowerCase();
+
+                    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExt)) {
+                        const img = document.createElement('img');
+                        img.src = fileUrl;
+                        img.alt = 'image';
+                        img.classList.add('chat-image');
+                        img.onload = () => scrollToBottom();
+                        msgText.appendChild(img);
+                    } else {
+                        const fileLink = document.createElement('a');
+                        fileLink.href = fileUrl;
+                        fileLink.target = '_blank';
+                        fileLink.innerHTML = '<i class="fa-solid fa-file"></i> ' + msg.file;
+                        msgText.appendChild(fileLink);
+                    }
+                }
+
                 messageGroup.appendChild(msgText);
 
                 const nextMsg = data.messages[i + 1];
@@ -124,13 +175,11 @@ function drawMessages(conversationId, serviceId, userId) {
                 if (!nextMsg || nextMsg.sender_id !== currentSenderId || timeDiff >= 3) {
                     const msgTime = document.createElement('div');
                     msgTime.classList.add('msg-time');
-
                     msgTime.textContent = currentTimeUTC.toLocaleTimeString('pt-PT', {
                         hour: '2-digit',
                         minute: '2-digit',
                         timeZone: 'Europe/Lisbon'
                     });
-
                     messageGroup.appendChild(msgTime);
                 }
 
@@ -138,13 +187,12 @@ function drawMessages(conversationId, serviceId, userId) {
                 lastTime = currentTimeUTC;
             });
 
-
             if (messageGroup) {
                 chatBody.appendChild(messageGroup);
             }
+            
+            scrollToBottom();
 
-
-            chatBody.scrollTop = chatBody.scrollHeight;
         })
         .catch(error => {
             console.error("Failed to load messages:", error);
@@ -160,26 +208,31 @@ function drawMessages(conversationId, serviceId, userId) {
     });
 }
 
-
-
-
 function sendMessage(event) {
     event.preventDefault();
 
     const input = document.getElementById('chat-input');
+    const fileInput = document.getElementById('chat-file');
+    const fileDisplay = document.getElementById('file-name-display');
     const message = input.value.trim();
-    const chatBody = document.getElementById('chat-body');
 
-    if (!message) return;
-
-    input.value = '';
+    if (!message && (!fileInput || fileInput.files.length === 0)) return;
 
     const formData = new FormData();
     formData.append('conversation_id', CURRENT_CONVERSATION_ID);
     formData.append('service_id', CURRENT_SERVICE_ID);
     formData.append('sender_id', CURRENT_USER_ID);
     formData.append('receiver_id', CURRENT_RECEIVER_ID);
-    formData.append('message', message);
+
+    if (fileInput && fileInput.files.length > 0) {
+        formData.append('file', fileInput.files[0]);
+        formData.append('message', message ? message : '');
+    } else if (message) {
+        formData.append('message', message);
+    }
+
+    input.value = '';
+    if (fileInput) fileInput.value = '';
 
     fetch('/actions/action_send_message.php', {
         method: 'POST',
@@ -191,9 +244,11 @@ function sendMessage(event) {
             console.error('Error sending message:', data.error || 'Unknown error');
         } else {
             drawMessages(CURRENT_CONVERSATION_ID, CURRENT_SERVICE_ID, CURRENT_USER_ID);
+            fileInput.value = '';
+            fileDisplay.innerHTML = '';
         }
     })
-        .catch(err => {
+    .catch(err => {
         console.error('Error sending:', err);
     });
 }
@@ -271,4 +326,11 @@ function checkUnreadMessages() {
                 }
             });
         });
+}
+
+function scrollToBottom() {
+    const chatBody = document.getElementById('chat-body');
+    if (chatBody) {
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
 }

@@ -50,17 +50,29 @@
                         <strong><span id="chat-username">[username]</span></strong><br>
                         <small id="chat-service-title">[service title]</small>
                     </div>
+
                     <div class="chat-body" id="chat-body">
                         <p><em>Select a conversation to start chatting...</em></p>
                     </div>
+
                     <div class="chat-footer">
-                        <form id="chat-form" onsubmit="sendMessage(event)">
-                            <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off" required />
+                        <form id="chat-form" onsubmit="sendMessage(event)" enctype="multipart/form-data">
+                            <div id="chat-input-wrapper">
+                                <label for="chat-file" id="chat-file-label">
+                                    <i class="fa-solid fa-paperclip"></i>
+                                </label>
+                                <input type="file" id="chat-file" accept="image/*,application/pdf,.doc,.docx" />
+                                <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off" />
+                            </div>
+                            
                             <button type="submit" id="chat-send-btn">
                                 <i class="fa-solid fa-paper-plane"></i>
                             </button>
                         </form>
+
                     </div>
+                    
+                    <div id="file-name-display" class="file-name-display"></div>
                 </div>
 
                 <div class="close-button">

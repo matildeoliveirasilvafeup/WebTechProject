@@ -13,14 +13,43 @@ $serviceId = (int)$_POST['service_id'] ?? null;
 $senderId = (int)$_POST['sender_id'] ?? null;
 $receiverId = (int)$_POST['receiver_id'] ?? null;
 $message = $_POST['message'] ?? null;
+$file = $_FILES['file'] ?? null;
 
-if (!$conversationId || !$serviceId || !$senderId || !$receiverId || !$message) {
+if (!$conversationId || !$serviceId || !$senderId || !$receiverId || !($message || $file)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'error' => 'Missing fields']);
     exit;
 }
 
-$result = Chat::sendMessage($conversationId, $serviceId, $senderId, $receiverId, $message);
+$uploadDir = __DIR__ . '/../uploads/chat/';
+if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+
+$fileName = null;
+
+if (!empty($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+    $fileTmp = $_FILES['file']['tmp_name'];
+    $originalName = basename($_FILES['file']['name']);
+    $ext = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+    $safeName = uniqid('file_', true) . '.' . $ext;
+
+    $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'docx', 'txt'];
+
+    if (in_array($ext, $allowed)) {
+        if (move_uploaded_file($fileTmp, $uploadDir . $safeName)) {
+            $fileName = $safeName;
+        } else {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => 'File upload failed']);
+            exit;
+        }
+    } else {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Invalid file type']);
+        exit;
+    }
+}
+
+$result = Chat::sendMessage($conversationId, $serviceId, $senderId, $receiverId, $message, $fileName);
 
 if (!$result['success']) {
     http_response_code(500);
