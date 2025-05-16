@@ -323,17 +323,6 @@
     width: 20%;
 }
 
-.service-image-wrapper {
-    position: relative;
-    display: inline-block;
-}
-
-.service-image {
-    display: block;
-    width: 100%;
-    border-radius: 8px;
-}
-
 .favorite-icon {
     position: absolute;
     top: 10px;

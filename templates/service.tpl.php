@@ -46,58 +46,33 @@ function renderServiceCard(Service $service) {
 <?php } ?>
 
 <?php function drawServicePage($service, $ratingInfo) { ?>
-    <div class="service-page">  
+    <div class="service-page">
         <div class="media-carousel">
             <div class="carousel-wrapper">
-            <?php if (empty($service->mediaUrls) || (count(array_filter($service->mediaUrls)) === 0)): ?>
-                <p>No media.</p>
-            <?php else: ?>
-                <?php foreach ($service->mediaUrls as $media): ?>
-                    <?php if (empty($media)) continue; ?>
-                    <?php if (preg_match('/\.(mp4|webm)$/i', $media)): ?>
-                        <video controls>
-                            <source src="<?= htmlspecialchars($media) ?>" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    <?php else: ?>
-                        <img src="<?= htmlspecialchars($media) ?>" alt="Service media">
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            <?php endif; ?>
-            </div>
-                <button class="carousel-btn left" onclick="scrollMedia(-1)">‹</button>
-                <button class="carousel-btn right" onclick="scrollMedia(1)">›</button>
+                <?php if (empty($service->mediaUrls) || (count(array_filter($service->mediaUrls)) === 0)): ?>
+                    <p>No media.</p>
+                <?php else: ?>
+                    <?php foreach ($service->mediaUrls as $media): ?>
+                        <?php if (empty($media)) continue; ?>
+                        <?php if (preg_match('/\.(mp4|webm)$/i', $media)): ?>
+                            <video controls>
+                                <source src="<?= htmlspecialchars($media) ?>" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        <?php else: ?>
+                            <img src="<?= htmlspecialchars($media) ?>" alt="Service media">
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    <span class="favorite-icon" onclick="toggleFavorite(this, <?= $service->id ?>)">
+                        <i class="<?= Favorite::isFavorite($service->id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart' ?>"></i>
+                    </span>
+                <?php endif; ?>
             </div>
 
-            <div class="service-details">
-                <h1><?= htmlspecialchars($service->title) ?></h1>
-                <div class="freelancer-box">
-                    <img src="<?= htmlspecialchars($service->profilePicture ?? 'https://via.placeholder.com/50') ?>" alt="Foto do freelancer">
-                    <p class="freelancer">
-                        By <strong><?= htmlspecialchars($service->freelancerName) ?></strong><br>
-                        <?php if ($ratingInfo['avg']): ?>
-                            <?= renderStars($ratingInfo['avg']) ?>
-                            <?= $ratingInfo['avg'] ?> (<?= $ratingInfo['count'] ?> reviews)
-                        <?php else: ?>
-                            No reviews yet
-                        <?php endif; ?>
-                    </p>
-                </div>
-                <p class="price">€<?= number_format($service->price, 2) ?></p>
-                <div class="description">
-                    <?= nl2br(htmlspecialchars($service->description)) ?>
-                </div>
-                <div class="button-group">
-                    <a href="contact_freelancer.php?id=<?= $service->freelancerId ?>" class="btn-hire">Contact</a>
-                    <a href="#" class="btn-add-cart">Add to Cart</a>
-                </div>
-            </div>
-        <div class="service-image-wrapper">
-            <img src="<?= htmlspecialchars($service->mediaUrl ?? 'https://via.placeholder.com/480') ?>" alt="Imagem do serviço" class="service-image">
-            <span class="favorite-icon" onclick="toggleFavorite(this, <?= $service->id ?>)">
-                <i class="<?= Favorite::isFavorite($service->id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart' ?>"></i>
-            </span>
+            <button class="carousel-btn left" onclick="scrollMedia(-1)">‹</button>
+            <button class="carousel-btn right" onclick="scrollMedia(1)">›</button>
         </div>
+        
         <div class="service-details">
             <h1><?= htmlspecialchars($service->title) ?></h1>
             <div class="freelancer-box">
@@ -135,16 +110,16 @@ function renderServiceCard(Service $service) {
             </a>
         </div>
 
-            <div class="service-info">
-                <h3>Service Information</h3>
-                <ul>
-                    <li><i class="fas fa-clock"></i><strong> Delivery: </strong> <?= $service->deliveryTime ?> days</li>
-                    <li><i class="fas fa-tags"></i><strong> Category: </strong> <?= htmlspecialchars($service->categoryName) ?></li>
-                    <li><i class="fas fa-sync-alt"></i><strong> Included Revisions: </strong> Until <?= $service->numberOfRevisions ?> revisions</li>
-                    <li><i class="fas fa-language"></i><strong> Language: </strong> <?= htmlspecialchars($service->language) ?></li>
-                </ul>
-            </div>
+        <div class="service-info">
+            <h3>Service Information</h3>
+            <ul>
+                <li><i class="fas fa-clock"></i><strong> Delivery: </strong> <?= $service->deliveryTime ?> days</li>
+                <li><i class="fas fa-tags"></i><strong> Category: </strong> <?= htmlspecialchars($service->categoryName) ?></li>
+                <li><i class="fas fa-sync-alt"></i><strong> Included Revisions: </strong> Until <?= $service->numberOfRevisions ?> revisions</li>
+                <li><i class="fas fa-language"></i><strong> Language: </strong> <?= htmlspecialchars($service->language) ?></li>
+            </ul>
         </div>
+    </div>
 
     <script src="../js/favorite.js"></script>
     <script src="../js/media_scroll.js"></script>
