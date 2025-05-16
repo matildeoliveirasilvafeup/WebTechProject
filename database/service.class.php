@@ -405,9 +405,33 @@ class Service {
 
     public static function deleteById(int $serviceId): bool {
         $db = Database::getInstance();
+    
+        $stmt = $db->prepare('SELECT media_url FROM service_images WHERE service_id = :id');
+        $stmt->bindValue(':id', $serviceId, PDO::PARAM_INT);
+        $stmt->execute();
+        $mediaUrls = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    
+        self::deleteServiceFiles($mediaUrls);
+    
+        $stmt = $db->prepare('DELETE FROM service_images WHERE service_id = :id');
+        $stmt->bindValue(':id', $serviceId, PDO::PARAM_INT);
+        $stmt->execute();
+    
         $stmt = $db->prepare('DELETE FROM services WHERE id = :id');
         $stmt->bindValue(':id', $serviceId, PDO::PARAM_INT);
         return $stmt->execute();
+    }
+
+    public static function deleteServiceFiles(array $mediaUrls): void {
+        foreach ($mediaUrls as $url) {
+            $cleanedPath = ltrim($url, '/');
+            $baseDir = realpath(__DIR__ . '/../uploads');
+            $filePath = realpath(__DIR__ . '/../' . $cleanedPath);
+            
+            if ($filePath && str_starts_with($filePath, $baseDir) && file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
     }
 
     public static function getOwnerId(int $serviceId): ?int {
