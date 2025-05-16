@@ -2,6 +2,7 @@
     --main-text: #333;
     --text-light: #555;
     --text-lighter: #777;
+    --text-Xlight: #999;
     --main-background: #f0f4f8;
     --main-background-darker: #f9f9f9;
     --secondary: #ffffff;
@@ -26,4 +27,5 @@
     --accent-light: #e1ecf4;
     --box-shadow: rgba(0, 0, 0, 0.05);
     --section-divider: #adadad;
+    --chat-darker-white: #f1f1f1;
 }
