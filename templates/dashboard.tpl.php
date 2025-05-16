@@ -30,7 +30,7 @@
     <div class="dashboard-content">
         <?php drawProfile($profile, $profile_preferences, $user); ?>
 
-        <?php drawFavorites($user, $favorites); ?>
+        <?php drawFavorites($favorites); ?>
         
         <div class="tab-content" id="listings">
             <div class="own-listings">

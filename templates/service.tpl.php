@@ -2,10 +2,14 @@
 declare(strict_types=1);
 require_once(__DIR__ .  '/../database/service.class.php');
 
-function renderServiceCard(Service $service) {
+function renderServiceCard(Service $service, bool $isDashboard = false) {
     $imageUrl = !empty($service->mediaUrls) ? reset($service->mediaUrls) : 'https://via.placeholder.com/300';
 ?>
-    <a href="service.php?id=<?= $service->id ?>" class="service-card">
+    <?php if ($isDashboard) { ?>
+        <div class="favorite-card">
+    <?php } ?>
+
+    <a href="service.php?id=<?= $service->id ?>" class="service-card">    
         <img src="<?= htmlspecialchars($imageUrl) ?>" alt="Service image">
         <div class="service-info">
             <h3><?= htmlspecialchars($service->title) ?></h3>
@@ -13,6 +17,10 @@ function renderServiceCard(Service $service) {
             <p class="price">€<?= number_format($service->price, 2) ?></p>
         </div>
     </a>
+
+    <?php if ($isDashboard) { ?>
+        </div>
+    <?php } ?>
 <?php } ?>
 <?php function renderServiceSlider(array $services, int $minItemsToShowNav = 6, string $sliderId = 'servicesSlider') {
     if (empty($services)) return;
@@ -35,12 +43,17 @@ function renderServiceCard(Service $service) {
     <script src="../js/slider.js"></script>
 <?php } ?>
 
-<?php function drawServiceGrid(array $services) {
+<?php function drawServiceGrid(array $services, bool $isDashboard = false) {
     if (empty($services)) return;
-?>
-    <section class="services-grid">
-        <?php foreach ($services as $service):
-            renderServiceCard($service);
+
+    if ($isDashboard) { ?>
+        <section class="favorites-grid">
+    <?php } else { ?>    
+
+        <section class="services-grid">
+    <?php } 
+        foreach ($services as $service):
+            renderServiceCard($service, $isDashboard);
         endforeach; ?>
     </section>
 <?php } ?>

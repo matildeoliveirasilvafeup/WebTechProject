@@ -88,7 +88,16 @@ class Favorite {
         ');
 
         $stmt->execute([':user_id' => $userId]);
+        $serviceIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $services = [];
+        foreach ($serviceIds as $serviceId) {
+            $service = Service::getById((int)$serviceId);
+            if ($service) {
+                $services[] = $service;
+            }
+        }
+
+        return $services;
     }
 }
