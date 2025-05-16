@@ -268,6 +268,11 @@ function highlightSelectedChat(conversationId, serviceId) {
 }
 
 function startConversation(serviceId, user1Id, user2Id) {
+    if (user1Id == user2Id) {
+        console.warn('Cannot start a conversation with yourself.');
+        return;
+    }
+    
     const formData = new FormData();
     formData.append('service_id', serviceId);
     formData.append('user1_id', user1Id);
