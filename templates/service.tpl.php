@@ -2,25 +2,46 @@
 declare(strict_types=1);
 require_once(__DIR__ .  '/../database/service.class.php');
 
-function renderServiceCard(Service $service, bool $isDashboard = false) {
+function renderServiceCard(Service $service, bool $isDashboard = false, bool $isOwner = false) {
     $imageUrl = !empty($service->mediaUrls) ? reset($service->mediaUrls) : 'https://via.placeholder.com/300';
 ?>
     <?php if ($isDashboard) { ?>
         <div class="dashboard-card">
     <?php } ?>
 
-    <a href="service.php?id=<?= $service->id ?>" class="service-card">    
+    <a href="service.php?id=<?= $service->id ?>" class="service-card">
         <img src="<?= htmlspecialchars($imageUrl) ?>" alt="Service image">
+    
+    <?php if ($isDashboard) { ?>
+        </a> 
+    <?php } ?>    
         <div class="service-info">
             <h3><?= htmlspecialchars($service->title) ?></h3>
             <p class="freelancer">By <?= htmlspecialchars($service->freelancerName) ?></p>
-            <p class="price">€<?= number_format($service->price, 2) ?></p>
-        </div>
-    </a>
+            <div class="price-actions">
+                <p class="price">€<?= number_format($service->price, 2) ?></p>
 
+                <?php if ($isOwner): ?>
+                <div class="card-actions">
+                    <a href="edit_service.php?id=<?= $service->id ?>" class="icon-btn" title="Edit" onclick="event.stopPropagation();">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <form method="POST" action="actions/action_delete_service.php" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this service?');">
+                        <input type="hidden" name="id" value="<?= $service->id ?>">
+                        <button type="submit" class="icon-btn delete" title="Delete" onclick="event.stopPropagation();">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+                <?php endif; ?>
+            </div> 
+        </div>
     <?php if ($isDashboard) { ?>
         </div>
-    <?php } ?>
+    <?php } else { ?>
+        </a>
+    <?php } ?> 
+  
 <?php } ?>
 <?php function renderServiceSlider(array $services, int $minItemsToShowNav = 6, string $sliderId = 'servicesSlider') {
     if (empty($services)) return;
@@ -43,7 +64,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false) {
     <script src="../js/slider.js"></script>
 <?php } ?>
 
-<?php function drawServiceGrid(array $services, bool $isDashboard = false) {
+<?php function drawServiceGrid(array $services, bool $isDashboard = false, bool $isFavorites = false) {
     if (empty($services)) return;
 
     if ($isDashboard) { ?>
@@ -52,7 +73,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false) {
         <section class="services-grid">   
     <?php }
         foreach ($services as $service):
-            renderServiceCard($service, $isDashboard);
+            renderServiceCard($service, $isDashboard, !$isFavorites);
         endforeach; ?>
     </section>
 <?php } ?>

@@ -70,15 +70,15 @@
                 <h2>Own Listings</h2>
             <?php endif;   ?>          
             <?php if (empty($services)): ?>
-                <p class="no"> <p>
+                <p class="no">
                     <?php if ($isFavorites) : ?>
                         You don't have any favorites yet.
                     <?php else : ?>
                         You don't have any own listings yet.
                     <?php endif; ?>   
-                </p> <p>
+                </p>
             <?php else:
-                drawServiceGrid($services, true);
+                drawServiceGrid($services, true, $isFavorites);
             endif; ?>
         </div>
     </div>
