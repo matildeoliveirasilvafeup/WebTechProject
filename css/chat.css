@@ -153,6 +153,9 @@
 #chat-send-btn i {
     font-size: 1rem;
 }
+#chat-service-title {
+    color: var(--main-background);
+}
 
 .message {
     width: 100%;
@@ -308,8 +311,7 @@
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;~
-    background-color: ;
+    white-space: nowrap;
 }
 
 .file-preview {

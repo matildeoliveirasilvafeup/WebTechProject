@@ -96,7 +96,7 @@ function drawMessages(conversationId, serviceId, userId) {
                 // window.location.href = `/pages/profile.php?id=${data.receiver_id}`;
             };
 
-            serviceTitleSpan.textContent = `Service #${data.service_id}`;
+            serviceTitleSpan.textContent = `═─ Go to service page ─═`;
             serviceTitleSpan.style.cursor = 'pointer';
             serviceTitleSpan.onclick = () => {
                 window.location.href = `/pages/service.php?id=${serviceId}`;
