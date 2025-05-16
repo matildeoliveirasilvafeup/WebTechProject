@@ -70,7 +70,7 @@ function renderStars(float $rating): string {
 <?php } ?>
 
 <?php function drawEmptyReviewSection() { ?>
-    <div class="reviews-section">
+    <div class="reviews-summary">
         <h2>Reviews</h2>
         <p>This service doesn't have reviews yet.</p>
     </div>
