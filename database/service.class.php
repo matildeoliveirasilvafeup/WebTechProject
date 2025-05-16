@@ -12,6 +12,7 @@ class Service {
     public array $mediaUrls = [];
     public ?string $categoryName;
     public ?int $categoryId;
+    public ?int $subcategoryId;
     public ?int $freelancerId;
     public ?int $deliveryTime;     
     public ?int $numberOfRevisions;
@@ -28,6 +29,7 @@ class Service {
         $this->mediaUrls = $data['mediaUrls'] ?? [];
         $this->categoryName = $data['category_name'] ?? null;
         $this->categoryId = isset($data['category_id']) ? (int)$data['category_id'] : null;
+        $this->subcategoryId = isset($data['subcategory_id']) ? (int)$data['subcategory_id'] : null;
         $this->freelancerId = (int)$data['freelancer_id'] ?? null;
         $this->deliveryTime = isset($data['delivery_time']) ? (int)$data['delivery_time'] : null;
         $this->numberOfRevisions = isset($data['number_of_revisions']) ? (int)$data['number_of_revisions'] : null;
@@ -440,5 +442,33 @@ class Service {
         $stmt->bindValue(':id', $serviceId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchColumn() ?: null;
+    }
+
+    public static function update(array $data): bool {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("
+            UPDATE services
+            SET title = :title,
+                description = :description,
+                price = :price,
+                category_id = :category_id,
+                subcategory_id = :subcategory_id,
+                delivery_time = :delivery_time,
+                number_of_revisions = :number_of_revisions,
+                language = :language
+            WHERE id = :id
+        ");
+    
+        $stmt->bindValue(':id', $data['id'], PDO::PARAM_INT);
+        $stmt->bindValue(':title', $data['title'], PDO::PARAM_STR);
+        $stmt->bindValue(':description', $data['description'], PDO::PARAM_STR);
+        $stmt->bindValue(':price', $data['price'], PDO::PARAM_STR);
+        $stmt->bindValue(':category_id', $data['category_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':subcategory_id', $data['subcategory_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':delivery_time', $data['delivery_time'], PDO::PARAM_INT);
+        $stmt->bindValue(':number_of_revisions', $data['number_of_revisions'], PDO::PARAM_INT);
+        $stmt->bindValue(':language', $data['language'], PDO::PARAM_STR);
+    
+        return $stmt->execute();
     }
 }
