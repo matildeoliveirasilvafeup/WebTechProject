@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const fileName = this.files[0].name;
 
             fileDisplay.innerHTML = `
-                <div class="file-preview">
+                <div class="file-preview-chat">
                 <i class="fa-solid fa-file"></i> ${fileName}
                 <button type="button" id="cancel-file-btn" title="Remove file">
                     <i class="fa-solid fa-xmark"></i>

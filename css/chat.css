@@ -154,7 +154,7 @@
     font-size: 1rem;
 }
 #chat-service-title {
-    color: var(--main-background);
+    color: var(--text-light);
 }
 
 .message {
@@ -314,7 +314,7 @@
     white-space: nowrap;
 }
 
-.file-preview {
+.file-preview-chat {
     display: flex;
     align-items: center;
     gap: 0.5rem;
