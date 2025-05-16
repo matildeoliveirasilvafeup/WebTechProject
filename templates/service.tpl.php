@@ -6,7 +6,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false) {
     $imageUrl = !empty($service->mediaUrls) ? reset($service->mediaUrls) : 'https://via.placeholder.com/300';
 ?>
     <?php if ($isDashboard) { ?>
-        <div class="favorite-card">
+        <div class="dashboard-card">
     <?php } ?>
 
     <a href="service.php?id=<?= $service->id ?>" class="service-card">    
@@ -47,11 +47,10 @@ function renderServiceCard(Service $service, bool $isDashboard = false) {
     if (empty($services)) return;
 
     if ($isDashboard) { ?>
-        <section class="favorites-grid">
+        <section class="dashboard-grid">
     <?php } else { ?>    
-
-        <section class="services-grid">
-    <?php } 
+        <section class="services-grid">   
+    <?php }
         foreach ($services as $service):
             renderServiceCard($service, $isDashboard);
         endforeach; ?>

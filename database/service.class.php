@@ -375,4 +375,31 @@ class Service {
         }
     }
 
+    public static function getByUserId(int $userId): array {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("
+            SELECT services.*, users.name AS freelancer_name,
+            (
+                SELECT GROUP_CONCAT(media_url) 
+                FROM service_images 
+                WHERE service_id = services.id 
+                ORDER BY id ASC LIMIT 1
+            ) AS media_urls
+            FROM services
+            JOIN users ON services.freelancer_id = users.id
+            JOIN profiles ON users.id = profiles.user_id
+            WHERE services.freelancer_id = :freelancer_id
+            ORDER BY services.created_at DESC
+        ");
+        $stmt->bindValue(':freelancer_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+   
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as &$row) {
+            $row['mediaUrls'] = array_filter(explode(',', $row['media_urls'] ?? ''));
+        }
+
+        return array_map(fn($row) => new Service($row), $rows);
+    }
 }
