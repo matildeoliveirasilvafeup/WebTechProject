@@ -26,7 +26,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
                     <a href="edit_service.php?id=<?= $service->id ?>" class="icon-btn" title="Edit" onclick="event.stopPropagation();">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
-                    <form method="POST" action="actions/action_delete_service.php" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this service?');">
+                    <form method="POST" action="../actions/action_delete_service.php" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this service?');">
                         <input type="hidden" name="id" value="<?= $service->id ?>">
                         <button type="submit" class="icon-btn delete" title="Delete" onclick="event.stopPropagation();">
                             <i class="fas fa-trash"></i>

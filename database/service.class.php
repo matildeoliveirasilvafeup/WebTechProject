@@ -402,4 +402,19 @@ class Service {
 
         return array_map(fn($row) => new Service($row), $rows);
     }
+
+    public static function deleteById(int $serviceId): bool {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('DELETE FROM services WHERE id = :id');
+        $stmt->bindValue(':id', $serviceId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public static function getOwnerId(int $serviceId): ?int {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('SELECT freelancer_id FROM services WHERE id = :id');
+        $stmt->bindValue(':id', $serviceId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchColumn() ?: null;
+    }
 }
