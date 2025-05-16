@@ -2,9 +2,11 @@
 declare(strict_types=1);
 require_once(__DIR__ .  '/../database/service.class.php');
 
-function renderServiceCard(Service $service) { ?>
+function renderServiceCard(Service $service) { 
+    $imageUrl = !empty($service->mediaUrls) ? reset($service->mediaUrls) : 'https://via.placeholder.com/300';
+?>
     <a href="service.php?id=<?= $service->id ?>" class="service-card">
-        <img src="<?= htmlspecialchars($service->mediaUrl ?? 'https://via.placeholder.com/300') ?>" alt="Service image">
+        <img src="<?= htmlspecialchars($imageUrl) ?>" alt="Service image">
         <div class="service-info">
             <h3><?= htmlspecialchars($service->title) ?></h3>
             <p class="freelancer">By <?= htmlspecialchars($service->freelancerName) ?></p>
@@ -45,7 +47,27 @@ function renderServiceCard(Service $service) { ?>
 
 <?php function drawServicePage($service, $ratingInfo) { ?>
     <div class="service-page">  
-        <img src="<?= htmlspecialchars($service->mediaUrl ?? 'https://via.placeholder.com/480') ?>" alt="Imagem do serviço">
+        <div class="media-carousel">
+            <div class="carousel-wrapper">
+            <?php if (empty($service->mediaUrls) || (count(array_filter($service->mediaUrls)) === 0)): ?>
+                <p>No media.</p>
+            <?php else: ?>
+                <?php foreach ($service->mediaUrls as $media): ?>
+                    <?php if (empty($media)) continue; ?>
+                    <?php if (preg_match('/\.(mp4|webm)$/i', $media)): ?>
+                        <video controls>
+                            <source src="<?= htmlspecialchars($media) ?>" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    <?php else: ?>
+                        <img src="<?= htmlspecialchars($media) ?>" alt="Service media">
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            </div>
+                <button class="carousel-btn left" onclick="scrollMedia(-1)">‹</button>
+                <button class="carousel-btn right" onclick="scrollMedia(1)">›</button>
+            </div>
 
             <div class="service-details">
                 <h1><?= htmlspecialchars($service->title) ?></h1>
@@ -94,6 +116,9 @@ function renderServiceCard(Service $service) { ?>
                 </ul>
             </div>
         </div>
+    </div>
+
+    <script src="../js/media_scroll.js"></script>
 <?php } ?>
 
 <?php function drawFeaturedServices($featuredServices) { ?>
@@ -121,3 +146,72 @@ function renderServiceCard(Service $service) { ?>
     <?php endif; ?>
 <?php } ?>
 
+<?php function drawListServicesForm($categories) { ?>
+    <section class="service-page" id="new_service">
+        <form action="/actions/action_list_service.php" method="POST" enctype="multipart/form-data" class="create-form">
+            <h1>List New Service</h1>
+ 
+            <label for="title">Service Title</label>
+            <input type="text" id="title" name="title" required>
+ 
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="6" required></textarea>
+ 
+            <div class="form-grid">
+                <div>
+                    <label for="price">Price (€)</label>
+                    <input type="number" id="price" name="price" min="0" step="0.01" required>
+                </div>
+             
+                <div>
+                    <label for="delivery">Delivery Time (in days)</label>
+                    <input type="number" id="delivery" name="delivery" min="0" step="1" required>
+                </div>
+ 
+                <div>
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="" disabled selected>Select a category</option>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= htmlspecialchars((string)$category->id) ?>" 
+                                    data-subcategories='<?= json_encode($category->subcategories ?? []) ?>'>
+                                <?= htmlspecialchars($category->name) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>        
+
+                <div>
+                    <label for="subcategory">Subcategory</label>
+                    <select id="subcategory" name="subcategory" required disabled>
+                        <option value="" disabled selected>Select a subcategory</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="revisions">Included Revisions</label>
+                    <input type="number" id="revisions" name="revisions" min="0" step="1" required>    
+                </div>  
+                
+                <div>
+                    <label for="language">Language</label>
+                    <input type="text" id="language" name="language">    
+                </div> 
+            </div>
+
+            <div class="form-group">
+                <label for="images">Images and Videos</label>
+                <input type="file" id="images" name="images[]" accept="image/*,video/*" multiple>
+            </div>
+            
+            <div id="file-preview" class="file-preview"></div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn-add-cart">Publish</button>
+                <a href="/index.php" class="btn-hire">Cancel</a>
+            </div>
+        </form>
+    </section>
+
+    <script src="../js/list_service.js"></script>
+<?php } ?>

@@ -1,0 +1,154 @@
+.service-page#new_service input[type="text"] {
+    margin: 0;
+}
+
+.service-page#new_service .button-group {
+    justify-content: flex-end;
+}
+
+.service-page#new_service {
+    display: block;
+    height: auto;
+}
+
+.create-form {
+    flex: none;
+    background: var(--secondary);
+    padding: 1em 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    color: var(--main-text-color);
+    overflow: visible;
+    min-height: auto;
+    height: auto;
+}
+
+.create-form h1 {
+    font-size: 2em;
+    margin-bottom: 0;
+    color: var(--button-background);
+}
+
+.create-form label {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.3em;
+    display: block;
+}
+
+.create-form input,
+.create-form select,
+.create-form textarea {
+    padding: 0.75em;
+    border: 1px solid var(--background-disabled);
+    border-radius: 10px;
+    background: var(--main-background-darker);
+    color: var(--main-text-color);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.form-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    column-gap: 3em;
+    row-gap: 1.5em;
+}
+
+.create-form input[type="file"] {
+    background: none;
+    border: none;
+}
+
+.create-form textarea {
+    resize: vertical;
+    min-height: 15%;
+}
+
+.create-form select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='none' stroke='currentColor' stroke-width='.8' d='M2 0L0 2h4L2 0zM2 5L0 3h4l-2 2z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7em top 50%;
+    background-size: 0.65em auto;
+    cursor: pointer;
+}
+
+.create-form input[type="number"] {
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 0.75em;
+}
+
+.create-form input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#create-form input[type="file"],
+.form-group input[type="file"] {
+    padding: 0.75em;
+    border: 1px solid var(--background-disabled);
+    border-radius: 10px;
+    background: var(--main-background-darker);
+    color: var(--main-text-color);
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#create-form input[type="file"]::file-selector-button,
+.form-group input[type="file"]::file-selector-button {
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 5px;
+    background: var(--button-background);
+    color: var(--secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#create-form input[type="file"]::file-selector-button:hover,
+.form-group input[type="file"]::file-selector-button:hover {
+    background: var(--main-background-darker);
+    color: var(--main-text);
+}
+ 
+.form-group label[for="images"] {
+    font-weight: 600;
+    color: var(--main-text-color);
+    display: block;
+}
+ 
+.button-group {
+    margin-bottom: 2em;
+}
+
+.file-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    gap: 1em;
+    margin: 1em 0;
+}
+
+.file-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.file-item img,
+.file-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}

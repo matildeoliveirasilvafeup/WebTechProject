@@ -13,6 +13,8 @@ class Profile {
         $this->bio = $data['bio'] ?? null;
         $this->location = $data['location'] ?? null;
         $this->profilePicture = $data['profile_picture'] ?? null;
+        $this->proficiency = $data['proficiency'] ?? null;
+        $this->communication = $data['communication'] ?? null;
     }
 
     public static function create(int $userId): void {
@@ -94,32 +96,25 @@ class Profile {
         $profilePicturePath = null;
 
         if ($file && isset($file['error']) && $file['error'] === UPLOAD_ERR_OK) {
-            $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-            $allowedExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-
-            if (!in_array($ext, $allowedExts)) {
-                http_response_code(400);
-                error_log("Invalid file type: $ext");
-                return ["success" => false, "message" => "Invalid file type."];
-            }
-
             $uploadDir = __DIR__ . '/../uploads/profile_pictures/';
-            if (!file_exists($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        
             self::deleteProfileIcon($userId);
-
-            $filename = uniqid('profile_', true) . '.' . $ext;
-            $destination = $uploadDir . $filename;
-
-            if (!move_uploaded_file($file['tmp_name'], $destination)) {
+        
+            $uploaded = uploadFiles(['name' => [$file['name']],
+                                     'type' => [$file['type']],
+                                     'tmp_name' => [$file['tmp_name']],
+                                     'error' => [$file['error']],
+                                     'size' => [$file['size']]],
+                                     $uploadDir, $allowedTypes);
+        
+            if (empty($uploaded)) {
                 http_response_code(500);
-                error_log("Failed to move uploaded file.");
-                return ["success" => false, "message" => "Failed to move uploaded file."];
+                error_log("Failed uploading profile image.");
+                return ["success" => false, "message" => "Failed loading profile image."];
             }
-
-            $profilePicturePath = '/uploads/profile_pictures/' . $filename;
+        
+            $profilePicturePath = str_replace(__DIR__ . '/../', '/', $uploaded[0]);
             $updates[] = "profile_picture = ?";
             $params[] = $profilePicturePath;
         }

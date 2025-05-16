@@ -8,14 +8,14 @@
     require_once(__DIR__ .  '/../templates/service.tpl.php');
     require_once(__DIR__ .  '/../templates/home.tpl.php');
 
-    $categories = Category::getAllWithSubcategories();
+    $categoriesMenu = Category::getAllWithSubcategories();
     $testimonials = Review::getLatestReviews(3);
     $featuredServices = Service::getFeatured(100);
 
     drawHeader();
-    drawCategoryMenu($categories); 
+    drawCategoryMenu($categoriesMenu); 
     drawHero();
-    drawCategorySection($categories); 
+    drawCategorySection($categoriesMenu); 
     drawFeaturedServices($featuredServices);
     drawHowItWorks();
     drawTestimonials($testimonials);

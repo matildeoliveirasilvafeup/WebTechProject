@@ -5,11 +5,11 @@ require_once(__DIR__ . '/../includes/session.php');
 require_once(__DIR__ . '/../includes/database.php');
 require_once(__DIR__ . '/../database/user.class.php');
 require_once(__DIR__ . '/../database/profiles.class.php');
+require_once(__DIR__ . '/action_upload_file.php');
 
 header('Content-Type: application/json');
 
 try {
-
     $name = trim($_POST['name'] ?? '');
     $username = trim($_POST['username'] ?? '');
     $location = trim($_POST['location'] ?? 'Portugal');

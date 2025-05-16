@@ -11,15 +11,6 @@
     color: var(--main-text-color);
 }
 
-.service-page img {
-    flex: 1 1 400px;
-    max-width: 480px;
-    width: 100%;
-    border-radius: 10px;
-    object-fit: cover;
-    box-shadow: 0 2px 10px var(--box-shadow);
-}
-
 .service-details {
     flex: 1 1 400px;
     display: flex;
@@ -89,7 +80,9 @@
     font-weight: bold;
     width: fit-content;
     transition: background 0.3s ease;
-    border: 2px solid ;
+    border: 2px solid var(--button-background);
+    font-size: medium;
+    cursor: pointer;
 }
 
 .btn-hire {
@@ -328,4 +321,67 @@
 .freelancer-services .service-card,
 .related-services .service-card {
     width: 20%;
+}
+
+.media-carousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin: auto;
+    flex: 1 1 20em;
+    max-width: 48em;
+    width: 100%;    
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 2px 10px var(--box-shadow);
+}
+
+.media-carousel .carousel-wrapper {
+    display: flex;
+    transition: scroll-behavior 0.3s ease-in-out;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+.carousel-wrapper img,
+.carousel-wrapper video {
+    flex: 0 0 100%;
+    max-width: 100%;
+    scroll-snap-align: center;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.carousel-btn.left {
+    left: 10px;
+}
+
+.carousel-btn.right {
+    right: 10px;
+}
+
+.carousel-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-btn {
+    display: none;
+}
+
+.carousel-wrapper:has(img + img) ~ .carousel-btn,
+.carousel-wrapper:has(img + video) ~ .carousel-btn,
+.carousel-wrapper:has(video + img) ~ .carousel-btn,
+.carousel-wrapper:has(video + video) ~ .carousel-btn{
+    display: block;
 }

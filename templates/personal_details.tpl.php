@@ -44,7 +44,7 @@
         <h2><?= htmlspecialchars($user->name) ?></h2>
         <p class="username">@<?= htmlspecialchars($user->username) ?></p>
         <p><i class="fas fa-map-marker-alt"></i> Located in <?= htmlspecialchars($profile->location) ?></p>
-        <p><i class="fas fa-calendar-alt"></i> Joined in <?= date('F Y', $user->created_at) ?></p>
+        <p><i class="fas fa-calendar-alt"></i> Joined in <?= date('F Y', strtotime($user->createdAt)) ?></p>
     </div>
 
     <button id="editProfBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
