@@ -379,6 +379,9 @@
     display: none;
 }
 
-.carousel-wrapper:has(img + img) ~ .carousel-btn {
+.carousel-wrapper:has(img + img) ~ .carousel-btn,
+.carousel-wrapper:has(img + video) ~ .carousel-btn,
+.carousel-wrapper:has(video + img) ~ .carousel-btn,
+.carousel-wrapper:has(video + video) ~ .carousel-btn{
     display: block;
 }

@@ -64,7 +64,7 @@ function renderServiceCard(Service $service) {
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
-                </div>
+            </div>
                 <button class="carousel-btn left" onclick="scrollMedia(-1)">‹</button>
                 <button class="carousel-btn right" onclick="scrollMedia(1)">›</button>
             </div>
