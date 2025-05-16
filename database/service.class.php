@@ -9,7 +9,7 @@ class Service {
     public float $price;
     public string $freelancerName;
     public ?string $profilePicture;
-    public ?string $mediaUrl;
+    public array $mediaUrls = [];
     public ?string $categoryName;
     public ?int $categoryId;
     public ?int $freelancerId;
@@ -25,7 +25,7 @@ class Service {
         $this->price = (float)$data['price'];
         $this->freelancerName = $data['freelancer_name'];
         $this->profilePicture = $data['profile_picture'] ?? null;
-        $this->mediaUrl = $data['media_url'] ?? null;
+        $this->mediaUrls = $data['mediaUrls'] ?? [];
         $this->categoryName = $data['category_name'] ?? null;
         $this->categoryId = isset($data['category_id']) ? (int)$data['category_id'] : null;
         $this->freelancerId = (int)$data['freelancer_id'] ?? null;
@@ -56,11 +56,11 @@ class Service {
                 services.*,
                 users.name AS freelancer_name,
                 (
-                    SELECT media_url 
+                    SELECT GROUP_CONCAT(media_url)
                     FROM service_images 
                     WHERE service_id = services.id 
                     ORDER BY id ASC LIMIT 1
-                ) AS media_url
+                ) AS media_urls
             FROM services
             JOIN users ON services.freelancer_id = users.id
             ORDER BY services.created_at DESC
@@ -68,9 +68,15 @@ class Service {
         ");
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
-
-        return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
-    }
+        
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        foreach ($rows as &$row) {
+            $row['mediaUrls'] = array_filter(explode(',', $row['media_urls'] ?? ''));
+        }
+    
+        return array_map(fn($row) => new Service($row), $rows);
+    }    
 
     public static function getById(int $id): ?Service {
         $db = Database::getInstance();
@@ -82,11 +88,11 @@ class Service {
                 categories.name AS category_name,
                 subcategories.name AS subcategory_name,
                 (
-                    SELECT media_url 
+                    SELECT GROUP_CONCAT(media_url)
                     FROM service_images 
                     WHERE service_id = services.id 
-                    ORDER BY id ASC LIMIT 1
-                ) AS media_url
+                    ORDER BY id ASC
+                ) AS media_urls
             FROM services
             JOIN users ON services.freelancer_id = users.id
             LEFT JOIN profiles ON users.id = profiles.user_id
@@ -98,14 +104,26 @@ class Service {
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return $data ? new Service($data) : null;
-    }
+    
+        if ($data) {
+            $data['mediaUrls'] = array_filter(explode(',', $data['media_urls'] ?? ''));
+            return new Service($data);
+        }
+    
+        return null;
+    }    
 
     public static function getMoreFromFreelancer(int $freelancerId, int $excludeId, int $limit = 4): array {
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            SELECT s.*, si.media_url, u.name AS freelancer_name 
+            SELECT s.*, u.name AS freelancer_name,
+            (   
+                SELECT GROUP_CONCAT(media_url)
+                FROM service_images 
+                WHERE service_id = s.id 
+                ORDER BY id ASC
+                LIMIT 1
+            ) AS media_urls
             FROM services s
             JOIN users u ON s.freelancer_id = u.id
             LEFT JOIN service_images si ON si.service_id = s.id
@@ -117,14 +135,26 @@ class Service {
         $stmt->bindValue(':exclude_id', $excludeId, PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
-
-        return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        foreach ($rows as &$row) {
+            $row['mediaUrls'] = array_filter(explode(',', $row['media_urls'] ?? ''));
+        }
+    
+        return array_map(fn($row) => new Service($row), $rows);
     }
 
     public static function getRelated(int $categoryId, int $excludeId, int $limit = 4): array {
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            SELECT s.*, si.media_url, u.name AS freelancer_name 
+            SELECT s.*, u.name AS freelancer_name,
+            (
+                SELECT GROUP_CONCAT(media_url)
+                FROM service_images 
+                WHERE service_id = s.id 
+                ORDER BY id ASC
+                LIMIT 1
+            ) AS media_urls
             FROM services s
             JOIN users u ON s.freelancer_id = u.id
             LEFT JOIN service_images si ON si.service_id = s.id
@@ -137,7 +167,13 @@ class Service {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
 
-        return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        foreach ($rows as &$row) {
+            $row['mediaUrls'] = array_filter(explode(',', $row['media_urls'] ?? ''));
+        }
+    
+        return array_map(fn($row) => new Service($row), $rows);
     }
 
     public static function getServicesBySearch(string $search, int $limit = 30): array {
@@ -149,11 +185,11 @@ class Service {
                 users.name AS freelancer_name,
                 profiles.profile_picture,
                 (
-                    SELECT media_url 
+                    SELECT GROUP_CONCAT(media_url)
                     FROM service_images 
                     WHERE service_id = services.id 
                     ORDER BY id ASC LIMIT 1
-                ) AS media_url
+                ) AS media_urls
             FROM services
             JOIN users ON services.freelancer_id = users.id
             LEFT JOIN profiles ON users.id = profiles.user_id
@@ -166,7 +202,13 @@ class Service {
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
     
-        return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as &$row) {
+            $row['mediaUrls'] = array_filter(explode(',', $row['media_urls'] ?? ''));
+        }
+
+        return array_map(fn($row) => new Service($row), $rows);
     }
 
     public static function getFilteredServices(string $search, array $filters, int $limit = 30): array {
@@ -175,17 +217,16 @@ class Service {
             SELECT 
                 services.*,
                 users.name AS freelancer_name,
-                profiles.profile_picture,
                 (
-                    SELECT media_url 
+                    SELECT GROUP_CONCAT(media_url) 
                     FROM service_images 
                     WHERE service_id = services.id 
                     ORDER BY id ASC LIMIT 1
-                ) AS media_url
+                ) AS media_urls
             FROM services
             JOIN users ON services.freelancer_id = users.id
-            LEFT JOIN profiles ON users.id = profiles.user_id
             WHERE (services.title LIKE :search OR users.name LIKE :search)
+            LIMIT :limit
         ";
     
         if (!empty($filters['category'])) {
@@ -267,7 +308,13 @@ class Service {
 
         $stmt->execute();
     
-        return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as &$row) {
+            $row['mediaUrls'] = array_filter(explode(',', $row['media_urls'] ?? ''));
+        }
+
+        return array_map(fn($row) => new Service($row), $rows);
     }
 
     public static function create(array $data): int {

@@ -2,9 +2,11 @@
 declare(strict_types=1);
 require_once(__DIR__ .  '/../database/service.class.php');
 
-function renderServiceCard(Service $service) { ?>
+function renderServiceCard(Service $service) { 
+    $imageUrl = !empty($service->mediaUrls) ? reset($service->mediaUrls) : 'https://via.placeholder.com/300';
+?>
     <a href="service.php?id=<?= $service->id ?>" class="service-card">
-        <img src="<?= htmlspecialchars($service->mediaUrl ?? 'https://via.placeholder.com/300') ?>" alt="Service image">
+        <img src="<?= htmlspecialchars($imageUrl) ?>" alt="Service image">
         <div class="service-info">
             <h3><?= htmlspecialchars($service->title) ?></h3>
             <p class="freelancer">By <?= htmlspecialchars($service->freelancerName) ?></p>
@@ -45,7 +47,27 @@ function renderServiceCard(Service $service) { ?>
 
 <?php function drawServicePage($service, $ratingInfo) { ?>
     <div class="service-page">  
-        <img src="<?= htmlspecialchars($service->mediaUrl ?? 'https://via.placeholder.com/480') ?>" alt="Imagem do serviço">
+        <div class="media-carousel">
+            <div class="carousel-wrapper">
+            <?php if (empty($service->mediaUrls) || (count(array_filter($service->mediaUrls)) === 0)): ?>
+                <p>No media.</p>
+            <?php else: ?>
+                <?php foreach ($service->mediaUrls as $media): ?>
+                    <?php if (empty($media)) continue; ?>
+                    <?php if (preg_match('/\.(mp4|webm)$/i', $media)): ?>
+                        <video controls>
+                            <source src="<?= htmlspecialchars($media) ?>" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    <?php else: ?>
+                        <img src="<?= htmlspecialchars($media) ?>" alt="Service media">
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+                </div>
+                <button class="carousel-btn left" onclick="scrollMedia(-1)">‹</button>
+                <button class="carousel-btn right" onclick="scrollMedia(1)">›</button>
+            </div>
 
             <div class="service-details">
                 <h1><?= htmlspecialchars($service->title) ?></h1>
@@ -94,6 +116,9 @@ function renderServiceCard(Service $service) { ?>
                 </ul>
             </div>
         </div>
+    </div>
+
+    <script src="../js/media_scroll.js"></script>
 <?php } ?>
 
 <?php function drawFeaturedServices($featuredServices) { ?>

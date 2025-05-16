@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-function uploadFiles(array $files, string $uploadDir, array $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4']): array {
+function uploadFiles(array $files, string $uploadDir, array $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'video/webm']): array {
     $uploadedFiles = [];
     $uploadDir = rtrim($uploadDir, '/') . '/';
 

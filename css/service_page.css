@@ -331,3 +331,58 @@
 .related-services .service-card {
     width: 20%;
 }
+
+.media-carousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+}
+
+.carousel-wrapper {
+    display: flex;
+    transition: scroll-behavior 0.3s ease-in-out;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+.carousel-wrapper img,
+.carousel-wrapper video {
+    flex: 0 0 100%;
+    max-width: 100%;
+    scroll-snap-align: center;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.carousel-btn.left {
+    left: 10px;
+}
+
+.carousel-btn.right {
+    right: 10px;
+}
+
+.carousel-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-btn {
+    display: none;
+}
+
+.carousel-wrapper:has(img + img) ~ .carousel-btn {
+    display: block;
+}
