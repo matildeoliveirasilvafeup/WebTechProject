@@ -1,12 +1,15 @@
-.service-page#new_service input[type="text"] {
+.service-page#new_service input[type="text"],
+.service-page#edit_service input[type="text"] {
     margin: 0;
 }
 
-.service-page#new_service .button-group {
+.service-page#new_service .button-group,
+.service-page#edit_service .button-group{
     justify-content: flex-end;
 }
 
-.service-page#new_service {
+.service-page#new_service,
+.service-page#edit_service {
     display: block;
     height: auto;
 }

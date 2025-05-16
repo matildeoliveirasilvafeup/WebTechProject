@@ -436,6 +436,24 @@ class Service {
         }
     }
 
+    public static function deleteSingleFile(string $mediaUrl): void {
+        $cleanedPath = ltrim($mediaUrl, '/');
+        $baseDir = realpath(__DIR__ . '/../uploads');
+        $filePath = realpath(__DIR__ . '/../' . $cleanedPath);
+    
+        if ($filePath && str_starts_with($filePath, $baseDir) && file_exists($filePath)) {
+            unlink($filePath);
+        }
+    }
+
+    public static function deleteMedia(int $serviceId, string $mediaUrl): bool {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('DELETE FROM service_images WHERE service_id = :service_id AND media_url = :media_url');
+        $stmt->bindValue(':service_id', $serviceId, PDO::PARAM_INT);
+        $stmt->bindValue(':media_url', $mediaUrl, PDO::PARAM_STR);
+        return $stmt->execute();
+    }
+
     public static function getOwnerId(int $serviceId): ?int {
         $db = Database::getInstance();
         $stmt = $db->prepare('SELECT freelancer_id FROM services WHERE id = :id');

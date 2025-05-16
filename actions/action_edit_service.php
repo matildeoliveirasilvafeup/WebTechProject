@@ -44,7 +44,8 @@ try {
 
     if (!empty($_POST['delete_media'])) {
         foreach ($_POST['delete_media'] as $mediaUrl) {
-            Service::deleteServiceFiles($mediaUrl);
+            Service::deleteSingleFile($mediaUrl);
+            Service::deleteMedia($serviceId, $mediaUrl);
         }
     }
 
