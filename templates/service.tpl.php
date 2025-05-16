@@ -252,18 +252,34 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
             </div>
 
             <div class="form-group">
-                <label for="images">Images and Videos</label>
-                <input type="file" id="images" name="images[]" accept="image/*,video/*" multiple>
-                <div id="file-preview" class="file-preview">
-                    <?php if ($service && !empty($service->mediaUrls)): ?>
+                <?php if ($service && !empty($service->mediaUrls)): ?>
+                    <h3>Old Media</h3>
+                    <div id="old-media-preview" class="file-preview">
                         <?php foreach ($service->mediaUrls as $media): ?>
-                            <div class="file-item">
-                                <a href="<?= htmlspecialchars($media) ?>" target="_blank">View</a>
-                                <input type="checkbox" name="delete_media[]" value="<?= htmlspecialchars($media) ?>"> Delete
+                            <div class="file-item" data-media-url="<?= htmlspecialchars($media) ?>">
+                                <?php if (preg_match('/\.(mp4|webm)$/i', $media)): ?>
+                                    <video controls>
+                                        <source src="<?= htmlspecialchars($media) ?>" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                <?php else: ?>
+                                    <img src="<?= htmlspecialchars($media) ?>" alt="Service media">
+                                <?php endif; ?>
+                                <div class="file-actions">
+                                    <input type="checkbox" name="delete_media[]" value="<?= htmlspecialchars($media) ?>" id="delete-<?= htmlspecialchars(basename($media)) ?>">
+                                    <label for="delete-<?= htmlspecialchars(basename($media)) ?>">Delete</label>
+                                </div>
                             </div>
                         <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+            
+            <div class="form-group">
+                <h3><?= $service ? 'Add New Media' : 'Add Media' ?></h3>
+                <label for="images">Images and Videos</label>
+                <input type="file" id="images" name="images[]" accept="image/*,video/*" multiple>
+                <div id="new-media-preview" class="file-preview"></div>
             </div>
 
             <div class="button-group">
