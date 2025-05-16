@@ -23,7 +23,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
 
                 <?php if ($isOwner): ?>
                 <div class="card-actions">
-                    <a href="edit_service.php?id=<?= $service->id ?>" class="icon-btn" title="Edit" onclick="event.stopPropagation();">
+                    <a href="list_service.php?id=<?= $service->id ?>" class="icon-btn" title="Edit" onclick="event.stopPropagation();">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                     <form method="POST" action="../actions/action_delete_service.php" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this service?');">
@@ -183,35 +183,43 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
     <?php endif; ?>
 <?php } ?>
 
-<?php function drawListServicesForm($categories) { ?>
-    <section class="service-page" id="new_service">
-        <form action="/actions/action_list_service.php" method="POST" enctype="multipart/form-data" class="create-form">
-            <h1>List New Service</h1>
+<?php function drawListServicesForm($categories, ?Service $service = null) { ?>
+    <section class="service-page" id="<?= $service ? 'edit_service' : 'new_service' ?>">
+        <form action="<?= $service ? '/actions/action_edit_service.php' : '/actions/action_list_service.php' ?>" 
+              method="POST" enctype="multipart/form-data" class="create-form">
+            <h1><?= $service ? 'Edit Service' : 'List New Service' ?></h1>
+
+            <?php if ($service): ?>
+                <input type="hidden" name="id" value="<?= $service->id ?>">
+            <?php endif; ?>
 
             <label for="title">Service Title</label>
-            <input type="text" id="title" name="title" required>
+            <input type="text" id="title" name="title" value="<?= htmlspecialchars($service->title ?? '') ?>" required>
 
             <label for="description">Description</label>
-            <textarea id="description" name="description" rows="6" required></textarea>
+            <textarea id="description" name="description" rows="6" required><?= htmlspecialchars($service->description ?? '') ?></textarea>
 
             <div class="form-grid">
                 <div>
                     <label for="price">Price (€)</label>
-                    <input type="number" id="price" name="price" min="0" step="0.01" required>
+                    <input type="number" id="price" name="price" min="0" step="0.01" 
+                           value="<?= htmlspecialchars(number_format((float)($service->price ?? 0), 2, '.', '')) ?>" required>
                 </div>
 
                 <div>
                     <label for="delivery">Delivery Time (in days)</label>
-                    <input type="number" id="delivery" name="delivery" min="0" step="1" required>
+                    <input type="number" id="delivery" name="delivery" min="0" step="1" 
+                           value="<?= $service->deliveryTime ?? '' ?>" required>
                 </div>
 
                 <div>
                     <label for="category">Category</label>
                     <select id="category" name="category" required>
-                        <option value="" disabled selected>Select a category</option>
+                        <option value="" disabled <?= $service ? '' : 'selected' ?>>Select a category</option>
                         <?php foreach ($categories as $category): ?>
                             <option value="<?= htmlspecialchars((string)$category->id) ?>"
-                                    data-subcategories='<?= json_encode($category->subcategories ?? []) ?>'>
+                                    data-subcategories='<?= json_encode($category->subcategories ?? []) ?>'
+                                    <?= $service && $service->categoryId == $category->id ? 'selected' : '' ?>>
                                 <?= htmlspecialchars($category->name) ?>
                             </option>
                         <?php endforeach; ?>
@@ -220,31 +228,46 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
 
                 <div>
                     <label for="subcategory">Subcategory</label>
-                    <select id="subcategory" name="subcategory" required disabled>
+                    <select id="subcategory" name="subcategory" required <?= $service ? '' : 'disabled' ?>>
                         <option value="" disabled selected>Select a subcategory</option>
+                        <?php if ($service && $service->subcategoryId): ?>
+                            <option value="<?= htmlspecialchars((string)$service->subcategoryId) ?>" selected>
+                                <?= htmlspecialchars((string)$service->subcategoryId) ?>
+                            </option>
+                        <?php endif; ?>
                     </select>
                 </div>
 
                 <div>
                     <label for="revisions">Included Revisions</label>
-                    <input type="number" id="revisions" name="revisions" min="0" step="1" required>
+                    <input type="number" id="revisions" name="revisions" min="0" step="1" 
+                           value="<?=$service->numberOfRevisions ?? '' ?>" required>
                 </div>
 
                 <div>
                     <label for="language">Language</label>
-                    <input type="text" id="language" name="language">
+                    <input type="text" id="language" name="language" 
+                           value="<?= htmlspecialchars($service->language ?? '') ?>">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="images">Images and Videos</label>
                 <input type="file" id="images" name="images[]" accept="image/*,video/*" multiple>
+                <div id="file-preview" class="file-preview">
+                    <?php if ($service && !empty($service->mediaUrls)): ?>
+                        <?php foreach ($service->mediaUrls as $media): ?>
+                            <div class="file-item">
+                                <a href="<?= htmlspecialchars($media) ?>" target="_blank">View</a>
+                                <input type="checkbox" name="delete_media[]" value="<?= htmlspecialchars($media) ?>"> Delete
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
             </div>
 
-            <div id="file-preview" class="file-preview"></div>
-
             <div class="button-group">
-                <button type="submit" class="btn-add-cart">Publish</button>
+                <button type="submit" class="btn-add-cart"><?= $service ? 'Update' : 'Publish' ?></button>
                 <a href="/index.php" class="btn-hire">Cancel</a>
             </div>
         </form>
