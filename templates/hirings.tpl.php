@@ -1,22 +1,22 @@
-<?php function drawHires() { ?>
+<?php function drawHirings() { ?>
     <?php 
         $session = Session::getInstance();
         $user = $session->getUser();
         $userId = $user->id;
     ?>
-    <div id="hires-container">
-        <button id="hires-toggle-btn">
+    <div id="hirings-container">
+        <button id="hirings-toggle-btn">
             <i class="fa-solid fa-briefcase"></i>
-            <span id="hires-badge" class="hires-badge hidden"></span>
+            <span id="hirings-badge" class="hirings-badge hidden"></span>
         </button>
 
-        <div id="hires-modal" class="hidden">
-            <div class="hires-wrapper">
-                <div class="hires-received">
+        <div id="hirings-modal" class="hidden">
+            <div class="hirings-wrapper">
+                <div class="hirings-received">
                     <h4>Received Hirings</h4>                   
 
                     <?php
-                        $hirings = Hire::getAllByUser($userId, 'owner_id');
+                        $hirings = Hiring::getAllByUser($userId, 'owner_id');
 
                         if (empty($hirings)) {
                             echo "<p>No active hirings</p>";
@@ -48,7 +48,7 @@
                                         <div class='hiring-service-header'
                                             data-clients='$jsonClients'
                                             data-title=\"$escapedServiceTitle\"
-                                            onclick='drawServiceClients(this)'>
+                                            onclick='drawServiceClients(this, $serviceId)'>
                                             <h5>$escapedServiceTitle</h5>
                                             <i class='fa fa-chevron-right toggle-icon'></i>
                                         </div>
@@ -57,25 +57,24 @@
                             }
                         }
                     ?>
-
                 </div>                    
 
-                <div class="hires-main" id="hires-main">
-                    <div class="hires-header">
-                        <strong><span id="hires-freelancer-name">[Freelancer's name]</span></strong><br>
-                        <small id="hires-service-title">[Service title]</small>
+                <div class="hirings-main" id="hirings-main">
+                    <div class="hirings-header">
+                        <strong><span id="hirings-freelancer-name">[Freelancer's name]</span></strong><br>
+                        <small id="hirings-service-title">[Service title]</small>
                     </div>
 
-                    <div class="hires-body" id="hires-body">
-                        <p><em>Select an hiring to see its details...</em></p>
+                    <div class="hirings-body" id="hirings-body">
+                        <p><em>Select a hiring to see its details...</em></p>
                     </div>
                 </div>
 
-                <div class="hires-own">
+                <div class="hirings-own">
                     <h4>Own Hirings</h4>                   
 
                     <?php
-                        $hirings = Hire::getAllByUser($userId, 'client_id');
+                        $hirings = Hiring::getAllByUser($userId, 'client_id');
 
                         if (empty($hirings)) {
                             echo "<p>No active hirings</p>";
@@ -99,7 +98,7 @@
                                 echo "
                                     <div class='hiring-service-group'>
                                         <div class='hiring-service-header'
-                                            onclick='drawOwnHiringRequest($userUsernameJs, $ownerId, $serviceHiringsJson, $serviceTitleJs);'>
+                                            onclick='drawOwnHiringRequest($userUsernameJs, $ownerId, $serviceHiringsJson, $serviceId, $serviceTitleJs);'>
                                             <h5>$serviceTitle</h5>
                                             <i class='fa fa-chevron-right'></i>
                                         </div>
@@ -108,16 +107,14 @@
                             }
                         }
                     ?>
-
                 </div>
 
-
                 <div class="close-button">
-                    <button id="hires-close-btn"><i class="fa-solid fa-xmark"></i></button>
+                    <button id="hirings-close-btn"><i class="fa-solid fa-xmark"></i></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="/js/hires.js"></script>
+    <script src="/js/hirings.js"></script>
 <?php } ?>

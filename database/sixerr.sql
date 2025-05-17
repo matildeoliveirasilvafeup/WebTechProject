@@ -54,7 +54,6 @@ CREATE TABLE conversations (
     PRIMARY KEY (id, service_id)
 );
 
-
 CREATE TABLE messages (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     conversation_id VARCHAR(50) NOT NULL,
@@ -93,18 +92,6 @@ CREATE TABLE service_images (
     media_url TEXT NOT NULL
 );
 
-CREATE TABLE orders_services (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    client_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    freelancer_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
-    total_price REAL NOT NULL,
-    status TEXT CHECK(status IN ('pending', 'in_progress', 'completed', 'cancelled')) DEFAULT 'pending',
-    reviewed INTEGER DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE reviews (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
@@ -128,7 +115,7 @@ CREATE TABLE subcategories (
     UNIQUE(category_id, name)
 );
 
-CREATE TABLE hires (
+CREATE TABLE hirings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
     client_id INTEGER,
@@ -279,7 +266,7 @@ INSERT INTO messages (conversation_id, service_id, sender_id, receiver_id, messa
 -- ('5_6', 2, 5, 6, 'Preciso de ajuda com o site da empresa.'),
 -- ('5_6', 2, 5, 6, 'Claro, posso marcar uma call para hoje.');
 
-INSERT INTO hires (service_id, client_id, owner_id) VALUES
+INSERT INTO hirings (service_id, client_id, owner_id) VALUES
 (1, 5, 6),
 (1, 7, 6),
 (3, 5, 6),

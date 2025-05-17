@@ -3,7 +3,7 @@ declare(strict_types=1);
 require_once(__DIR__ . '/../includes/database.php');
 require_once(__DIR__ . '/../database/user.class.php');
 
-class Hire {
+class Hiring {
     public int $id;
     public int $service_id;
     public int $client_id;
@@ -22,41 +22,41 @@ class Hire {
         $this->ended_at = $ended_at;
     }
 
-    public static function getById(int $id): ?Hire {
+    public static function getById(int $id): ?Hiring {
         $db = Database::getInstance();
 
-        $stmt = $db->prepare("SELECT * FROM hires WHERE id = ?");
+        $stmt = $db->prepare("SELECT * FROM hirings WHERE id = ?");
         $stmt->execute([$id]);
 
         $row = $stmt->fetch();
         return $row ? self::fromRow($row) : null;
     }
 
-    public static function create(int $service_id, int $client_id, int $owner_id): Hire {
+    public static function create(int $service_id, int $client_id, int $owner_id): Hiring {
         $db = Database::getInstance();
 
-        $stmt = $db->prepare("INSERT INTO hires (service_id, client_id, owner_id) VALUES (?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO hirings (service_id, client_id, owner_id) VALUES (?, ?, ?)");
         $stmt->execute([$service_id, $client_id, $owner_id]);
 
         $id = (int)$db->lastInsertId();
-        return self::getById($db, $id);
+        return self::getById($id);
     }
 
     public static function getAllByUser(int $userId, string $position): array {
         $db = Database::getInstance();
 
-        $stmt = $db->prepare("SELECT * FROM hires WHERE $position = ?  ORDER BY created_at DESC");
+        $stmt = $db->prepare("SELECT * FROM hirings WHERE $position = ?  ORDER BY created_at DESC");
         $stmt->execute([$userId]);
 
-        $hires = [];
+        $hirings = [];
         while ($row = $stmt->fetch()) {
-            $hires[] = self::fromRow($row);
+            $hirings[] = self::fromRow($row);
         }
 
-        return $hires;
+        return $hirings;
     }
 
-    public function updateStatus(string $newStatus): void {
+    public static function updateStatus(int $id, string $newStatus): array {
         $db = Database::getInstance();
 
         $validStatuses = ['Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed'];
@@ -64,15 +64,20 @@ class Hire {
             throw new InvalidArgumentException("Invalid status: $newStatus");
         }
 
-        $this->status = $newStatus;
-        $this->ended_at = in_array($newStatus, ['Rejected', 'Cancelled', 'Completed']) ? date('Y-m-d H:i:s') : null;
+        $ended_at = in_array($newStatus, ['Rejected', 'Cancelled', 'Completed']) ? date('Y-m-d H:i:s') : null;
 
-        $stmt = $db->prepare("UPDATE hires SET status = ?, ended_at = ? WHERE id = ?");
-        $stmt->execute([$this->status, $this->ended_at, $this->id]);
+        $stmt = $db->prepare("UPDATE hirings SET status = ?, ended_at = ? WHERE id = ?");
+        $success = $stmt->execute([$newStatus, $ended_at, $id]);
+
+        if ($success) {
+            return ["success" => true, "message" => "Status updated successfully."];
+        } else {
+            return ["success" => false, "message" => "Error updating Status."];
+        }
     }
 
-    private static function fromRow(array $row): Hire {
-        return new Hire(
+    private static function fromRow(array $row): Hiring {
+        return new Hiring(
             (int)$row['id'],
             (int)$row['service_id'],
             (int)$row['client_id'],
