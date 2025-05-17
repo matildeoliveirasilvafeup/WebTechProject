@@ -88,6 +88,10 @@
 .btn-hire {
     background: var(--button-background);
     color: var(--secondary);
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.2s;
 }
 
 .btn-add-cart {
