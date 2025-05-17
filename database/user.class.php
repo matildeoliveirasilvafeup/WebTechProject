@@ -46,6 +46,19 @@ class User {
         ]);
     }
 
+    public static function getById(int $userId) {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('SELECT * FROM users WHERE id = :id');
+        $stmt->execute([':id' => $userId]);
+
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($userData) {
+            return new User($userData);
+        }
+
+        return null;
+    }
+
     public static function getByEmailAndPassword($email, $password) {
         $db = Database::getInstance();
         $stmt = $db->prepare('SELECT * FROM users WHERE email = :email');

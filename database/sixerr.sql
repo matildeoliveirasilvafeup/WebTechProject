@@ -128,6 +128,16 @@ CREATE TABLE subcategories (
     UNIQUE(category_id, name)
 );
 
+CREATE TABLE hires (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
+    client_id INTEGER,
+    owner_id INTEGER,
+    status TEXT NOT NULL DEFAULT 'Pending' CHECK (status IN ('Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ended_at TIMESTAMP
+);
+
 INSERT INTO users (name, username, email, password_hash, role) VALUES
 ('João Silva', 'joaosilva', 'joao@example.com', 'hash1', 'user'),
 ('Maria Costa', 'mariac', 'maria@example.com', 'hash2', 'admin'),
@@ -268,3 +278,12 @@ INSERT INTO messages (conversation_id, service_id, sender_id, receiver_id, messa
 ('5_6', 1, 5, 6, 'Olá Ana! Claro, como posso ajudar?');
 -- ('5_6', 2, 5, 6, 'Preciso de ajuda com o site da empresa.'),
 -- ('5_6', 2, 5, 6, 'Claro, posso marcar uma call para hoje.');
+
+INSERT INTO hires (service_id, client_id, owner_id) VALUES
+(1, 5, 6),
+(1, 7, 6),
+(3, 5, 6),
+(6, 5, 6),
+(5, 6, 5),
+(4, 6, 5),
+(2, 6, 5);
