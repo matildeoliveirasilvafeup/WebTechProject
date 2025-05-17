@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const serviceCard = `
                     <a href="service.php?id=${service.id}" class="service-card">
                         <div class="service-images">
-                            ${images.map(imageUrl => `<img src="${imageUrl}" alt="Service image">`).join('')}
+                            <img src="${images[0]}" alt="Service image">
                         </div>
                         <div class="service-info">
                             <h3>${service.title}</h3>
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const serviceCard = `
                     <a href="service.php?id=${service.id}" class="service-card">
                         <div class="service-images">
-                            ${images.map(imageUrl => `<img src="${imageUrl}" alt="Service image">`).join('')}
+                            <img src="${images[0]}" alt="Service image">
                         </div>
                         <div class="service-info">
                             <h3>${service.title}</h3>
