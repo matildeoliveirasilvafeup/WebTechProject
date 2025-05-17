@@ -32,7 +32,7 @@ CREATE TABLE profiles (
 
 CREATE TABLE favorites (
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    listing_id INTEGER REFERENCES listings(id) ON DELETE CASCADE,
+    listing_id INTEGER REFERENCES service(id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, listing_id)
 );
 
