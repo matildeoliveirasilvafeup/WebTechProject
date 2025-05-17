@@ -232,7 +232,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
                         <option value="" disabled selected>Select a subcategory</option>
                         <?php if ($service && $service->subcategoryId): ?>
                             <option value="<?= htmlspecialchars((string)$service->subcategoryId) ?>" selected>
-                                <?= htmlspecialchars((string)$service->subcategoryId) ?>
+                                <?= htmlspecialchars((string)$service->subcategoryName) ?>
                             </option>
                         <?php endif; ?>
                     </select>

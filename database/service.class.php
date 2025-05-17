@@ -13,6 +13,7 @@ class Service {
     public ?string $categoryName;
     public ?int $categoryId;
     public ?int $subcategoryId;
+    public ?string $subcategoryName;
     public ?int $freelancerId;
     public ?int $deliveryTime;     
     public ?int $numberOfRevisions;
@@ -30,6 +31,7 @@ class Service {
         $this->categoryName = $data['category_name'] ?? null;
         $this->categoryId = isset($data['category_id']) ? (int)$data['category_id'] : null;
         $this->subcategoryId = isset($data['subcategory_id']) ? (int)$data['subcategory_id'] : null;
+        $this->subcategoryName = $data['subcategory_name'] ?? null;
         $this->freelancerId = (int)$data['freelancer_id'] ?? null;
         $this->deliveryTime = isset($data['delivery_time']) ? (int)$data['delivery_time'] : null;
         $this->numberOfRevisions = isset($data['number_of_revisions']) ? (int)$data['number_of_revisions'] : null;
