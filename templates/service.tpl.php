@@ -254,6 +254,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
             <div class="form-group">
                 <?php if ($service && !empty($service->mediaUrls)): ?>
                     <h3>Old Media</h3>
+                    <p>Select the media files to remove.</p>
                     <div id="old-media-preview" class="file-preview">
                         <?php foreach ($service->mediaUrls as $media): ?>
                             <div class="file-item" data-media-url="<?= htmlspecialchars($media) ?>">
