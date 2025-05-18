@@ -219,24 +219,34 @@
 
 .hiring-service-group {
     width: 100%;
-    border: 1px solid var(--soft-line);
     border-radius: 0.625rem;
     margin-bottom: 1rem;
-    background-color: #fafafa;
     padding: 0.625rem;
 }
 .hiring-service-header {
     padding: 0.75rem 1rem;
-    background-color: var(--chat-darker-white);
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    border-bottom: 1px solid var(--soft-line);
+}
+.hiring-service-group:hover {
+    background-color: var(--soft-line);
+}
+.hiring-service-group.active {
+    background-color: var(--background-disabled);
+    font-weight: bold;
 }
 .hiring-service-header h5 {
     margin: 0;
     font-size: 1rem;
+    font-weight: normal;
+}
+.hirings-received .hiring-service-header h5 {
+    text-align: start;
+}
+.hirings-own .hiring-service-header h5 {
+    text-align: end;
 }
 .toggle-icon {
     transition: transform 0.3s ease;
@@ -304,8 +314,8 @@
     font-weight: bold;
     display: inline-block;
 }
-.status-pending { background-color: #ffecb3; color: #8a6d3b; }
-.status-accepted { background-color: #d9edf7; color: #31708f; }
-.status-rejected { background-color: #f2dede; color: #a94442; }
-.status-cancelled { background-color: #eee; color: #999; }
-.status-completed { background-color: #dff0d8; color: #3c763d; }
+.status-pending { background-color: var(--pending-color); color: var(--pending-background) }
+.status-accepted { background-color: var(--accepted-color); color: var(--accepted-background) }
+.status-rejected { background-color: var(--rejected-color); color: var(--rejected-background) }
+.status-cancelled { background-color: var(--cancelled-color); color: var(--cancelled-background) }
+.status-completed { background-color: var(--completed-color); color: var(--completed-background) }

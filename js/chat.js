@@ -70,6 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('openChat');
         }
     }
+
+    const openHiring = localStorage.getItem('openHiring');
+    if (openHiring === 'true') {
+        document.getElementById('hirings-modal')?.classList.remove('hidden');
+        localStorage.removeItem('openHiring');
+    }
 });
 
 
@@ -134,7 +140,33 @@ function drawMessages(conversationId, serviceId, userId) {
                 const msgText = document.createElement('div');
                 msgText.classList.add('msg-text');
 
-                if (msg.message) {
+                if (msg.message && msg.sub_message) {
+                    const bubble = document.createElement('div');
+                    bubble.classList.add('message-with-sub');
+
+                    const mainText = document.createElement('p');
+                    mainText.textContent = msg.message;
+                    bubble.appendChild(mainText);
+
+                    const subText = document.createElement('p');
+                    subText.textContent = msg.sub_message;
+                    subText.classList.add('sub-message-bubble');
+
+                    if (msg.status_class) {
+                        bubble.classList.add(`status-${msg.status_class.toLowerCase()}`);
+                        subText.classList.add(`status-${msg.status_class.toLowerCase()}`);
+                    }
+
+                    subText.style.cursor = 'pointer';
+                    subText.onclick = () => {
+                        localStorage.setItem('openHiring', 'true');
+                        location.reload();
+                    };
+
+                    bubble.appendChild(subText);
+                    msgText.appendChild(bubble);
+                } else if (msg.message) {
+
                     const textEl = document.createElement('p');
                     textEl.textContent = msg.message;
                     msgText.appendChild(textEl);
@@ -222,7 +254,8 @@ function sendMessage(event) {
     formData.append('service_id', CURRENT_SERVICE_ID);
     formData.append('sender_id', CURRENT_USER_ID);
     formData.append('receiver_id', CURRENT_RECEIVER_ID);
-
+    formData.append('sub_message', '');
+    
     if (fileInput && fileInput.files.length > 0) {
         formData.append('file', fileInput.files[0]);
         formData.append('message', message ? message : '');

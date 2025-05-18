@@ -34,6 +34,7 @@
                                     $client = User::getById($h->client_id);
                                     return [
                                         'hiring_id' => $h->id,
+                                        'owner_id' => $h->owner_id,
                                         'client_id' => $h->client_id,
                                         'client_name' => $client->username,
                                         'status' => $h->status,
@@ -44,11 +45,14 @@
                                 $escapedServiceTitle = htmlspecialchars($service->title, ENT_QUOTES, 'UTF-8');
 
                                 echo "
-                                    <div class='hiring-service-group'>
+                                    <div class='hiring-service-group' 
+                                            data-id='{$clientData[0]['hiring_id']}'
+                                            onclick='highlightSelectedHiring({$clientData[0]['hiring_id']});'>
                                         <div class='hiring-service-header'
                                             data-clients='$jsonClients'
                                             data-title=\"$escapedServiceTitle\"
-                                            onclick='drawServiceClients(this, $serviceId)'>
+                                            onclick='drawServiceClients(this, $serviceId, \"$serviceTitle\");'>
+
                                             <h5>$escapedServiceTitle</h5>
                                             <i class='fa fa-chevron-right toggle-icon'></i>
                                         </div>
@@ -96,11 +100,13 @@
                                 $serviceTitleJs = json_encode($serviceTitle);
 
                                 echo "
-                                    <div class='hiring-service-group'>
+                                    <div class='hiring-service-group' 
+                                            data-id='{$serviceHirings[0]->id}'
+                                            onclick='highlightSelectedHiring({$serviceHirings[0]->id});'>
                                         <div class='hiring-service-header'
                                             onclick='drawOwnHiringRequest($userUsernameJs, $ownerId, $serviceHiringsJson, $serviceId, $serviceTitleJs);'>
+                                            <i class='fa fa-chevron-left'></i>
                                             <h5>$serviceTitle</h5>
-                                            <i class='fa fa-chevron-right'></i>
                                         </div>
                                     </div>
                                 ";

@@ -1,3 +1,6 @@
+let CURRENT_HIRING_SERVICE_ID = null;
+let CURRENT_HIRING_OWNER_ID = null;
+
 document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('hirings-toggle-btn');
     const closeBtn = document.getElementById('hirings-close-btn');
@@ -18,16 +21,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const openHiring = localStorage.getItem('openHiring');
-    if (openHiring) {
-        try {
-            hiringModal.classList.remove('hidden');
-        } catch (e) {
-            console.error('Erro ao reabrir modal:', e);
-        } finally {
-            localStorage.removeItem('openHiring');
-        }
+    if (openHiring === 'true') {
+        document.getElementById('hirings-modal')?.classList.remove('hidden');
+        localStorage.removeItem('openHiring');
     }
 });
+
+function highlightSelectedHiring(id) {
+    document.querySelectorAll('.hiring-service-group').forEach(item => {
+        item.classList.remove('active');
+    });
+
+    const selectedItem = document.querySelector(
+        `.hiring-service-group[data-id="${id}"]`
+    );
+
+    if (selectedItem) {
+        selectedItem.classList.add('active');
+    }
+}
 
 function updateHiringStatus(hiringId, newStatus) {
     const formData = new FormData();
@@ -45,7 +57,7 @@ function updateHiringStatus(hiringId, newStatus) {
         return response.json();
     })
     .then(data => {
-        localStorage.setItem('openHiring', JSON.stringify({}));
+        localStorage.setItem('openHiring', 'true');
         location.reload();
     })
     .catch(error => {
@@ -54,9 +66,8 @@ function updateHiringStatus(hiringId, newStatus) {
     });
 }
 
-function drawServiceClients(element, serviceId) {
-    CURRENT_SERVICE_ELEMENT = element;
-    CURRENT_SERVICE_ID = serviceId;
+function drawServiceClients(element, serviceId, serviceTitle) {
+    CURRENT_HIRING_SERVICE_ID = serviceId;
 
     const title = element.getAttribute('data-title');
     const clientsJSON = element.getAttribute('data-clients');
@@ -83,10 +94,19 @@ function drawServiceClients(element, serviceId) {
             <span class="client-username" id="client-username">${client.client_name}</span>
             <div class="hiring-actions">
                 ${client.status === 'Pending' ? `
-                    <button onclick="updateHiringStatus(${client.hiring_id}, 'Accepted')" class="accept-btn">Accept</button>
-                    <button onclick="updateHiringStatus(${client.hiring_id}, 'Rejected')" class="reject-btn">Reject</button>
+                    <button onclick="updateHiringStatus(${client.hiring_id}, 'Accepted');
+                        sendStatusMessage(event, 'Accepted', ${client.owner_id}, ${client.client_id}, '${serviceTitle}')" 
+                        class="accept-btn">Accept
+                    </button>
+                    <button onclick="updateHiringStatus(${client.hiring_id}, 'Rejected');
+                        sendStatusMessage(event, 'Rejected', ${client.owner_id}, ${client.client_id}, '${serviceTitle}')"
+                        class="reject-btn">Reject
+                    </button>
                 ` : client.status === 'Accepted' ? `
-                    <button onclick="updateHiringStatus(${client.hiring_id}, 'Completed')" class="finish-btn">Finish</button>
+                    <button onclick="updateHiringStatus(${client.hiring_id}, 'Completed');
+                        sendStatusMessage(event, 'Completed', ${client.owner_id}, ${client.client_id}, '${serviceTitle}')"
+                        class="finish-btn">Finish
+                    </button>
                 ` : `<span class="status-label">${client.status}</span>`}
             </div>
         </div>
@@ -101,17 +121,12 @@ function drawServiceClients(element, serviceId) {
 }
 
 function drawOwnHiringRequest(ownerUsername, ownerId, hirings, serviceId, serviceTitle) {
-    CURRENT_HIRINGS = hirings;
-    CURRENT_HIRING_OWNER_USERNAME = ownerUsername;
-    CURRENT_HIRING_OWNER_ID = ownerId;
     CURRENT_HIRING_SERVICE_ID = serviceId;
-    CURRENT_HIRING_SERVICE_TITLE = serviceTitle;
+    CURRENT_HIRING_OWNER_ID = ownerId;
 
     const body = document.getElementById("hirings-body");
     const headerName = document.getElementById("hirings-freelancer-name");
     const headerTitle = document.getElementById("hirings-service-title");
-
-    console.log(ownerUsername);
 
     headerName.textContent = ownerUsername;
     headerName.style.cursor = 'pointer';
@@ -138,11 +153,47 @@ function drawOwnHiringRequest(ownerUsername, ownerId, hirings, serviceId, servic
                 </div>
                 ${showCancel ? `
                     <div class="hiring-actions">
-                        <button onclick="updateHiringStatus(${hiring.id}, 'Cancelled')" class="cancel-btn">Cancel</button>
+                        <button onclick="updateHiringStatus(${hiring.id}, 'Cancelled');
+                            sendStatusMessage(event, 'Cancelled', ${hiring.client_id}, ${hiring.owner_id}, '${serviceTitle}')"
+                            class="cancel-btn">Cancel
+                        </button>
                     </div>` : ""}
             </div>
         `;
     });
 
     body.innerHTML = html;
+}
+
+function sendStatusMessage(event, status, senderId, receiverId, serviceTitle) {
+    event.preventDefault();
+    
+    const message = `The hiring '${serviceTitle}' has been updated to ${status}!`;
+    const subMessage = `Click to see details`;
+
+    const ids = [senderId, receiverId].sort((a, b) => a - b);
+    const conversationId = `${ids[0]}_${ids[1]}`;
+
+    const formData = new FormData();
+    formData.append('conversation_id', conversationId);
+    formData.append('service_id', CURRENT_HIRING_SERVICE_ID);
+    formData.append('sender_id', senderId);
+    formData.append('receiver_id', receiverId);
+    formData.append('message', message);
+    formData.append('sub_message', subMessage);
+
+    fetch('/actions/action_send_message.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success) {
+            console.error('Error sending message:', data.error || 'Unknown error');
+        } else {
+        }
+    })
+    .catch(err => {
+        console.error('Error sending:', err);
+    });
 }

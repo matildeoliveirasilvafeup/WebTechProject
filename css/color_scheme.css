@@ -28,4 +28,14 @@
     --box-shadow: rgba(0, 0, 0, 0.05);
     --section-divider: #adadad;
     --chat-darker-white: #f1f1f1;
+    --pending-color: #ffecb3;
+    --pending-background: #8a6d3b;
+    --accepted-color: #d9edf7;
+    --accepted-background: #31708f;
+    --rejected-color: #f2dede;
+    --rejected-background: #a94442;
+    --cancelled-color: #eee;
+    --cancelled-background: #999;
+    --completed-color: #dff0d8;
+    --completed-background: #3c763d;
 }

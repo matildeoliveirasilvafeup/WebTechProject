@@ -61,6 +61,7 @@ CREATE TABLE messages (
     sender_id INTEGER NOT NULL,
     receiver_id INTEGER NOT NULL,
     message TEXT NOT NULL,
+    sub_message TEXT DEFAULT '',
     file TEXT,
     is_read INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -235,12 +236,6 @@ INSERT INTO service_images (service_id, media_url) VALUES
 (5, 'https://picsum.photos/300?template1'),
 (6, 'https://picsum.photos/300?landing2'),
 (7, 'https://picsum.photos/300?identity1');
-
-INSERT INTO orders_services (client_id, freelancer_id, service_id, total_price, status) VALUES
-(4, 1, 1, 75.00, 'completed'),
-(2, 3, 2, 150.00, 'in_progress'),
-(3, 1, 1, 75.00, 'in_progress'),
-(1, 1, 1, 75.00, 'in_progress');
 
 INSERT INTO reviews (service_id, client_id, rating, comment) VALUES
 (1, 4, 5, 'Excellent service, highly recommended!'),

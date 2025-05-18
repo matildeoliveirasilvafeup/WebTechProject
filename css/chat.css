@@ -335,3 +335,29 @@
 #cancel-file-btn:hover {
     color: var(--button-danger-hover);
 }
+
+.message-with-sub {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 12px;
+    background-color: #f4f4f4;
+    margin-bottom: 5px;
+}
+.message-with-sub.status-pending { background-color: var(--pending-color); color: var(--pending-background) }
+.message-with-sub.status-accepted { background-color: var(--accepted-color); color: var(--accepted-background) }
+.message-with-sub.status-rejected { background-color: var(--rejected-color); color: var(--rejected-background) }
+.message-with-sub.status-cancelled { background-color: var(--cancelled-color); color: black }
+.message-with-sub.status-completed { background-color: var(--completed-color); color: var(--completed-background) }
+
+.sub-message-bubble {
+    margin-top: 6px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: bold;
+}
+.sub-message-bubble.status-pending { background-color: #f0dca1; color: var(--pending-background) }
+.sub-message-bubble.status-accepted { background-color: #b7daed; color: var(--accepted-background) }
+.sub-message-bubble.status-rejected { background-color: #e7c5c5; color: var(--rejected-background) }
+.sub-message-bubble.status-cancelled { background-color: #d9d9d9; color: black }
+.sub-message-bubble.status-completed { background-color: #cde0c5; color: var(--completed-background) }
