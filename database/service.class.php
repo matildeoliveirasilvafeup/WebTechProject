@@ -12,6 +12,8 @@ class Service {
     public array $mediaUrls = [];
     public ?string $categoryName;
     public ?int $categoryId;
+    public ?int $subcategoryId;
+    public ?string $subcategoryName;
     public ?int $freelancerId;
     public ?int $deliveryTime;     
     public ?int $numberOfRevisions;
@@ -28,6 +30,8 @@ class Service {
         $this->mediaUrls = $data['mediaUrls'] ?? [];
         $this->categoryName = $data['category_name'] ?? null;
         $this->categoryId = isset($data['category_id']) ? (int)$data['category_id'] : null;
+        $this->subcategoryId = isset($data['subcategory_id']) ? (int)$data['subcategory_id'] : null;
+        $this->subcategoryName = $data['subcategory_name'] ?? null;
         $this->freelancerId = (int)$data['freelancer_id'] ?? null;
         $this->deliveryTime = isset($data['delivery_time']) ? (int)$data['delivery_time'] : null;
         $this->numberOfRevisions = isset($data['number_of_revisions']) ? (int)$data['number_of_revisions'] : null;
@@ -350,6 +354,140 @@ class Service {
         ");
         $stmt->bindValue(':service_id', $serviceId, PDO::PARAM_INT);
         $stmt->bindValue(':media_url', $mediaUrl, PDO::PARAM_STR);
+    
+        return $stmt->execute();
+    }
+
+    public static function increaseFavoriteCount(int $serviceId): void {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare('UPDATE services SET favorites_count = favorites_count + 1 WHERE id = ?');
+
+        $stmt->execute([$serviceId]);
+    }
+
+    public static function decreaseFavoriteCount(int $serviceId): void {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare('SELECT favorites_count FROM services WHERE id = ?');
+        $stmt->execute([$serviceId]);
+        $favoritesCount = $stmt->fetchColumn();
+
+        if ($favoritesCount > 0) {
+            $stmt = $db->prepare('UPDATE services SET favorites_count = favorites_count - 1 WHERE id = ?');
+            $stmt->execute([$serviceId]);
+        }
+    }
+
+    public static function getByUserId(int $userId): array {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("
+            SELECT services.*, users.name AS freelancer_name,
+            (
+                SELECT GROUP_CONCAT(media_url) 
+                FROM service_images 
+                WHERE service_id = services.id 
+                ORDER BY id ASC LIMIT 1
+            ) AS media_urls
+            FROM services
+            JOIN users ON services.freelancer_id = users.id
+            JOIN profiles ON users.id = profiles.user_id
+            WHERE services.freelancer_id = :freelancer_id
+            ORDER BY services.created_at DESC
+        ");
+        $stmt->bindValue(':freelancer_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+   
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as &$row) {
+            $row['mediaUrls'] = array_filter(explode(',', $row['media_urls'] ?? ''));
+        }
+
+        return array_map(fn($row) => new Service($row), $rows);
+    }
+
+    public static function deleteById(int $serviceId): bool {
+        $db = Database::getInstance();
+    
+        $stmt = $db->prepare('SELECT media_url FROM service_images WHERE service_id = :id');
+        $stmt->bindValue(':id', $serviceId, PDO::PARAM_INT);
+        $stmt->execute();
+        $mediaUrls = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    
+        self::deleteServiceFiles($mediaUrls);
+    
+        $stmt = $db->prepare('DELETE FROM service_images WHERE service_id = :id');
+        $stmt->bindValue(':id', $serviceId, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        $stmt = $db->prepare('DELETE FROM services WHERE id = :id');
+        $stmt->bindValue(':id', $serviceId, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public static function deleteServiceFiles(array $mediaUrls): void {
+        foreach ($mediaUrls as $url) {
+            $cleanedPath = ltrim($url, '/');
+            $baseDir = realpath(__DIR__ . '/../uploads');
+            $filePath = realpath(__DIR__ . '/../' . $cleanedPath);
+            
+            if ($filePath && str_starts_with($filePath, $baseDir) && file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+    }
+
+    public static function deleteSingleFile(string $mediaUrl): void {
+        $cleanedPath = ltrim($mediaUrl, '/');
+        $baseDir = realpath(__DIR__ . '/../uploads');
+        $filePath = realpath(__DIR__ . '/../' . $cleanedPath);
+    
+        if ($filePath && str_starts_with($filePath, $baseDir) && file_exists($filePath)) {
+            unlink($filePath);
+        }
+    }
+
+    public static function deleteMedia(int $serviceId, string $mediaUrl): bool {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('DELETE FROM service_images WHERE service_id = :service_id AND media_url = :media_url');
+        $stmt->bindValue(':service_id', $serviceId, PDO::PARAM_INT);
+        $stmt->bindValue(':media_url', $mediaUrl, PDO::PARAM_STR);
+        return $stmt->execute();
+    }
+
+    public static function getOwnerId(int $serviceId): ?int {
+        $db = Database::getInstance();
+        $stmt = $db->prepare('SELECT freelancer_id FROM services WHERE id = :id');
+        $stmt->bindValue(':id', $serviceId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchColumn() ?: null;
+    }
+
+    public static function update(array $data): bool {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("
+            UPDATE services
+            SET title = :title,
+                description = :description,
+                price = :price,
+                category_id = :category_id,
+                subcategory_id = :subcategory_id,
+                delivery_time = :delivery_time,
+                number_of_revisions = :number_of_revisions,
+                language = :language
+            WHERE id = :id
+        ");
+    
+        $stmt->bindValue(':id', $data['id'], PDO::PARAM_INT);
+        $stmt->bindValue(':title', $data['title'], PDO::PARAM_STR);
+        $stmt->bindValue(':description', $data['description'], PDO::PARAM_STR);
+        $stmt->bindValue(':price', $data['price'], PDO::PARAM_STR);
+        $stmt->bindValue(':category_id', $data['category_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':subcategory_id', $data['subcategory_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':delivery_time', $data['delivery_time'], PDO::PARAM_INT);
+        $stmt->bindValue(':number_of_revisions', $data['number_of_revisions'], PDO::PARAM_INT);
+        $stmt->bindValue(':language', $data['language'], PDO::PARAM_STR);
     
         return $stmt->execute();
     }

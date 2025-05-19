@@ -1,10 +1,10 @@
-<?php function drawDashboard($profile, $user, $profile_preferences) { ?>
+<?php function drawDashboard($profile, $user, $profile_preferences, $favorites, $ownServices) { ?>
 
     <div class="dashboard">
         <?php 
             drawSidebar();
 
-            drawContent($profile, $user, $profile_preferences);
+            drawContent($profile, $user, $profile_preferences, $favorites, $ownServices);
 
             drawEditModal($profile, $user, $profile_preferences);
         ?>       
@@ -26,25 +26,14 @@
     </div>
 <?php } ?>
 
-<?php function drawContent($profile, $user, $profile_preferences) { ?>
+<?php function drawContent($profile, $user, $profile_preferences, $favorites, $ownServices) { ?>
     <div class="dashboard-content">
-        <?php drawProfile($profile, $profile_preferences, $user); ?>
-
-        <div class="tab-content" id="favorites">
-            <div class="favourites-details">
-                <h2>Your Favorites</h2>
-                <p>Here's a list of your favorite services or listings.</p>
-            </div>
-        </div>
-        
-        <div class="tab-content" id="listings">
-            <div class="own-listings">
-                <h2>Your Listings</h2>
-                <p>Manage your own posted services or offers here.</p>
-            </div>
-        </div>
-        
-        <?php drawSettings($user); ?>
+        <?php 
+            drawProfile($profile, $profile_preferences, $user);
+            drawFavorites($favorites); 
+            drawOwnListings($ownServices);
+            drawSettings($user); 
+        ?>
     </div>
 <?php } ?>
 
@@ -59,5 +48,38 @@
 
     <div id="editModalPrefs" class="modal hidden">
         <?php drawEditPreferencesModal($profile); ?>
+    </div>
+<?php } ?>
+
+<?php function drawFavorites($favorites) {
+    drawFavoritesOrOwnListings($favorites, true);
+} ?>
+
+<?php function drawOwnListings($services) {
+    drawFavoritesOrOwnListings($services, false);
+} ?>
+
+<?php function drawFavoritesOrOwnListings($services, $isFavorites) { 
+    $id = $isFavorites ? 'favorites' : 'listings';
+?>
+    <div class="tab-content" id= "<?= $id ?>">
+        <div class="dashboard-details">
+            <?php if ($isFavorites) : ?>
+                <h2>Favorites</h2>
+            <?php else : ?>
+                <h2>Own Listings</h2>
+            <?php endif;   ?>          
+            <?php if (empty($services)): ?>
+                <p class="no">
+                    <?php if ($isFavorites) : ?>
+                        You don't have any favorites yet.
+                    <?php else : ?>
+                        You don't have any own listings yet.
+                    <?php endif; ?>   
+                </p>
+            <?php else:
+                drawServiceGrid($services, true, $isFavorites);
+            endif; ?>
+        </div>
     </div>
 <?php } ?>
