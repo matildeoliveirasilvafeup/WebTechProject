@@ -125,28 +125,9 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
                 <?= nl2br(htmlspecialchars($service->description)) ?>
             </div>
 
-            <div class="service-details">
-                <h1><?= htmlspecialchars($service->title) ?></h1>
-                <div class="freelancer-box">
-                    <img src="<?= htmlspecialchars($service->profilePicture ?? 'https://via.placeholder.com/50') ?>" alt="Foto do freelancer">
-                    <p class="freelancer">
-                        By <strong><?= htmlspecialchars($service->freelancerName) ?></strong><br>
-                        <?php if ($ratingInfo['avg']): ?>
-                            <?= renderStars($ratingInfo['avg']) ?>
-                            <?= $ratingInfo['avg'] ?> (<?= $ratingInfo['count'] ?> reviews)
-                        <?php else: ?>
-                            No reviews yet
-                        <?php endif; ?>
-                    </p>
-                </div>
-                <p class="price">€<?= number_format($service->price, 2) ?></p>
-                <div class="description">
-                    <?= nl2br(htmlspecialchars($service->description)) ?>
-                </div>
-                <div class="button-group">
-                    <a href="#" class="btn-hire" onclick="startConversation(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>)">Contact</a>
-                    <a href="#" class="btn-add-cart">Add to Cart</a>
-                </div>
+            <div class="button-group">
+                <a href="#" class="btn-hire" onclick="startConversation(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>)">Contact</a>
+                <a href="#" class="btn-add-cart">Add to Cart</a>
             </div>
         </div>
 
@@ -289,7 +270,6 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
                                 <?php endif; ?>
                                 <div class="file-actions">
                                     <input type="checkbox" name="delete_media[]" value="<?= htmlspecialchars($media) ?>" id="delete-<?= htmlspecialchars(basename($media)) ?>">
-                                    <label for="delete-<?= htmlspecialchars(basename($media)) ?>">Delete</label>
                                 </div>
                             </div>
                         <?php endforeach; ?>

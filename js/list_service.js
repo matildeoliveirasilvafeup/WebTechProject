@@ -88,3 +88,46 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+document.querySelector('.create-form').addEventListener('submit', function (event) {
+    const form = event.target;
+
+    const newFiles = form.querySelector('#images').files;
+    const newImageCount = Array.from(newFiles).filter(file => file.type.startsWith('image/')).length;
+
+    const oldMedia = form.querySelectorAll('#old-media-preview .file-item');
+    let oldImageCount = 0;
+
+    oldMedia.forEach(item => {
+        const mediaUrl = item.dataset.mediaUrl;
+        const isImage = /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(mediaUrl);
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        const markedForDeletion = checkbox?.checked;
+
+        if (isImage && !markedForDeletion) {
+            oldImageCount++;
+        }
+    });
+
+    const totalImageCount = oldImageCount + newImageCount;
+
+    if (totalImageCount === 0) {
+        alert("You need to add at least one image in order to publish a service.");
+        event.preventDefault();
+        return
+    } else if (totalImageCount > 15) {
+        alert("You can only have a maximum of 15 media files per service.");
+        event.preventDefault();
+        return;
+    }
+
+    const totalUploadSize = Array.from(newFiles).reduce((sum, file) => sum + file.size, 0);
+
+    const MAX_UPLOAD_SIZE = 8 * 1024 * 1024;
+
+    if (totalUploadSize > MAX_UPLOAD_SIZE) {
+        alert("Total file size exceeds the 8MB limit. Please reduce the size of your images or videos.");
+        event.preventDefault();
+        return;
+    }
+});
