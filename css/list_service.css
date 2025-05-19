@@ -4,12 +4,14 @@
 }
 
 .service-page#new_service .button-group,
-.service-page#edit_service .button-group{
+.service-page#edit_service .button-group,
+.service-page#create_category .button-group {
     justify-content: flex-end;
 }
 
 .service-page#new_service,
-.service-page#edit_service {
+.service-page#edit_service,
+.service-page#create_category {
     display: block;
     height: auto;
 }

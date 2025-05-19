@@ -38,7 +38,7 @@ if ($user && isset($user->id)) {
 $profile = Profile::getByUserId($userId);
 $profile_preferences = ProfilePreferences::getByUserId($userId);
 $favorites = Favorite::getByUserId($userId);
-$isAdmin = $session->getRole() === 'admin';
+$isAdmin = Session::isAdmin();
 $ownServices = $isAdmin ? Service::getAll() : Service::getByUserId($userId);
 
 drawHeader();

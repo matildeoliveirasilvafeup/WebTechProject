@@ -51,5 +51,9 @@ class Session {
     public static function setRole(string $role): void {
         $_SESSION["role"] = $role;
     }
+
+    public static function isAdmin(): bool {
+        return isset($_SESSION["role"]) && $_SESSION["role"] === "admin";
+    }
 }
 ?>
