@@ -24,6 +24,7 @@ class Session {
 
     public function login($user) {
         $_SESSION["user"] = $user;
+        $_SESSION["role"] = $user->role ?? null;
     }
 
     public function logout() {
@@ -41,6 +42,14 @@ class Session {
             return $error;
         }
         return null;
+    }
+
+    public static function getRole(): ?string {
+        return $_SESSION["role"] ?? null;
+    }
+
+    public static function setRole(string $role): void {
+        $_SESSION["role"] = $role;
     }
 }
 ?>

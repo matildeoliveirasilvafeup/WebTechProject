@@ -45,6 +45,12 @@ class Service {
         $db = Database::getInstance();
         $stmt = $db->prepare("
             SELECT services.*, users.name AS freelancer_name, users.username AS freelancer_username, profiles.profile_picture
+            (
+                SELECT GROUP_CONCAT(media_url)
+                FROM service_images
+                WHERE service_id = services.id
+                ORDER BY id ASC LIMIT 1
+            ) AS media_urls
             FROM services
             JOIN users ON services.freelancer_id = users.id
             JOIN profiles ON users.id = profiles.user_id
@@ -52,7 +58,13 @@ class Service {
         ");
         $stmt->execute();
 
-        return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as &$row) {
+            $row['mediaUrls'] = array_filter(explode(',', $row['media_urls'] ?? ''));
+        }
+
+        return array_map(fn($row) => new Service($row), $rows);
     }
 
     public static function getFeatured(int $limit = 6): array {

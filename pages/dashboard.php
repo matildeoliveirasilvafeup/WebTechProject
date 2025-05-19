@@ -38,10 +38,11 @@ if ($user && isset($user->id)) {
 $profile = Profile::getByUserId($userId);
 $profile_preferences = ProfilePreferences::getByUserId($userId);
 $favorites = Favorite::getByUserId($userId);
-$ownServices = Service::getByUserId($userId);
+$isAdmin = $session->getRole() === 'admin';
+$ownServices = $isAdmin ? Service::getAll() : Service::getByUserId($userId);
 
 drawHeader();
-drawDashboard($profile, $user, $profile_preferences, $favorites, $ownServices);
+drawDashboard($profile, $user, $profile_preferences, $favorites, $ownServices, $isAdmin);
 drawChat();
 drawFooter(); 
 ?>
