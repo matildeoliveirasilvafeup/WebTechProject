@@ -58,8 +58,8 @@ require_once(__DIR__ .  '/../database/category.class.php');
             <label for="category-name">Category Name</label>
             <input type="text" id="category-name" name="category_name" required>
 
-            <label for="category-icon">Category Icon (optional)</label>
-            <input type="text" id="category-icon" name="category_icon" placeholder="e.g., fa-solid fa-code">
+            <label for="category-icon">Category Icon</label>
+            <input type="text" id="category-icon" name="category_icon" placeholder="e.g., fsa fa-solid fsa fa-code" required>
 
             <div class="form-group">
                 <h3>Subcategories</h3>

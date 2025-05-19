@@ -55,5 +55,16 @@ class Category {
     
         return $categories;
     }
+
+    public static function create(string $name, string $icon, PDO $db): int {
+        $stmt = $db->prepare("INSERT INTO categories (name, icon) VALUES (?, ?)");
+        $stmt->execute([$name, $icon]);
+        return (int)$db->lastInsertId();
+    }
+
+    public static function addSubcategory(int $categoryId, string $subName, PDO $db): void {
+        $stmt = $db->prepare("INSERT INTO subcategories (category_id, name) VALUES (?, ?)");
+        $stmt->execute([$categoryId, $subName]);
+    }
 }
 ?>

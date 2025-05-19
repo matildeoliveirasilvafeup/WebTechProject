@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('subcategory-container');
 
     function updateInputs() {
-        const inputs = container.querySelectorAll('input[name="subcategories[]"]');
+        const inputs = Array.from(container.querySelectorAll('input[name="subcategories[]"]'));
         const lastInput = inputs[inputs.length - 1];
 
         if (lastInput && lastInput.value.trim() !== '') {
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
             newInput.type = 'text';
             newInput.name = 'subcategories[]';
             newInput.placeholder = 'Subcategory name';
-            newInput.required = true;
 
             newInput.addEventListener('input', updateInputs);
 
@@ -21,13 +20,17 @@ document.addEventListener('DOMContentLoaded', function () {
             container.appendChild(div);
         }
 
-        const inputsNow = container.querySelectorAll('input[name="subcategories[]"]');
-        const emptyInputs = Array.from(inputsNow).filter(input => input.value.trim() === '');
+        const emptyInputs = inputs.filter(input => input.value.trim() === '');
         if (emptyInputs.length > 1) {
             for (let i = 0; i < emptyInputs.length - 1; i++) {
                 emptyInputs[i].parentElement.remove();
             }
         }
+
+        const currentInputs = Array.from(container.querySelectorAll('input[name="subcategories[]"]'));
+        currentInputs.forEach((input, index) => {
+            input.required = index === 0;
+        });
     }
 
     const existingInputs = container.querySelectorAll('input[name="subcategories[]"]');
@@ -39,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
         initialInput.type = 'text';
         initialInput.name = 'subcategories[]';
         initialInput.placeholder = 'Subcategory name';
-        initialInput.required = true;
 
         initialInput.addEventListener('input', updateInputs);
         initialDiv.appendChild(initialInput);
@@ -49,4 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
             input.addEventListener('input', updateInputs);
         });
     }
+
+    updateInputs();
 });
