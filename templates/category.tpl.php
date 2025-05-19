@@ -28,9 +28,13 @@ require_once(__DIR__ .  '/../database/category.class.php');
     </div>
 <?php } ?>
 
-<?php function drawCategorySection($categories, $isAdmin) { ?>
+<?php function drawCategorySection($categories, $isAdmin) { 
+    $counter = $isAdmin ? count($categories) + 1: count($categories)?>
     <div class="category-section">
         <div class="carousel-wrapper">
+            <?php if ($counter > 10): ?>
+                <button class="slider-btn left" onclick="scrollCategorySlider(this, -1)">‹</button>
+            <?php endif; ?>
             <div class="category-carousel">
                 <?php foreach ($categories as $category): ?>
                     <a href="search.php?category=<?= $category->id ?>" class="category-card">
@@ -46,8 +50,13 @@ require_once(__DIR__ .  '/../database/category.class.php');
                     </a>
                 <?php endif; ?>
             </div>
+            <?php if ($counter > 10): ?>
+                <button class="slider-btn right" onclick="scrollCategorySlider(this, 1)">›</button>
+            <?php endif; ?>
         </div>    
     </div>
+
+    <script src="../js/slider.js"></script>
 <?php } ?>
 
 <?php function drawCategoryForm() { ?>
