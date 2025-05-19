@@ -32,14 +32,17 @@ class Hiring {
         return $row ? self::fromRow($row) : null;
     }
 
-    public static function create(int $service_id, int $client_id, int $owner_id): Hiring {
+    public static function create(int $service_id, int $client_id, int $owner_id): array {
         $db = Database::getInstance();
 
         $stmt = $db->prepare("INSERT INTO hirings (service_id, client_id, owner_id) VALUES (?, ?, ?)");
-        $stmt->execute([$service_id, $client_id, $owner_id]);
-
-        $id = (int)$db->lastInsertId();
-        return self::getById($id);
+        $success = $stmt->execute([$service_id, $client_id, $owner_id]);
+        
+        if ($success) {
+            return ["success" => true, "message" => "Hiring created successfully."];
+        } else {
+            return ["success" => false, "message" => "Error creating hiring."];
+        }
     }
 
     public static function getAllByUser(int $userId, string $position): array {

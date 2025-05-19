@@ -11,10 +11,10 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
 
     <a href="service.php?id=<?= $service->id ?>" class="service-card">
         <img src="<?= htmlspecialchars($imageUrl) ?>" alt="Service image">
-    
+
     <?php if ($isDashboard) { ?>
-        </a> 
-    <?php } ?>    
+        </a>
+    <?php } ?>
         <div class="service-info">
             <h3><?= htmlspecialchars($service->title) ?></h3>
             <p class="freelancer">By <?= htmlspecialchars($service->freelancerName) ?></p>
@@ -34,14 +34,14 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
                     </form>
                 </div>
                 <?php endif; ?>
-            </div> 
+            </div>
         </div>
     <?php if ($isDashboard) { ?>
         </div>
     <?php } else { ?>
         </a>
-    <?php } ?> 
-  
+    <?php } ?>
+
 <?php } ?>
 <?php function renderServiceSlider(array $services, int $minItemsToShowNav = 6, string $sliderId = 'servicesSlider') {
     if (empty($services)) return;
@@ -69,8 +69,8 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
 
     if ($isDashboard) { ?>
         <section class="dashboard-grid">
-    <?php } else { ?>    
-        <section class="services-grid">   
+    <?php } else { ?>
+        <section class="services-grid">
     <?php }
         foreach ($services as $service):
             renderServiceCard($service, $isDashboard, !$isFavorites);
@@ -101,40 +101,44 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
                     </span>
                 <?php endif; ?>
             </div>
+                <button class="carousel-btn left" onclick="scrollMedia(-1)">‹</button>
+                <button class="carousel-btn right" onclick="scrollMedia(1)">›</button>
+            </div>
 
-            <button class="carousel-btn left" onclick="scrollMedia(-1)">‹</button>
-            <button class="carousel-btn right" onclick="scrollMedia(1)">›</button>
-        </div>
-        
-        <div class="service-details">
-            <h1><?= htmlspecialchars($service->title) ?></h1>
-            <div class="freelancer-box">
-                <?php if (!empty($service->profilePicture)): ?>
-                    <img src="<?= htmlspecialchars($service->profilePicture) ?>" alt="Foto do freelancer">
-                <?php else: ?>
-                    <i class="fa-solid fa-image-portrait"></i>
-                <?php endif; ?>
-
-                <p class="freelancer">
-                    By <strong><?= renderUserLink($service->freelancerUsername, $service->freelancerName) ?></strong><br>
-                    <?php if ($ratingInfo['avg']): ?>
-                        <?= renderStars($ratingInfo['avg']) ?>
-                        <?= $ratingInfo['avg'] ?> (<?= $ratingInfo['count'] ?> reviews)
+            <div class="service-details">
+                <h1><?= htmlspecialchars($service->title) ?></h1>
+                <div class="freelancer-box">
+                    <?php if (!empty($service->profilePicture)): ?>
+                        <img src="<?= htmlspecialchars($service->profilePicture) ?>" alt="Foto do freelancer">
                     <?php else: ?>
-                        No reviews yet
+                        <i class="fa-solid fa-image-portrait"></i>
                     <?php endif; ?>
-                </p>
-            </div>
-            <p class="price">€<?= number_format($service->price, 2) ?></p>
-            <div class="description">
-                <?= nl2br(htmlspecialchars($service->description)) ?>
-            </div>
 
-            <div class="button-group">
-                <a href="#" class="btn-hire" onclick="startConversation(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>)">Contact</a>
-                <a href="#" class="btn-add-cart">Add to Cart</a>
+                    <p class="freelancer">
+                        By <strong><?= renderUserLink($service->freelancerUsername, $service->freelancerName) ?></strong><br>
+                        <?php if ($ratingInfo['avg']): ?>
+                            <?= renderStars($ratingInfo['avg']) ?>
+                            <?= $ratingInfo['avg'] ?> (<?= $ratingInfo['count'] ?> reviews)
+                        <?php else: ?>
+                            No reviews yet
+                        <?php endif; ?>
+                    </p>
+                </div>
+                <p class="price">€<?= number_format($service->price, 2) ?></p>
+                <div class="description">
+                    <?= nl2br(htmlspecialchars($service->description)) ?>
+                </div>
+
+                <div class="button-group">
+                    <a href="#" class="btn-hire" onclick="startConversation(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>)">Contact</a>
+                    <a href="#" class="btn-add-cart" onclick="
+                        startConversation(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>);
+                        createHiring(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>);
+                        sendStatusMessage(event, 'Pending', <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>, '<?= htmlspecialchars($service->title, ENT_QUOTES) ?>');
+                        ">Hire
+                    </a>
+                </div>
             </div>
-        </div>
 
         <div class="info-actions">
             <button class="icon-btn favorite">
@@ -162,6 +166,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
 
     <script src="../js/favorite.js"></script>
     <script src="/js/chat.js"></script>
+    <script src="/js/hirings.js"></script>
     <script src="../js/media_scroll.js"></script>
 <?php } ?>
 
@@ -192,7 +197,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
 
 <?php function drawListServicesForm($categories, ?Service $service = null) { ?>
     <section class="service-page" id="<?= $service ? 'edit_service' : 'new_service' ?>">
-        <form action="<?= $service ? '/actions/action_edit_service.php' : '/actions/action_list_service.php' ?>" 
+        <form action="<?= $service ? '/actions/action_edit_service.php' : '/actions/action_list_service.php' ?>"
               method="POST" enctype="multipart/form-data" class="create-form">
             <h1><?= $service ? 'Edit Service' : 'List New Service' ?></h1>
 
@@ -209,13 +214,13 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
             <div class="form-grid">
                 <div>
                     <label for="price">Price (€)</label>
-                    <input type="number" id="price" name="price" min="0" step="0.01" 
+                    <input type="number" id="price" name="price" min="0" step="0.01"
                            value="<?= htmlspecialchars(number_format((float)($service->price ?? 0), 2, '.', '')) ?>" required>
                 </div>
 
                 <div>
                     <label for="delivery">Delivery Time (in days)</label>
-                    <input type="number" id="delivery" name="delivery" min="0" step="1" 
+                    <input type="number" id="delivery" name="delivery" min="0" step="1"
                            value="<?= $service->deliveryTime ?? '' ?>" required>
                 </div>
 
@@ -247,13 +252,13 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
 
                 <div>
                     <label for="revisions">Included Revisions</label>
-                    <input type="number" id="revisions" name="revisions" min="0" step="1" 
+                    <input type="number" id="revisions" name="revisions" min="0" step="1"
                            value="<?=$service->numberOfRevisions ?? '' ?>" required>
                 </div>
 
                 <div>
                     <label for="language">Language</label>
-                    <input type="text" id="language" name="language" 
+                    <input type="text" id="language" name="language"
                            value="<?= htmlspecialchars($service->language ?? '') ?>">
                 </div>
             </div>
@@ -282,7 +287,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
                     </div>
                 <?php endif; ?>
             </div>
-            
+
             <div class="form-group">
                 <h3><?= $service ? 'Add New Media' : 'Add Media' ?></h3>
                 <label for="images">Images and Videos</label>

@@ -27,6 +27,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function createHiring(serviceId, clientId, ownerId) {
+    CURRENT_HIRING_SERVICE_ID = serviceId;
+    
+    fetch('/actions/action_create_hiring.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            serviceId: serviceId,
+            client_id: clientId,
+            owner_id: ownerId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Hiring result:', data);
+    })
+    .catch(error => {
+        console.error('Erro ao contratar:', error);
+    });
+}
+
 function highlightSelectedHiring(id) {
     document.querySelectorAll('.hiring-service-group').forEach(item => {
         item.classList.remove('active');
