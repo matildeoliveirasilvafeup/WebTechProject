@@ -2,9 +2,23 @@ import { createHiring, sendStatusMessage, startConversation } from './chat_hirin
 
 document.addEventListener('DOMContentLoaded', () => {
     const billingForm = document.getElementById('billing-form');
-    // const goBackStep = document.getElementById('step-go-back');
+    const goBackStep = document.getElementById('step-go-back');
     const paymentStep = document.getElementById('step-payment');
     const billingStep = document.getElementById('step-billing');
+    const methodRadios = document.querySelectorAll('input[name="payment_method"]');
+    const methodForms = document.querySelectorAll('.method-form');
+
+    methodRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            methodForms.forEach(form => {
+                if (form.dataset.method === radio.value) {
+                    form.classList.remove('hidden');
+                } else {
+                    form.classList.add('hidden');
+                }
+            });
+        });
+    });
 
     const toPaymentBtn = document.getElementById('to-payment');
     toPaymentBtn.addEventListener('click', () => {
@@ -42,12 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 resultDiv.innerHTML = '<p class="success">Payment successful! Redirecting...</p>';
 
-                // Aguarda cada chamada assíncrona
                 await startConversation(serviceId, clientId, freelancerId, 'false');
                 await createHiring(serviceId, clientId, freelancerId);
                 await sendStatusMessage('Pending', clientId, freelancerId, serviceId, serviceTitle);
 
-                console.log('here here here');
+                paymentStep.classList.add('hidden');
+                goBackStep.classList.remove('hidden');
+
                 window.location.href = '/pages/home_page.php';
             } else {
                 resultDiv.innerHTML = `<p class="error">${data.message}</p>`;
@@ -56,47 +71,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
-
-
-function openPaymentModal(serviceId) {
-    const modal = document.getElementById('payment-modal');
-    modal.classList.add('visible');
-    modal.dataset.serviceId = serviceId;
-}
-
-function closePaymentModal() {
-    document.getElementById('payment-modal').classList.remove('visible');
-}
-
-function confirmPayment() {
-    const modal = document.getElementById('payment-modal');
-    const serviceId = modal.dataset.serviceId;
-    const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value;
-
-    if (!paymentMethod) {
-        alert('Choose a payment method');
-        return;
-    }
-
-    fetch('/actions/simulate_payment.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            service_id: serviceId,
-            method: paymentMethod
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            alert('Payment simulated successfully!');
-            closePaymentModal();
-        } else {
-            alert('Payment failed: ' + data.error);
-        }
-    })
-    .catch(err => {
-        console.error('Error:', err);
-        alert('Unexpected error occurred.');
-    });
-}

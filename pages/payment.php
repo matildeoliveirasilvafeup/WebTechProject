@@ -75,17 +75,41 @@ function drawPaymentForm(Service $service, User $client, User $freelancer): void
                 <input type="hidden" name="client_id" value="<?= htmlspecialchars($client->id) ?>">
                 <input type="hidden" name="freelancer_id" value="<?= htmlspecialchars($freelancer->id) ?>">
 
-                <label><input type="radio" name="payment_method" value="paypal" required> PayPal</label>
-                <label><input type="radio" name="payment_method" value="credit_card"> Credit Card</label>
-                <label><input type="radio" name="payment_method" value="pix"> PIX</label>
+                <div class="payment-options">
+                    <label><input type="radio" name="payment_method" value="paypal" required> PayPal</label>
+                    <label><input type="radio" name="payment_method" value="credit_card"> Credit Card</label>
+                    <label><input type="radio" name="payment_method" value="pix"> PIX</label>
+                    <label><input type="radio" name="payment_method" value="mbway"> MB Way</label>
+                    <label><input type="radio" name="payment_method" value="paysafecard"> Paysafecard</label>
+                </div>
+
+                <div id="method-details">
+                    <div class="method-form hidden" data-method="credit_card">
+                        <label>Card Number<input type="text" name="cc_number" /></label>
+                        <label>Expiration Date<input type="text" name="cc_expiry" placeholder="MM/YY" /></label>
+                        <label>CVV<input type="text" name="cc_cvv" /></label>
+                    </div>
+                    <div class="method-form hidden" data-method="paypal">
+                        <label>PayPal Email<input type="email" name="paypal_email" /></label>
+                    </div>
+                    <div class="method-form hidden" data-method="pix">
+                        <p>Use the QR code to pay with your banking app.</p>
+                    </div>
+                    <div class="method-form hidden" data-method="mbway">
+                        <label>Phone Number<input type="text" name="mbway_phone" /></label>
+                    </div>
+                    <div class="method-form hidden" data-method="paysafecard">
+                        <label>Paysafecard Code<input type="text" name="paysafe_code" /></label>
+                    </div>
+                </div>
 
                 <button type="submit" id="confirm-payment">Confirm Payment</button>
             </form>
         </div>
-<!-- 
+
         <div class="payment-step hidden" id="step-go-back">
             <h3>Redirecting to Home Page</h3>
-        </div> -->
+        </div>
 
         <div id="result"></div>
     </div>

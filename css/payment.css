@@ -52,3 +52,24 @@
     color: red;
     margin-top: 1.25rem;
 }
+
+.payment-options {
+    margin-bottom: 1rem;
+}
+
+.method-form {
+    margin: 1rem 0;
+    padding: 1rem;
+    border: 1px dashed #ccc;
+    background: #f9f9f9;
+    border-radius: 0.5rem;
+}
+
+.method-form.hidden {
+    display: none;
+}
+
+.method-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
