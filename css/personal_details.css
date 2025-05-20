@@ -25,9 +25,19 @@ html, body {
 :where(body) > .public-profile main {
     flex: 1;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     box-sizing: border-box;
+}
+
+.public-profile .category-menu {
+    width: 100%;
+}
+
+.public-profile h1 {
+    color: var(--main-theme);
+    margin: 1em;
 }
 
 .public-profile .personal-details {

@@ -10,6 +10,7 @@ require_once (__DIR__ . '/../database/chat.class.php');
 require_once (__DIR__ . '/../database/service.class.php');
 
 require_once (__DIR__ . '/../templates/chat.tpl.php');
+require_once (__DIR__ .  '/../templates/category.tpl.php');
 require_once (__DIR__ . '/../templates/personal_details.tpl.php');
 
 require_once (__DIR__ . '/../templates/common/header.tpl.php');
@@ -22,6 +23,7 @@ if (!$username) {
     exit("User not found.");
 }
 
+$categoriesMenu = Category::getAllWithSubcategories();
 $userId = User::getIdByUsername($username); 
 $user = User::getById($userId);
 $profile = Profile::getByUserId($userId);
@@ -29,8 +31,9 @@ $profile_preferences = ProfilePreferences::getByUserId($userId);
 
 drawPublicProfileStart();
 drawHeader();
+drawCategoryMenu($categoriesMenu);
 drawProfile($profile, $profile_preferences, $user, false);
-drawChat();
+#drawChat();
 drawFooter();
 drawPublicProfileEnd();
 

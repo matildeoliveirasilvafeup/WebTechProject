@@ -1,5 +1,9 @@
 
 <?php function drawProfile($profile, $profile_preferences, $user, $isPrivate = true) { ?>
+    <?php if (!$isPrivate) { ?>
+        <h1><?= htmlspecialchars($user->name) ?>'s Profile</h1>
+    <?php } ?>
+    
     <div id="profile" class="tab-content active">
         <div class="personal-details">
             <div class="profile-header">
