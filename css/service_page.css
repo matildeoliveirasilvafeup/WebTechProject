@@ -24,9 +24,11 @@
     margin: 0;
 }
 
-.freelancer-box .freelancer {
+.freelancer-box .freelancer a {
     font-size: 0.95rem;
     line-height: 1.4;
+    text-decoration: none;
+    color: black;
 }
 
 .freelancer-box .freelancer strong {

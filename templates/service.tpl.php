@@ -111,7 +111,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
             <div class="freelancer-box">
                 <img src="<?= htmlspecialchars($service->profilePicture ?? 'https://via.placeholder.com/50') ?>" alt="Foto do freelancer">
                 <p class="freelancer">
-                    By <strong><?= htmlspecialchars($service->freelancerName) ?></strong><br>
+                    By <strong><?= renderUserLink($service->freelancerName) ?></strong><br>
                     <?php if ($ratingInfo['avg']): ?>
                         <?= renderStars($ratingInfo['avg']) ?>
                         <?= $ratingInfo['avg'] ?> (<?= $ratingInfo['count'] ?> reviews)

@@ -1,11 +1,11 @@
 
-<?php function drawProfile($profile, $profile_preferences, $user) { ?>
+<?php function drawProfile($profile, $profile_preferences, $user, $isPrivate = true) { ?>
     <div id="profile" class="tab-content active">
         <div class="personal-details">
             <div class="profile-header">
 
                 <?php drawIcon($profile); ?>
-                <?php drawInfo($profile, $user); ?>
+                <?php drawInfo($profile, $user, $isPrivate); ?>
                 
             </div>
             
@@ -13,18 +13,20 @@
             
             <div class="profile-body">
                 
-                <?php drawBio($profile); ?>
+                <?php drawBio($profile, $isPrivate); ?>
                 
                 <hr class="section-divider">
                 
-                <?php drawPreferences($profile_preferences); ?>
+                <?php drawPreferences($profile_preferences, $isPrivate); ?>
                 
             </div>
 
-            <?php drawControls(); ?>
+            <?php if ($isPrivate)
+                drawControls(); ?>
         </div>
 
-        <?php drawReviews(); ?>
+        <?php if ($isPrivate)
+            drawReviews(); ?>
     </div>
     
 <?php } ?>
@@ -39,29 +41,32 @@
     </div>
 <?php } ?>
 
-<?php function drawInfo($profile, $user) { ?>
+<?php function drawInfo($profile, $user, $isPrivate) { ?>
     <div class="profile-info">
         <h2><?= htmlspecialchars($user->name) ?></h2>
         <p class="username">@<?= htmlspecialchars($user->username) ?></p>
         <p><i class="fas fa-map-marker-alt"></i> Located in <?= htmlspecialchars($profile->location) ?></p>
         <p><i class="fas fa-calendar-alt"></i> Joined in <?= date('F Y', strtotime($user->createdAt)) ?></p>
     </div>
+    <?php if ($isPrivate) { ?>
+        <button id="editProfBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
+    <?php } 
+} ?>
 
-    <button id="editProfBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
-<?php } ?>
-
-<?php function drawBio($profile) { ?>
+<?php function drawBio($profile, $isPrivate) { ?>
     <div class="profile-bio">
         <div class="content">
             <h3>Bio</h3>
             <p id="bioText"><?= htmlspecialchars($profile->bio ?? 'No bio available') ?></p>
         </div>
-        
-        <button id="editBioBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
+
+        <?php if ($isPrivate) { ?>
+            <button id="editBioBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
+        <?php } ?>    
     </div>
 <?php } ?>
 
-<?php function drawPreferences($profile_preferences) { ?>
+<?php function drawPreferences($profile_preferences, $isPrivate) { ?>
     <div class="profile-preferences">
         <div class="content">
             <h3>Preferences</h3>
@@ -71,7 +76,9 @@
             
         </div>
 
-        <button id="editPrefsBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
+        <?php if ($isPrivate) { ?>
+            <button id="editPrefsBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
+        <?php } ?>    
     </div>
 <?php } ?>
 
