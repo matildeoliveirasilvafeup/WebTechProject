@@ -131,3 +131,11 @@
         </div>
     </div>
 <?php } ?>
+
+<?php function drawPublicProfileStart() { ?>
+    <div class="public-profile">
+<?php } 
+
+function drawPublicProfileEnd() { ?>
+    </div>
+<?php } ?>

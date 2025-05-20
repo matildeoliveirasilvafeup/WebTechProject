@@ -22,15 +22,16 @@ if (!$username) {
     exit("User not found.");
 }
 
-
 $userId = User::getIdByUsername($username); 
 $user = User::getById($userId);
 $profile = Profile::getByUserId($userId);
 $profile_preferences = ProfilePreferences::getByUserId($userId);
 
+drawPublicProfileStart();
 drawHeader();
-drawChat();
 drawProfile($profile, $profile_preferences, $user, false);
+drawChat();
 drawFooter();
+drawPublicProfileEnd();
 
 ?>

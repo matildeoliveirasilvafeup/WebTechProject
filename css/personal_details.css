@@ -8,6 +8,40 @@
 }
 
 .personal-details {
+    max-width: 30vw;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+:where(body) > .public-profile {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+ 
+:where(body) > .public-profile main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.public-profile .personal-details {
+    min-width: 50vw;
+    max-width: 85%;
+} 
+
+.public-profile .profile-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.personal-details {
     padding: 2em;
 }
 
