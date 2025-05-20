@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $categoryName = trim($_POST['category_name'] ?? '');
 $icon = trim($_POST['category_icon'] ?? '');
-$subcategories = $_POST['subcategories[]'] ?? [];
+$subcategories = $_POST['subcategories'] ?? [];
 
 if (empty($categoryName)) {
     $_SESSION['error'] = 'Category name is required.';
@@ -20,19 +20,15 @@ if (empty($categoryName)) {
 }
 
 try {
-    $db = Database::getInstance();
-    $db->beginTransaction();
-
-    $categoryId = Category::create($categoryName, $icon, $db);
+    $categoryId = Category::create($categoryName, $icon);
 
     foreach ($subcategories as $sub) {
         $subName = trim($sub);
         if (!empty($subName)) {
-            Category::addSubcategory($categoryId, $subName, $db);
+            Category::addSubcategory($categoryId, $subName);
         }
     }
 
-    $db->commit();
     $_SESSION['success'] = 'Category created successfully.';
     header('Location: /pages/home_page.php');
     exit();

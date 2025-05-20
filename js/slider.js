@@ -8,7 +8,7 @@ function scrollSlider(button, direction) {
 function scrollCategorySlider(button, direction) {
     const wrapper = button.closest('.carousel-wrapper');
     const slider = wrapper.querySelector('.category-carousel');
-    const scrollAmount = slider.offsetWidth * 0.2;
+    const scrollAmount = slider.offsetWidth * 0.8;
     slider.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
 }
 

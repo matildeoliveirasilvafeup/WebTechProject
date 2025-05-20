@@ -44,7 +44,7 @@ require_once(__DIR__ .  '/../database/category.class.php');
                 <?php endforeach; ?>
 
                 <?php if ($isAdmin): ?>
-                    <a href="create_category.php" class="category-card">
+                    <a href="create_category.php" class="category-card" id="admin">
                         <i class="icon fas fa-plus"></i>
                         <p>Create New Category</p>
                     </a>
