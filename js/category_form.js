@@ -54,3 +54,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateInputs();
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const iconInput = document.getElementById('category-icon');
+    if (iconInput) {
+        $('#category-icon').iconpicker({
+            placement: 'bottomLeft',
+            hideOnSelect: true,
+            animation: false
+        });
+    }
+});

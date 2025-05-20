@@ -114,3 +114,7 @@
     color: var(--main-text-color);
     text-decoration: none;
 }
+
+.iconpicker-popover.popover .popover-title input[type=search].iconpicker-search {
+    max-width: 100%;
+}

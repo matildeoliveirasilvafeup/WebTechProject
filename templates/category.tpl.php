@@ -68,7 +68,7 @@ require_once(__DIR__ .  '/../database/category.class.php');
             <input type="text" id="category-name" name="category_name" required>
 
             <label for="category-icon">Category Icon</label>
-            <input type="text" id="category-icon" name="category_icon" placeholder="e.g., fsa fa-solid fsa fa-code" required>
+            <input type="text" id="category-icon" name="category_icon" readonly required>
 
             <div class="form-group">
                 <h3>Subcategories</h3>
@@ -87,6 +87,8 @@ require_once(__DIR__ .  '/../database/category.class.php');
         </form>
     </section>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/js/fontawesome-iconpicker.min.js"></script>    
 <script src="../js/category_form.js"></script>
 
 <?php } ?>
