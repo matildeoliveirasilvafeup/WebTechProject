@@ -171,4 +171,22 @@ class User {
             ];
         }
     }
+    
+    public static function getIdByUsername(string $username): ?int {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT id FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? (int)$result['id'] : null;
+    }
+
+    public static function getById(int $id): ?User {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->execute([$id]);
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ? new User($data) : null;
+    }
 }

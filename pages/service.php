@@ -16,6 +16,7 @@
     require_once(__DIR__ .  '/../templates/chat.tpl.php');
     require_once(__DIR__ .  '/../templates/common/footer.tpl.php');
     require_once(__DIR__ .  '/../templates/common/toast.tpl.php');
+    require_once(__DIR__ .  '/../templates/common/utils.tpl.php');
 
     $serviceId = $_GET['id'] ?? null;
     if (!$serviceId || !is_numeric($serviceId)) {

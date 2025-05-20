@@ -8,6 +8,50 @@
 }
 
 .personal-details {
+    max-width: 30vw;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+:where(body) > .public-profile {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+ 
+:where(body) > .public-profile main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.public-profile .category-menu {
+    width: 100%;
+}
+
+.public-profile h1 {
+    color: var(--main-theme);
+    margin: 1em;
+}
+
+.public-profile .personal-details {
+    min-width: 50vw;
+    max-width: 85%;
+} 
+
+.public-profile .profile-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.personal-details {
     padding: 2em;
 }
 

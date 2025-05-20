@@ -5,6 +5,7 @@
     require_once(__DIR__ .  '/../templates/search.tpl.php');
     require_once(__DIR__ .  '/../templates/chat.tpl.php');
     require_once(__DIR__ .  '/../templates/common/footer.tpl.php');
+    require_once (__DIR__ . '/../templates/common/utils.tpl.php'); 
 
     $categories = Category::getAllWithSubcategories();
     $searchQuery = $_GET['q'] ?? '';

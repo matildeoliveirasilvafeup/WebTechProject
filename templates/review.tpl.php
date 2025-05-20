@@ -53,7 +53,7 @@ function renderStars(float $rating): string {
                 <div class="review-header">
                     <img src="<?= htmlspecialchars($review->profilePicture ?? 'https://via.placeholder.com/40') ?>" alt="Foto do cliente">
                     <div>
-                        <strong><?= htmlspecialchars($review->clientName) ?></strong><br>
+                        <strong><?= renderUserLink($review->clientUsername,$review->clientName) ?></strong><br>
                         <?= renderStars($review->rating) ?>
                     </div>
                 </div>

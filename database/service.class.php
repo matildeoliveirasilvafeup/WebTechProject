@@ -8,6 +8,7 @@ class Service {
     public string $description;
     public float $price;
     public string $freelancerName;
+    public string $freelancerUsername;
     public ?string $profilePicture;
     public array $mediaUrls = [];
     public ?string $categoryName;
@@ -26,6 +27,7 @@ class Service {
         $this->description = $data['description'];
         $this->price = (float)$data['price'];
         $this->freelancerName = $data['freelancer_name'];
+        $this->freelancerUsername = $data['freelancer_username'];
         $this->profilePicture = $data['profile_picture'] ?? null;
         $this->mediaUrls = $data['mediaUrls'] ?? [];
         $this->categoryName = $data['category_name'] ?? null;
@@ -42,7 +44,7 @@ class Service {
     public static function getAll(): array {
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            SELECT services.*, users.username AS freelancer_name, profiles.profile_picture
+            SELECT services.*, users.name AS freelancer_name, users.username AS freelancer_username, profiles.profile_picture
             FROM services
             JOIN users ON services.freelancer_id = users.id
             JOIN profiles ON users.id = profiles.user_id
@@ -59,6 +61,7 @@ class Service {
             SELECT 
                 services.*,
                 users.name AS freelancer_name,
+                users.username AS freelancer_username,
                 (
                     SELECT GROUP_CONCAT(media_url)
                     FROM service_images 
@@ -88,6 +91,7 @@ class Service {
             SELECT 
                 services.*,
                 users.name AS freelancer_name,
+                users.username AS freelancer_username,
                 profiles.profile_picture,
                 categories.name AS category_name,
                 subcategories.name AS subcategory_name,
@@ -120,7 +124,7 @@ class Service {
     public static function getMoreFromFreelancer(int $freelancerId, int $excludeId, int $limit = 4): array {
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            SELECT s.*, u.name AS freelancer_name,
+            SELECT s.*, u.name AS freelancer_name, u.username AS freelancer_username,
             (   
                 SELECT GROUP_CONCAT(media_url)
                 FROM service_images 
@@ -151,7 +155,7 @@ class Service {
     public static function getRelated(int $categoryId, int $excludeId, int $limit = 4): array {
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            SELECT s.*, u.name AS freelancer_name,
+            SELECT s.*, u.name AS freelancer_name, u.username AS freelancer_username,
             (
                 SELECT GROUP_CONCAT(media_url)
                 FROM service_images 
@@ -187,6 +191,7 @@ class Service {
             SELECT 
                 services.*,
                 users.name AS freelancer_name,
+                users.username AS freelancer_username,
                 profiles.profile_picture,
                 (
                     SELECT GROUP_CONCAT(media_url)
@@ -221,6 +226,7 @@ class Service {
             SELECT 
                 services.*,
                 users.name AS freelancer_name,
+                users.username AS freelancer_username,
                 (
                     SELECT GROUP_CONCAT(media_url) 
                     FROM service_images 
@@ -383,6 +389,7 @@ class Service {
         $db = Database::getInstance();
         $stmt = $db->prepare("
             SELECT services.*, users.name AS freelancer_name,
+            users.username AS freelancer_username,
             (
                 SELECT GROUP_CONCAT(media_url) 
                 FROM service_images 

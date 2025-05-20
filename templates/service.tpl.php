@@ -109,9 +109,14 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
         <div class="service-details">
             <h1><?= htmlspecialchars($service->title) ?></h1>
             <div class="freelancer-box">
-                <img src="<?= htmlspecialchars($service->profilePicture ?? 'https://via.placeholder.com/50') ?>" alt="Foto do freelancer">
+                <?php if (!empty($service->profilePicture)): ?>
+                    <img src="<?= htmlspecialchars($service->profilePicture) ?>" alt="Foto do freelancer">
+                <?php else: ?>
+                    <i class="fa-solid fa-image-portrait"></i>
+                <?php endif; ?>
+
                 <p class="freelancer">
-                    By <strong><?= htmlspecialchars($service->freelancerName) ?></strong><br>
+                    By <strong><?= renderUserLink($service->freelancerUsername, $service->freelancerName) ?></strong><br>
                     <?php if ($ratingInfo['avg']): ?>
                         <?= renderStars($ratingInfo['avg']) ?>
                         <?= $ratingInfo['avg'] ?> (<?= $ratingInfo['count'] ?> reviews)
