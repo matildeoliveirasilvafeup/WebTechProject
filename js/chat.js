@@ -92,8 +92,7 @@ function drawMessages(conversationId, serviceId, userId) {
             usernameSpan.textContent = data.receiver_username;
             usernameSpan.style.cursor = 'pointer';
             usernameSpan.onclick = () => {
-                console.log('Go to user profile TODO');
-                // window.location.href = `/pages/profile.php?id=${data.receiver_id}`;
+                window.location.href = `/pages/profile.php?user=${data.receiver_username}`;
             };
 
             serviceTitleSpan.textContent = `═─ Go to service page ─═`;

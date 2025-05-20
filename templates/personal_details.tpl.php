@@ -26,7 +26,7 @@
             </div>
 
             <?php if ($isPrivate)
-                drawControls(); ?>
+                drawControls($user); ?>
         </div>
 
         <?php if ($isPrivate)
@@ -115,10 +115,10 @@
 } ?>
 
     
-<?php function drawControls() { ?>
+<?php function drawControls($user) { ?>
     <div class="profile-controls">
-        <a href="#" class="btn">Preview Profile</a>
-        <a href="index.php" class="btn">Explore Platform</a>
+        <a href="/pages/profile.php?user=<?= $user->username ?>" class="btn">Preview Profile</a>
+        <a href="/index.php" class="btn">Explore Platform</a>
     </div>
 <?php } ?>
 

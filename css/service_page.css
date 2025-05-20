@@ -235,6 +235,17 @@
     border-radius: 50%;
 }
 
+.review-header a {
+    text-decoration: none;
+    color: black;
+}
+
+.review-header a:hover,
+.freelancer-box .freelancer a:hover {
+    text-decoration: underline;
+    color: var(--main-theme-darker);
+}
+
 .review-comment {
     font-style: italic;
     margin: 8px 0;

@@ -10,6 +10,7 @@ class Review {
     public string $comment;
     public string $createdAt;
     public string $clientName;
+    public string $clientUsername;
     public string $serviceTitle;
     public ?string $profilePicture;
 
@@ -21,6 +22,7 @@ class Review {
         $this->comment = $data['comment'] ?? '';
         $this->createdAt = $data['created_at'] ?? date('Y-m-d H:i:s');
         $this->clientName = $data['client_name'] ?? '';
+        $this->clientUsername = $data['client_username'] ?? '';
         $this->serviceTitle = $data['service_title'] ?? '';
         $this->profilePicture = $data['profile_picture'] ?? null;
     }
@@ -65,7 +67,7 @@ class Review {
     public static function getServiceReviews(int $service_id): array {
         $db = Database::getInstance();
         $reviewsStmt = $db->prepare("
-            SELECT r.*, u.name AS client_name, p.profile_picture
+            SELECT r.*, u.name AS client_name, u.username AS client_username, p.profile_picture
             FROM reviews r
             JOIN users u ON u.id = r.client_id
             LEFT JOIN profiles p ON p.user_id = u.id

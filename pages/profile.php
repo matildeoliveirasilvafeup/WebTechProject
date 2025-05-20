@@ -14,7 +14,8 @@ require_once (__DIR__ .  '/../templates/category.tpl.php');
 require_once (__DIR__ . '/../templates/personal_details.tpl.php');
 
 require_once (__DIR__ . '/../templates/common/header.tpl.php');
-require_once (__DIR__ . '/../templates/common/footer.tpl.php'); 
+require_once (__DIR__ . '/../templates/common/footer.tpl.php');
+require_once (__DIR__ . '/../templates/common/utils.tpl.php'); 
 
 $username = $_GET['user'] ?? '';
 
@@ -33,7 +34,7 @@ drawPublicProfileStart();
 drawHeader();
 drawCategoryMenu($categoriesMenu);
 drawProfile($profile, $profile_preferences, $user, false);
-#drawChat();
+drawChat();
 drawFooter();
 drawPublicProfileEnd();
 

@@ -12,6 +12,7 @@
     require_once(__DIR__ .  '/../templates/service.tpl.php');
     require_once(__DIR__ .  '/../templates/home.tpl.php');
     require_once(__DIR__ .  '/../templates/chat.tpl.php');
+    require_once (__DIR__ . '/../templates/common/utils.tpl.php'); 
 
     $categoriesMenu = Category::getAllWithSubcategories();
     $testimonials = Review::getLatestReviews(3);
