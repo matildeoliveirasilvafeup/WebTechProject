@@ -36,6 +36,8 @@ class Chat {
     public static function sendMessage(string $conversation_id, int $service_id, int $sender_id, int $receiver_id, ?string $message, ?string $sub_message = null, ?string $file = null): array {
         $db = Database::getInstance();
 
+        self::createConversation($service_id, $sender_id, $receiver_id);
+
         $stmt = $db->prepare("
             INSERT INTO messages (conversation_id, service_id, sender_id, receiver_id, message, sub_message, file)
             VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -134,10 +136,10 @@ class Chat {
         $db = Database::getInstance();
 
         $stmt = $db->prepare("
-            SELECT conversation_id, COUNT(*) AS unread_count
+            SELECT conversation_id, service_id, COUNT(*) AS unread_count
             FROM messages
             WHERE receiver_id = ? AND is_read = 0
-            GROUP BY conversation_id
+            GROUP BY conversation_id, service_id
         ");
         $stmt->execute([$userId]);
 

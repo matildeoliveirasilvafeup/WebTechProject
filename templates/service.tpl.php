@@ -130,12 +130,11 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
                 </div>
 
                 <div class="button-group">
-                    <a href="#" class="btn-hire" onclick="startConversation(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>)">Contact</a>
-                    <a href="#" class="btn-add-cart" onclick="
-                        startConversation(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>);
-                        createHiring(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>);
-                        sendStatusMessage(event, 'Pending', <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>, '<?= htmlspecialchars($service->title, ENT_QUOTES) ?>');
-                        ">Hire
+                    <a href="#" class="btn-hire" onclick="startConversation(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>, 'true')">Contact</a>
+
+                    <a href="/pages/payment.php?service_id=<?= $service->id ?>&client_id=<?= Session::getInstance()->getUser()->id ?>&freelancer_id=<?= $service->freelancerId ?>"
+                        class="btn-add-cart">
+                        Hire
                     </a>
                 </div>
             </div>
@@ -166,7 +165,8 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
 
     <script src="../js/favorite.js"></script>
     <script src="/js/chat.js"></script>
-    <script src="/js/hirings.js"></script>
+    <script type="module" src="/js/chat_hiring_utils.js"></script>
+    <script type="module" src="/js/hirings.js"></script>
     <script src="../js/media_scroll.js"></script>
 <?php } ?>
 

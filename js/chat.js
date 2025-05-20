@@ -6,6 +6,8 @@ let CURRENT_RECEIVER_ID = null;
 document.addEventListener('DOMContentLoaded', () => {
     checkUnreadMessages();
 
+    window.drawMessages = drawMessages;
+
     const toggleBtn = document.getElementById('chat-toggle-btn');
     const closeBtn = document.getElementById('chat-close-btn');
     const modal = document.getElementById('chat-modal');
@@ -27,6 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('chat-toggle-btn').addEventListener('click', () => {
         document.getElementById('chat-modal').classList.remove('hidden');
         checkUnreadMessages();
+    });
+
+    document.querySelectorAll('.chat-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const conversationId = item.dataset.conversationId;
+            const serviceId = item.dataset.serviceId;
+            const userId = item.dataset.userId;
+
+            drawMessages(conversationId, serviceId, userId);
+            highlightSelectedChat(conversationId, serviceId);
+        });
     });
 
     const fileInput = document.getElementById('chat-file');
@@ -75,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (openHiring === 'true') {
         document.getElementById('hirings-modal')?.classList.remove('hidden');
         localStorage.removeItem('openHiring');
-    }
+    } 
 });
 
 
@@ -122,7 +135,7 @@ function drawMessages(conversationId, serviceId, userId) {
                 const currentSenderId = msg.sender_id;
                 const currentIsoUTC = msg.message_created_at.replace(' ', 'T') + 'Z';
                 const currentTimeUTC = new Date(currentIsoUTC);
-                const isUser = currentSenderId === userId;
+                const isUser = currentSenderId === parseInt(userId, 10);
 
                 if (
                     lastSenderId !== currentSenderId ||
@@ -299,39 +312,6 @@ function highlightSelectedChat(conversationId, serviceId) {
     }
 }
 
-function startConversation(serviceId, user1Id, user2Id) {
-    if (user1Id == user2Id) {
-        console.warn('Cannot start a conversation with yourself.');
-        return;
-    }
-    
-    const formData = new FormData();
-    formData.append('service_id', serviceId);
-    formData.append('user1_id', user1Id);
-    formData.append('user2_id', user2Id);
-
-    fetch('/actions/action_start_conversation.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            localStorage.setItem('openChat', JSON.stringify({
-                conversation_id: data.conversation_id,
-                service_id: data.service_id,
-                user_id: user1Id
-            }));
-            location.reload();
-        } else {
-            alert('Error: ' + data.error);
-        }
-    })
-    .catch(err => {
-        console.error('Failed to start conversation:', err);
-    });
-}
-
 function checkUnreadMessages() {
     fetch('/actions/action_get_unread_messages.php')
         .then(res => res.json())
@@ -340,7 +320,8 @@ function checkUnreadMessages() {
             const unreadMap = {};
 
             data.forEach(entry => {
-                unreadMap[entry.conversation_id] = entry.unread_count;
+                const key = `${entry.conversation_id}-${entry.service_id}`;
+                unreadMap[key] = entry.unread_count;
             });
 
             const total = Object.keys(unreadMap).length;
@@ -353,12 +334,16 @@ function checkUnreadMessages() {
 
             document.querySelectorAll('.chat-item').forEach(item => {
                 const conversationId = item.dataset.conversationId;
-                const convBadge = document.getElementById(`unread-badge-${conversationId}`);
+                const serviceId = item.dataset.serviceId;
+                const key = `${conversationId}-${serviceId}`;
+                
+                const badgeId = `unread-badge-${conversationId}-${serviceId}`;
+                const convBadge = document.getElementById(badgeId);
 
-                if (unreadMap[conversationId]) {
-                    convBadge.textContent = unreadMap[conversationId];
+                if (unreadMap[key]) {
+                    convBadge.textContent = unreadMap[key];
                     convBadge.classList.remove('hidden');
-                } else {
+                } else if (convBadge) {
                     convBadge.classList.add('hidden');
                 }
             });

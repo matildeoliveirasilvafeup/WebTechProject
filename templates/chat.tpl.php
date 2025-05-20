@@ -31,12 +31,11 @@
                                     <div class='chat-item'
                                         data-conversation-id='$conversationId'
                                         data-service-id='$serviceId'
-                                        onclick='drawMessages(\"$conversationId\", $serviceId, $userId);
-                                        highlightSelectedChat(\"$conversationId\", \"$serviceId\");'>
+                                        data-user-id='$userId'>
                                 
                                         <div class='chat-item-title-wrapper'>
                                             <p class='chat-item-title'>$serviceTitle</p>
-                                            <span class='chat-item-badge hidden' id='unread-badge-$conversationId'></span>
+                                            <span class='chat-item-badge hidden' id='unread-badge-$conversationId-$serviceId'></span>
                                         </div>
                                     </div>
                                 ";

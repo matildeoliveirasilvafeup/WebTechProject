@@ -87,6 +87,21 @@ CREATE TABLE services (
     favorites_count INTEGER DEFAULT 0
 );
 
+CREATE TABLE payments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    service_id INTEGER NOT NULL,
+    client_id INTEGER NOT NULL,
+    freelancer_id INTEGER NOT NULL,
+    method TEXT NOT NULL,
+    billing_name TEXT NOT NULL,
+    billing_email TEXT NOT NULL,
+    billing_address TEXT NOT NULL,
+    billing_city TEXT NOT NULL,
+    billing_postal TEXT NOT NULL,
+    status TEXT DEFAULT 'Completed',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE service_images (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,

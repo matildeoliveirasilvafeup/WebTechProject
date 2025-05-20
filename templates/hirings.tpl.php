@@ -122,5 +122,5 @@
         </div>
     </div>
 
-    <script src="/js/hirings.js"></script>
+    <script type="module" src="/js/hirings.js"></script>
 <?php } ?>
