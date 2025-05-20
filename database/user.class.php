@@ -209,4 +209,21 @@ class User {
             return ["success" => false, "message" => "Failed to promote user."];
         }
     }
+
+    public static function banUser(string $username, string $reason): array {
+        $session = Session::getInstance();
+        $currentUser = $session->getUser();
+
+        if (!$currentUser || $currentUser->role !== 'admin') {
+            http_response_code(403);
+            return ['success' => false, 'message' => 'Access denied. Only admins can ban users.'];
+        }
+
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare("UPDATE users SET is_banned = 1 WHERE username = :username");
+        $stmt->execute([':username' => $username]);
+
+        return ['success' => true, 'message' => "User '$username' was banned successfully."];
+    }
 }
