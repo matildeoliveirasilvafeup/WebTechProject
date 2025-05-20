@@ -171,7 +171,7 @@ class User {
             ];
         }
     }
-    
+
     public static function getIdByUsername(string $username): ?int {
         $db = Database::getInstance();
         $stmt = $db->prepare("SELECT id FROM users WHERE username = ?");
@@ -188,5 +188,25 @@ class User {
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data ? new User($data) : null;
+    }
+
+    public static function promoteToAdmin(int $userId): array {
+        $session = Session::getInstance();
+        $currentUser = $session->getUser();
+
+        if (!$currentUser || $currentUser->role !== 'admin') {
+            http_response_code(403);
+            return ["success" => false, "message" => "Only admins can promote users."];
+        }
+
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare("UPDATE users SET role = 'admin' WHERE id = ?");
+        if ($stmt->execute([$userId])) {
+            return ["success" => true, "message" => "User promoted to admin successfully."];
+        } else {
+            http_response_code(500);
+            return ["success" => false, "message" => "Failed to promote user."];
+        }
     }
 }
