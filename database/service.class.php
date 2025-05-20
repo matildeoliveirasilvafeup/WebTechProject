@@ -44,7 +44,7 @@ class Service {
     public static function getAll(): array {
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            SELECT services.*, users.name AS freelancer_name, users.username AS freelancer_username, profiles.profile_picture
+            SELECT services.*, users.name AS freelancer_name, users.username AS freelancer_username, profiles.profile_picture,
             (
                 SELECT GROUP_CONCAT(media_url)
                 FROM service_images

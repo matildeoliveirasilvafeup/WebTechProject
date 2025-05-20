@@ -47,7 +47,24 @@
 
 <?php function drawInfo($profile, $user, $isPrivate) { ?>
     <div class="profile-info">
-        <h2><?= htmlspecialchars($user->name) ?></h2>
+        <div class="name-line">
+            <h2><?= htmlspecialchars($user->name) ?></h2>
+
+            <?php if (!$isPrivate): ?>
+                <div class="admin-buttons">
+                    <form method="POST" action="/actions/action_promote_admin.php" class="admin-action-form">
+                        <input type="hidden" name="id" value="<?= htmlspecialchars($user->id) ?>">
+                        <button type="submit" class="btn btn-promote" title="Promote to Admin">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </button>
+                    </form>
+
+                    <button class="btn btn-ban" title="Ban User">
+                        <i class="fas fa-user-slash"></i>
+                    </button>
+                </div>    
+            <?php endif; ?>
+        </div>
         <p class="username">@<?= htmlspecialchars($user->username) ?></p>
         <p><i class="fas fa-map-marker-alt"></i> Located in <?= htmlspecialchars($profile->location) ?></p>
         <p><i class="fas fa-calendar-alt"></i> Joined in <?= date('F Y', strtotime($user->createdAt)) ?></p>
