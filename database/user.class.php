@@ -8,6 +8,7 @@ class User {
     public string $name;
     public string $username;
     public string $email;
+    public int $is_banned = 0;
     public string $role;
     public string $createdAt;
     public string $password_hash;
@@ -18,6 +19,7 @@ class User {
         $this->name = $data['name'];
         $this->username = $data['username'];
         $this->email = $data['email'];
+        $this->is_banned = (int)$data['is_banned'] ?? 0;
         $this->role = $data['role'] ?? 'user';
         $this->createdAt = $data['created_at'] ?? '';
         $this->password_hash = $data['password_hash'] ?? '';

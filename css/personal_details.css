@@ -48,6 +48,7 @@ html, body {
 .public-profile .profile-header {
     display: inline-flex;
     align-items: center;
+    max-width: 100%;
     gap: 1em;
 }
 
@@ -112,10 +113,11 @@ html, body {
 }
 
 .profile-info .name-line {
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    width: 100%;
 }
 
 .profile-info h2 {
@@ -195,7 +197,6 @@ html, body {
 }
 
 .admin-buttons {
-  margin-left: auto;
   display: flex;
   gap: 0.5em;
 }

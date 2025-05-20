@@ -86,7 +86,7 @@ class Chat {
             SELECT u.id, u.username, p.profile_picture
             FROM users u
             LEFT JOIN profiles p ON u.id = p.user_id
-            WHERE u.id = ?
+            WHERE u.id = ? AND u.is_banned = 0
         ");
         $stmtReceiver->execute([$receiverId]);
         $receiver = $stmtReceiver->fetch(PDO::FETCH_ASSOC);
