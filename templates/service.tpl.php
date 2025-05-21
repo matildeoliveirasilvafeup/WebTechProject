@@ -264,8 +264,9 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
                     <p>Select the media files to remove.</p>
                     <div id="old-media-preview" class="file-preview">
                         <?php foreach ($service->mediaUrls as $media): ?>
-                            <div class="file-item" data-media-url="<?= htmlspecialchars($media) ?>">
-                                <?php if (preg_match('/\.(mp4|webm)$/i', $media)): ?>
+                            <?php $isImage = !preg_match('/\.(mp4|webm)$/i', $media); ?>
+                            <div class="file-item" data-media-url="<?= htmlspecialchars($media) ?>" data-is-image="<?= $isImage ? 'true' : 'false' ?>">
+                                <?php if (!$isImage): ?>
                                     <video controls>
                                         <source src="<?= htmlspecialchars($media) ?>" type="video/mp4">
                                         Your browser does not support the video tag.
