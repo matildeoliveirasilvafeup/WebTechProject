@@ -71,7 +71,7 @@ function renderStars(float $rating): string {
     </div>
 <?php } ?>
 
-<?php function drawReviewSection($reviews) { ?>
+<?php function drawReviewSection($reviews, $isAdmin = false) { ?>
     <div class="reviews-section">
         <?php foreach ($reviews as $index => $review): ?>
             <div class="review-card" data-index="<?= $index ?>" 
@@ -90,7 +90,18 @@ function renderStars(float $rating): string {
                     </div>
                 </div>
                 <p class="review-comment">"<?= htmlspecialchars($review->comment) ?>"</p>
-                <small class="review-date"><?= date('d M Y', strtotime($review->createdAt)) ?></small>
+                <small class="review-date">
+                    <?= date('d M Y', strtotime($review->createdAt)) ?>
+                    
+                    <?php if ($isAdmin || (isset($_SESSION['user']) && $_SESSION['user']->id == $review->clientId)): ?>
+                        <form method="POST" action="../actions/action_delete_review.php">
+                            <input type="hidden" name="review_id" value="<?= $review->id ?>">
+                            <button type="submit" class="review-trash" title="Delete review">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    <?php endif; ?>
+                </small>
             </div>
         <?php endforeach; ?>
 
@@ -130,10 +141,10 @@ function renderStars(float $rating): string {
     </div>
 <?php } ?>
 
-<?php function drawReviewBlock($service, $reviews, $averageRating) {
+<?php function drawReviewBlock($service, $reviews, $averageRating, $isAdmin = false) {
     if (count($reviews) > 0) { 
         drawReviewsSummary($service,$averageRating);
-        drawReviewSection($reviews);    
+        drawReviewSection($reviews, $isAdmin);    
     } else {
         drawEmptyReviewSection();
     }

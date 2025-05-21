@@ -34,17 +34,19 @@
         exit;
     }
 
+    $session = Session::getInstance();
     $ratingInfo = Review::getServiceRatingInfo((int)$service->id);
     $reviews = Review::getServiceReviews((int)$service->id);
     $moreFromFreelancer = Service::getMoreFromFreelancer((int)$service->freelancerId, (int)$service->id, 100);
     $relatedServices = Service::getRelated($service->categoryId, $service->id, 100);
     $averageRating = Review::getAverageRating($reviews);
+    $isAdmin = Session::isAdmin();
 
     drawHeader();
     drawCategoryMenu($categories);
     drawServicePage($service, $ratingInfo);
-    drawReviewBlock($service, $reviews, $averageRating);
-    drawMoreFromFreelancer($service, $moreFromFreelancer); 
+    drawReviewBlock($service, $reviews, $averageRating, $isAdmin);
+    drawMoreFromFreelancer($service, $moreFromFreelancer);
     drawRelatedServices($relatedServices); 
     drawCopyToast();
     drawChat();

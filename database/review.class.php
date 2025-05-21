@@ -152,5 +152,24 @@ class Review {
 
         return $success;
     }
+
+    public static function deleteReview(int $reviewId): bool {
+    $db = Database::getInstance();
+
+    $stmt = $db->prepare("SELECT service_id FROM reviews WHERE id = :id");
+    $stmt->execute([':id' => $reviewId]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$row) return false;
+    $serviceId = (int)$row['service_id'];
+
+    $delStmt = $db->prepare("DELETE FROM reviews WHERE id = :id");
+    $success = $delStmt->execute([':id' => $reviewId]);
+
+    if ($success) {
+        self::updateServiceRating($serviceId);
+    }
+
+    return $success;
+}
 }
 ?>

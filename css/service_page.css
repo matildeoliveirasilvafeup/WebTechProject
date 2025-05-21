@@ -521,3 +521,22 @@
     color: var(--star-yellow);
     transition: color 0.2s ease-in-out;
 }
+
+.review-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-trash {
+    margin-left: auto;
+    cursor: pointer;
+    padding-left: 0.5em;
+    background: none; 
+    border: none;
+    transition: color 0.2s ease;
+}
+
+.review-trash:hover {
+    color: var(--button-danger);
+}
