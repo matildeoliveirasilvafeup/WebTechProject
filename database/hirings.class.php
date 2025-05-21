@@ -62,12 +62,12 @@ class Hiring {
     public static function updateStatus(int $id, string $newStatus): array {
         $db = Database::getInstance();
 
-        $validStatuses = ['Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed'];
+        $validStatuses = ['Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed', 'Closed'];
         if (!in_array($newStatus, $validStatuses)) {
             throw new InvalidArgumentException("Invalid status: $newStatus");
         }
 
-        $ended_at = in_array($newStatus, ['Rejected', 'Cancelled', 'Completed']) ? date('Y-m-d H:i:s') : null;
+        $ended_at = in_array($newStatus, ['Rejected', 'Cancelled', 'Closed']) ? date('Y-m-d H:i:s') : null;
 
         $stmt = $db->prepare("UPDATE hirings SET status = ?, ended_at = ? WHERE id = ?");
         $success = $stmt->execute([$newStatus, $ended_at, $id]);

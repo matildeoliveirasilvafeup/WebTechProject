@@ -365,7 +365,7 @@
 .message-with-sub.status-accepted { background-color: var(--accepted-color); color: var(--accepted-background) }
 .message-with-sub.status-rejected { background-color: var(--rejected-color); color: var(--rejected-background) }
 .message-with-sub.status-cancelled { background-color: var(--cancelled-color); color: black }
-.message-with-sub.status-completed { background-color: var(--completed-color); color: var(--completed-background) }
+.message-with-sub.status-completed, .sub-message-bubble.status-closed { background-color: var(--completed-color); color: var(--completed-background) }
 
 .sub-message-bubble {
     margin-top: 6px;
@@ -378,4 +378,4 @@
 .sub-message-bubble.status-accepted { background-color: #b7daed; color: var(--accepted-background) }
 .sub-message-bubble.status-rejected { background-color: #e7c5c5; color: var(--rejected-background) }
 .sub-message-bubble.status-cancelled { background-color: #d9d9d9; color: black }
-.sub-message-bubble.status-completed { background-color: #cde0c5; color: var(--completed-background) }
+.sub-message-bubble.status-completed, .sub-message-bubble.status-closed { background-color: #cde0c5; color: var(--completed-background) }

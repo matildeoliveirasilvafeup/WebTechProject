@@ -95,33 +95,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const body = document.getElementById('hirings-body');
         body.innerHTML = clients.map(client => `
             <div class="client-hiring-card">
-            <span class="client-username" id="client-username">${client.client_name}</span>
-            <div class="hiring-actions">
-            ${client.status === 'Pending' ? `
-                <button onclick="updateHiringStatus(${client.hiring_id}, 'Accepted');
-                sendStatusMessage('Accepted', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')" 
-                class="accept-btn">Accept
-                </button>
-                <button onclick="updateHiringStatus(${client.hiring_id}, 'Rejected');
-                sendStatusMessage('Rejected', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')"
-                class="reject-btn">Reject
-                </button>
-                ` : client.status === 'Accepted' ? `
-                <button onclick="updateHiringStatus(${client.hiring_id}, 'Completed');
-                sendStatusMessage('Completed', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')"
-                class="finish-btn">Finish
-                </button>
-                ` : `<span class="status-label">${client.status}</span>`}
+                <span class="client-username" id="client-username">${client.client_name}</span>
+                <div class="hiring-actions">
+                    ${client.status === 'Pending' ? `
+                        <button onclick="updateHiringStatus(${client.hiring_id}, 'Accepted');
+                            sendStatusMessage('Accepted', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')" 
+                            class="accept-btn">Accept
+                        </button>
+                        <button onclick="updateHiringStatus(${client.hiring_id}, 'Rejected');
+                            sendStatusMessage('Rejected', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')"
+                            class="reject-btn">Reject
+                        </button>
+                        ` : client.status === 'Accepted' ? `
+                        <button onclick="updateHiringStatus(${client.hiring_id}, 'Completed');
+                            sendStatusMessage('Completed', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')"
+                            class="finish-btn">Finish
+                        </button>
+                        ` : `<span class="status-label">${client.status}</span>`}
                 </div>
-                </div>
+            </div>
         `).join('');
-        
-        const usernameSpan = document.getElementById('client-username');
-        usernameSpan.style.cursor = 'pointer';
-        usernameSpan.onclick = () => {
-            console.log('Go to user profile TODO');
-            // window.location.href = `/pages/profile.php?id=${data.receiver_id}`;
-        };
     }
 
     function drawOwnHiringRequest(ownerUsername, ownerId, hirings, serviceId, serviceTitle) {
@@ -131,10 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const headerTitle = document.getElementById("hirings-service-title");
         
         headerName.textContent = ownerUsername;
-        headerName.style.cursor = 'pointer';
-        headerName.onclick = () => {
-            // window.location.href = `/pages/profile.php?id=${ownerId}`;
-        };
         headerTitle.textContent = serviceTitle;
         headerTitle.style.cursor = 'pointer';
         headerTitle.onclick = () => {
@@ -145,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         hirings.forEach(hiring => {
             const status = hiring.status;
-            const showCancel = status === "Pending" || status === "Accepted";
+            const showCancel = status === "Pending" || status === "Accepted" || status === "Completed";
             const statusBadge = `<span class="status-badge status-${status.toLowerCase()}">${status}</span>`;
             
             html += `
@@ -155,10 +144,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 ${showCancel ? `
                     <div class="hiring-actions">
-                        <button onclick="updateHiringStatus(${hiring.id}, 'Cancelled');
-                            sendStatusMessage('Cancelled', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')"
-                            class="cancel-btn">Cancel
-                        </button>
+                        ${status === 'Completed' ? `
+                            <button onclick="updateHiringStatus(${hiring.id}, 'Closed');
+                                sendStatusMessage('Closed', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')" 
+                                class="close-btn">Approve
+                            </button>
+                            <button onclick="updateHiringStatus(${hiring.id}, 'Reopened');
+                                sendStatusMessage('Reopened', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')" 
+                                class="reopen-btn">Reopen Hiring
+                            </button>
+                            ` : `
+                            <button onclick="updateHiringStatus(${hiring.id}, 'Cancelled');
+                                sendStatusMessage('Cancelled', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')"
+                                class="cancel-btn">Cancel
+                            </button>`}
                     </div>` : ""}
             </div>
             `;

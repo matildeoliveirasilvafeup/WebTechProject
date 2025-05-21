@@ -57,8 +57,14 @@ export function createHiring(serviceId, clientId, ownerId) {
 }
 
 export function sendStatusMessage(status, senderId, receiverId, serviceId, serviceTitle) {
-
-    const message = `The hiring '${serviceTitle}' has been updated to ${status}!`;
+    
+    let message = null;
+    if (status === 'Reopened') {
+        status = 'Pending';
+        message = `The hiring '${serviceTitle}' has been reopened!`;
+    } else {
+        message = `The hiring '${serviceTitle}' has been updated to ${status}!`;
+    }
     const subMessage = `Click to see details`;
 
     const ids = [senderId, receiverId].sort((a, b) => a - b);

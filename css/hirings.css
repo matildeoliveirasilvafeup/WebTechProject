@@ -293,6 +293,8 @@
 
 .hiring-actions button,
 .accept-btn,
+.reopen-btn,
+.close-btn,
 .reject-btn,
 .cancel-btn {
     padding: 0.4rem 0.8rem;
@@ -303,18 +305,22 @@
     color: white;
 }
 .accept-btn,
+.close-btn,
 .finish-btn {
     background-color: #4CAF50;
 }
 .accept-btn:hover,
+.close-btn:hover,
 .finish-btn:hover {
     background-color: #439c46;
 }
 .reject-btn,
+.reopen-btn,
 .cancel-btn {
     background-color: #F44336;
 }
 .reject-btn:hover,
+.reopen-btn:hover,
 .cancel-btn:hover {
     background-color: #d32f2f;
 }
@@ -335,4 +341,4 @@
 .status-accepted { background-color: var(--accepted-color); color: var(--accepted-background) }
 .status-rejected { background-color: var(--rejected-color); color: var(--rejected-background) }
 .status-cancelled { background-color: var(--cancelled-color); color: var(--cancelled-background) }
-.status-completed { background-color: var(--completed-color); color: var(--completed-background) }
+.status-completed, .status-closed { background-color: var(--completed-color); color: var(--completed-background) }

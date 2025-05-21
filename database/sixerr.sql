@@ -136,7 +136,7 @@ CREATE TABLE hirings (
     service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
     client_id INTEGER,
     owner_id INTEGER,
-    status TEXT NOT NULL DEFAULT 'Pending' CHECK (status IN ('Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed')),
+    status TEXT NOT NULL DEFAULT 'Pending' CHECK (status IN ('Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed', 'Closed')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ended_at TIMESTAMP
 );
