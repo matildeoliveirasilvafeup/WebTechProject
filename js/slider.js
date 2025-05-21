@@ -15,17 +15,19 @@ function scrollCategorySlider(button, direction) {
 document.addEventListener("DOMContentLoaded", function () {
     const carousel = document.querySelector(".category-carousel");
 
-    if (carousel.scrollWidth > carousel.clientWidth) {
-        carousel.classList.add("scrollable");
-    } else {
-        carousel.classList.remove("scrollable");
-    }
-
-    window.addEventListener("resize", function () {
+    if (carousel) {
         if (carousel.scrollWidth > carousel.clientWidth) {
             carousel.classList.add("scrollable");
         } else {
             carousel.classList.remove("scrollable");
         }
-    });
+
+        window.addEventListener("resize", function () {
+            if (carousel.scrollWidth > carousel.clientWidth) {
+                carousel.classList.add("scrollable");
+            } else {
+                carousel.classList.remove("scrollable");
+            }
+        });
+    }
 });

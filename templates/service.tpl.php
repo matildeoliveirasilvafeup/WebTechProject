@@ -164,9 +164,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
     </div>
 
     <script src="../js/favorite.js"></script>
-    <script src="/js/chat.js"></script>
     <script type="module" src="/js/chat_hiring_utils.js"></script>
-    <script type="module" src="/js/hirings.js"></script>
     <script src="../js/media_scroll.js"></script>
 <?php } ?>
 

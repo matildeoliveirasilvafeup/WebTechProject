@@ -6,8 +6,6 @@ export function startConversation(serviceId, user1Id, user2Id, flag) {
         return Promise.resolve();
     }
 
-    console.log(flag);
-
     const formData = new FormData();
     formData.append('service_id', serviceId);
     formData.append('user1_id', user1Id);
@@ -48,7 +46,6 @@ export function createHiring(serviceId, clientId, ownerId) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Hiring result:', data);
         if (!data.success) {
             throw new Error(data.message || 'Error creating hiring.');
         }

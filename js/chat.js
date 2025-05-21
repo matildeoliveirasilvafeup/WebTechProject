@@ -5,8 +5,6 @@ window.ChatState = {
     CURRENT_RECEIVER_ID: null
 };
 
-// And access them like:
-
 document.addEventListener('DOMContentLoaded', () => {
     checkUnreadMessages();
 
