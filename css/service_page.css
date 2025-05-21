@@ -304,18 +304,31 @@
     flex-wrap: wrap;
 }
 
-.reviews-controls input[type="text"] {
-    padding: 0.5em;
-    border-radius: 5px;
-    border: 1px solid var(--background-disabled);
-    width: 15vw;
+.reviews-controls .btn-add-cart {
+    background: var(--main-background-darker);
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+.reviews-controls .btn-add-cart:hover {
+    background: var(--button-background-selected);
 }
 
 .reviews-controls select {
-    padding: 0.5em;
     border-radius: 5px;
     border: 1px solid var(--background-disabled);
     max-width: 10vw;
+}
+
+.reviews-controls .btn-add-cart,
+.reviews-controls select {
+  vertical-align: middle; 
+  line-height: 1;         
+  font-size: 0.95em;       
+  height: 3em;          
+  box-sizing: border-box;
+  margin: 0;             
+  padding: 0.2em 1em;     
 }
 
 .load-more-btn {

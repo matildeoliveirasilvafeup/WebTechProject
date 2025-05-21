@@ -35,7 +35,7 @@ function renderStars(float $rating): string {
         </div>
 
         <div class="reviews-controls">
-            <!-- <button class="btn-add-cart" onclick="openReviewModal()">Write a review</button> -->
+            <button class="btn-add-cart" onclick="openReviewModal()">Write a review</button>
             <select id="review-sort">
                 <option value="latest">Newest</option>
                 <option value="oldest">Oldest</option>
