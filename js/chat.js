@@ -1,7 +1,11 @@
-let CURRENT_CONVERSATION_ID = null;
-let CURRENT_SERVICE_ID = null;
-let CURRENT_USER_ID = null;
-let CURRENT_RECEIVER_ID = null;
+window.ChatState = {
+    CURRENT_CONVERSATION_ID: null,
+    CURRENT_SERVICE_ID: null,
+    CURRENT_USER_ID: null,
+    CURRENT_RECEIVER_ID: null
+};
+
+// And access them like:
 
 document.addEventListener('DOMContentLoaded', () => {
     checkUnreadMessages();
@@ -12,23 +16,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('chat-close-btn');
     const modal = document.getElementById('chat-modal');
 
-    toggleBtn.addEventListener('click', () => {
-        modal.classList.toggle('hidden');
-    });
+    if (toggleBtn && modal) {
+        toggleBtn.addEventListener('click', () => {
+            modal.classList.toggle('hidden');
+            checkUnreadMessages();
+        });
+    }
     
-    closeBtn.addEventListener('click', () => {
-        modal.classList.toggle('hidden');
-    });
+    if (closeBtn && modal) {
+        closeBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    }
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           modal.classList.add('hidden');
         }
-    });
-
-    document.getElementById('chat-toggle-btn').addEventListener('click', () => {
-        document.getElementById('chat-modal').classList.remove('hidden');
-        checkUnreadMessages();
     });
 
     document.querySelectorAll('.chat-item').forEach(item => {
@@ -45,27 +49,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('chat-file');
     const fileDisplay = document.getElementById('file-name-display');
 
-    fileInput.addEventListener('change', function () {
-        if (this.files.length > 0) {
-            const fileName = this.files[0].name;
+    if (fileInput) {
+        fileInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                const fileName = this.files[0].name;
 
-            fileDisplay.innerHTML = `
-                <div class="file-preview-chat">
-                <i class="fa-solid fa-file"></i> ${fileName}
-                <button type="button" id="cancel-file-btn" title="Remove file">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-                </div>
-            `;
+                fileDisplay.innerHTML = `
+                    <div class="file-preview-chat">
+                    <i class="fa-solid fa-file"></i> ${fileName}
+                    <button type="button" id="cancel-file-btn" title="Remove file">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    </div>
+                `;
 
-            document.getElementById('cancel-file-btn').addEventListener('click', () => {
-                fileInput.value = '';
+                document.getElementById('cancel-file-btn').addEventListener('click', () => {
+                    fileInput.value = '';
+                    fileDisplay.innerHTML = '';
+                });
+            } else {
                 fileDisplay.innerHTML = '';
-            });
-        } else {
-            fileDisplay.innerHTML = '';
-        }
-    });
+            }
+        });
+    }
     
     const openChat = localStorage.getItem('openChat');
     if (openChat) {
@@ -103,10 +109,11 @@ function drawMessages(conversationId, serviceId, userId) {
     fetch(`/actions/action_get_messages.php?conversation_id=${conversationId}&service_id=${serviceId}&user_id=${userId}`)
         .then(res => res.json())
         .then(data => {
-            CURRENT_CONVERSATION_ID = conversationId;
-            CURRENT_SERVICE_ID = serviceId;
-            CURRENT_USER_ID = userId;
-            CURRENT_RECEIVER_ID = data.receiver_id;
+            
+            window.ChatState.CURRENT_CONVERSATION_ID = conversationId;
+            window.ChatState.CURRENT_SERVICE_ID = serviceId;
+            window.ChatState.CURRENT_USER_ID = userId;
+            window.ChatState.CURRENT_RECEIVER_ID = data.receiver_id;
 
             usernameSpan.textContent = data.receiver_username;
             usernameSpan.style.cursor = 'pointer';
@@ -263,10 +270,10 @@ function sendMessage(event) {
     if (!message && (!fileInput || fileInput.files.length === 0)) return;
 
     const formData = new FormData();
-    formData.append('conversation_id', CURRENT_CONVERSATION_ID);
-    formData.append('service_id', CURRENT_SERVICE_ID);
-    formData.append('sender_id', CURRENT_USER_ID);
-    formData.append('receiver_id', CURRENT_RECEIVER_ID);
+    formData.append('conversation_id', window.ChatState.CURRENT_CONVERSATION_ID);
+    formData.append('service_id', window.ChatState.CURRENT_SERVICE_ID);
+    formData.append('sender_id', window.ChatState.CURRENT_USER_ID);
+    formData.append('receiver_id', window.ChatState.CURRENT_RECEIVER_ID);
     formData.append('sub_message', '');
     
     if (fileInput && fileInput.files.length > 0) {
@@ -288,7 +295,7 @@ function sendMessage(event) {
         if (!data.success) {
             console.error('Error sending message:', data.error || 'Unknown error');
         } else {
-            drawMessages(CURRENT_CONVERSATION_ID, CURRENT_SERVICE_ID, CURRENT_USER_ID);
+            drawMessages(window.ChatState.CURRENT_CONVERSATION_ID, window.ChatState.CURRENT_SERVICE_ID, window.ChatState.CURRENT_USER_ID);
             fileInput.value = '';
             fileDisplay.innerHTML = '';
         }

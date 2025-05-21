@@ -15,7 +15,7 @@
     require_once(__DIR__ .  '/../templates/hirings.tpl.php');
     require_once(__DIR__ .  '/../templates/common/header.tpl.php');
     require_once(__DIR__ .  '/../templates/common/footer.tpl.php');
-    require_once (__DIR__ . '/../templates/common/utils.tpl.php');
+    require_once(__DIR__ .  '/../templates/common/utils.tpl.php');
 
     $session = Session::getInstance();
     $categoriesMenu = Category::getAllWithSubcategories();

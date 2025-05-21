@@ -14,8 +14,6 @@ function drawPaymentForm(Service $service, User $client, User $freelancer): void
 
     </div>
 
-    <script src="/js/chat.js"></script>
-    <script type="module" src="/js/hirings.js"></script>
     <script type="module" src="/js/payment.js"></script>
 <?php } ?>
 

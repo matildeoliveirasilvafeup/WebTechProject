@@ -2,6 +2,9 @@
     <?php 
         $session = Session::getInstance();
         $user = $session->getUser();
+        if (!$user) {
+            return;
+        }
         $userId = $user->id;
     ?>
     
@@ -15,7 +18,7 @@
             <div class="chat-wrapper">
 
                 <?php
-                    drawSidebar($userId); 
+                    drawChatSidebar($userId); 
                 
                     drawMainChat();
 
@@ -29,7 +32,7 @@
     <script src="/js/chat.js"></script>
 <?php } ?>
 
-<?php function drawSidebar($userId) { ?>
+<?php function drawChatSidebar($userId) { ?>
     <div class="chat-sidebar">
         <h4>Chats</h4>                   
         
@@ -39,25 +42,27 @@
             if (empty($conversations)) {
                 echo "<p>No open chats</p>";
             } else {
-                foreach ($conversations as $conversation) {
-                    $service = Service::getById((int)$conversation['service_id']);
-                    $serviceTitle = htmlspecialchars($service->title);
-                    $conversationId = $conversation['id'];
-                    $serviceId = $conversation['service_id'];
+                echo "<div class='chat-scrollable'>";
+                    foreach ($conversations as $conversation) {
+                        $service = Service::getById((int)$conversation['service_id']);
+                        $serviceTitle = htmlspecialchars($service->title);
+                        $conversationId = $conversation['id'];
+                        $serviceId = $conversation['service_id'];
 
-                    echo "
-                        <div class='chat-item'
-                            data-conversation-id='$conversationId'
-                            data-service-id='$serviceId'
-                            data-user-id='$userId'>
-                    
-                            <div class='chat-item-title-wrapper'>
-                                <p class='chat-item-title'>$serviceTitle</p>
-                                <span class='chat-item-badge hidden' id='unread-badge-$conversationId-$serviceId'></span>
+                        echo "
+                            <div class='chat-item'
+                                data-conversation-id='$conversationId'
+                                data-service-id='$serviceId'
+                                data-user-id='$userId'>
+                        
+                                <div class='chat-item-title-wrapper'>
+                                    <p class='chat-item-title'>$serviceTitle</p>
+                                    <span class='chat-item-badge hidden' id='unread-badge-$conversationId-$serviceId'></span>
+                                </div>
                             </div>
-                        </div>
-                    ";
-                }
+                        ";
+                    }
+                echo "</div>";
             }
         ?>
     </div>

@@ -16,8 +16,9 @@
     position: fixed;
     bottom: 1rem;
     right: 1rem;
-    width: 50rem;
-    height: 32rem;
+    width: 90vw;
+    max-width: 50rem;
+    height: 80vh;
     background: white;
     border-radius: 10px;
     box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.3);
@@ -94,6 +95,23 @@
 .chat-item.active {
     background-color: var(--background-disabled);
     font-weight: bold;
+}
+.chat-scrollable {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.chat-scrollable {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE/Edge */
+}
+.chat-scrollable::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .chat-main {
@@ -244,8 +262,8 @@
     padding: 0.0625em 0.375em;
     border-radius: 10px;
     margin-left: 0.3125em;
-    top: -0.3125em;
-    right: -0.3125em;
+    top: 0;
+    right: 0;
 }
 .chat-item-title-wrapper {
     position: relative;

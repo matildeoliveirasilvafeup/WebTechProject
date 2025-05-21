@@ -50,34 +50,36 @@ emailInput.addEventListener('input', () => {
     checkFormValidity();
 });
 
-usernameInput.addEventListener('input', () => {
-    const username = usernameInput.value.trim();
+if (signType == 'signup') {
+    usernameInput.addEventListener('input', () => {
+        const username = usernameInput.value.trim();
 
-    if (username) {
-        fetch(`../api/validate_user.php?username=${encodeURIComponent(username)}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.username?.used) {
-                    usernameStatus.textContent = 'Username already taken';
-                    usernameStatus.style.color = 'red';
-                    usernameAvailable = false;
-                } else {
-                    usernameStatus.textContent = 'Username available';
-                    usernameStatus.style.color = 'green';
-                    usernameAvailable = true;
-                }
-                checkFormValidity();
-            });
-    } else {
-        usernameStatus.textContent = '';
-        usernameAvailable = false;
+        if (username) {
+            fetch(`../api/validate_user.php?username=${encodeURIComponent(username)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.username?.used) {
+                        usernameStatus.textContent = 'Username already taken';
+                        usernameStatus.style.color = 'red';
+                        usernameAvailable = false;
+                    } else {
+                        usernameStatus.textContent = 'Username available';
+                        usernameStatus.style.color = 'green';
+                        usernameAvailable = true;
+                    }
+                    checkFormValidity();
+                });
+        } else {
+            usernameStatus.textContent = '';
+            usernameAvailable = false;
+            checkFormValidity();
+        }
+        
         checkFormValidity();
-    }
-    
-    checkFormValidity();
-});
+    });
 
-nameInput.addEventListener('input', checkFormValidity);
+    nameInput.addEventListener('input', checkFormValidity);
+}
 
 function checkNameRequirements(name) {
 
