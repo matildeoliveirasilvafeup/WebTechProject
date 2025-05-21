@@ -50,7 +50,7 @@
         <div class="name-line">
             <h2><?= htmlspecialchars($user->name) ?></h2>
 
-            <?php if (!$isPrivate && $isAdmin): ?>
+            <?php if (!$isPrivate && $isAdmin && $user->role !== 'admin'): ?>
                 <div class="admin-buttons">
                     <form method="POST" action="/actions/action_promote_admin.php" class="admin-action-form">
                         <input type="hidden" name="id" value="<?= htmlspecialchars($user->id) ?>">
