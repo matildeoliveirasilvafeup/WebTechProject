@@ -48,7 +48,8 @@
 <?php function drawInfo($profile, $user, $isPrivate, $isAdmin) { ?>
     <div class="profile-info">
         <div class="name-line">
-            <h2><?= htmlspecialchars($user->name) ?></h2>
+            <h2><?php if ($user->role === 'admin') { ?> Admin <?php } ?>
+            <?= htmlspecialchars($user->name) ?></h2>
 
             <?php if (!$isPrivate && $isAdmin && $user->role !== 'admin'): ?>
                 <div class="admin-buttons">
