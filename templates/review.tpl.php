@@ -35,8 +35,8 @@ function renderStars(float $rating): string {
         </div>
 
         <div class="reviews-controls">
-            <input type="text" placeholder="Search in reviews...">
-            <select>
+            <!-- <button class="btn-add-cart" onclick="openReviewModal()">Write a review</button> -->
+            <select id="review-sort">
                 <option value="latest">Newest</option>
                 <option value="oldest">Oldest</option>
                 <option value="highest">Best rating</option>
@@ -49,7 +49,10 @@ function renderStars(float $rating): string {
 <?php function drawReviewSection($reviews) { ?>
     <div class="reviews-section">
         <?php foreach ($reviews as $index => $review): ?>
-            <div class="review-card" data-index="<?= $index ?>" style="<?= $index >= 3 ? 'display: none;' : '' ?>">
+            <div class="review-card" data-index="<?= $index ?>" 
+                data-rating="<?= $review->rating ?>"
+                data-date="<?= htmlspecialchars($review->createdAt) ?>"
+                style="<?= $index >= 3 ? 'display: none;' : '' ?>">
                 <div class="review-header">
                     <img src="<?= htmlspecialchars($review->profilePicture ?? 'https://via.placeholder.com/40') ?>" alt="Foto do cliente">
                     <div>
