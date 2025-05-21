@@ -1,19 +1,26 @@
 .carousel-wrapper {
     width: 100%;
     overflow-x: auto;
+    padding: 0 2em;
+    box-sizing: border-box;
 }
 
 .category-carousel {
-    margin: 2em 0 2em 0;
     display: flex;
     gap: 15px;
-    padding: 1em 2em;
+    padding: 1em 0;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    justify-content: flex-start;
-    max-width: 100%;
+    overflow-x: auto;
     box-sizing: border-box;
+    scroll-behavior: smooth;
+    flex-wrap: nowrap;
     justify-content: center;
+    transition: justify-content 0.3s ease;
+}
+
+.category-carousel.scrollable {
+    justify-content: flex-start;
 }
 
 .category-card {
@@ -32,6 +39,11 @@
     flex-direction: column;
     justify-content: center; 
     align-items: center; 
+}
+
+.category-card#admin {
+    background-color: var(--text-Xlight);
+    color: var(--secondary);
 }
 
 .category-card:hover {
@@ -101,4 +113,8 @@
 .category-menu .subcategories li a {
     color: var(--main-text-color);
     text-decoration: none;
+}
+
+.iconpicker-popover.popover .popover-title input[type=search].iconpicker-search {
+    max-width: 100%;
 }

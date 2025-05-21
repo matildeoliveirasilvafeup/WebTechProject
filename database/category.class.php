@@ -55,5 +55,22 @@ class Category {
     
         return $categories;
     }
+
+    public static function create(string $name, string $icon): int {
+        $db = Database::getInstance();
+        $db->beginTransaction();
+        $stmt = $db->prepare("INSERT INTO categories (name, icon) VALUES (?, ?)");
+        $stmt->execute([$name, $icon]);
+        $db->commit();
+        return (int)$db->lastInsertId();
+    }
+
+    public static function addSubcategory(int $categoryId, string $subName): void {
+        $db = Database::getInstance();
+        $db->beginTransaction();
+        $stmt = $db->prepare("INSERT INTO subcategories (category_id, name) VALUES (?, ?)");
+        $stmt->execute([$categoryId, $subName]);
+        $db->commit();
+    }
 }
 ?>

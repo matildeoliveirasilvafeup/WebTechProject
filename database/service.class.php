@@ -44,15 +44,27 @@ class Service {
     public static function getAll(): array {
         $db = Database::getInstance();
         $stmt = $db->prepare("
-            SELECT services.*, users.name AS freelancer_name, users.username AS freelancer_username, profiles.profile_picture
+            SELECT services.*, users.name AS freelancer_name, users.username AS freelancer_username, profiles.profile_picture,
+            (
+                SELECT GROUP_CONCAT(media_url)
+                FROM service_images
+                WHERE service_id = services.id
+                ORDER BY id ASC LIMIT 1
+            ) AS media_urls
             FROM services
-            JOIN users ON services.freelancer_id = users.id
+            JOIN users ON services.freelancer_id = users.id AND users.is_banned = 0
             JOIN profiles ON users.id = profiles.user_id
             ORDER BY services.created_at DESC
         ");
         $stmt->execute();
 
-        return array_map(fn($row) => new Service($row), $stmt->fetchAll(PDO::FETCH_ASSOC));
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows as &$row) {
+            $row['mediaUrls'] = array_filter(explode(',', $row['media_urls'] ?? ''));
+        }
+
+        return array_map(fn($row) => new Service($row), $rows);
     }
 
     public static function getFeatured(int $limit = 6): array {
@@ -69,7 +81,7 @@ class Service {
                     ORDER BY id ASC LIMIT 1
                 ) AS media_urls
             FROM services
-            JOIN users ON services.freelancer_id = users.id
+            JOIN users ON services.freelancer_id = users.id AND users.is_banned = 0
             ORDER BY services.created_at DESC
             LIMIT :limit
         ");
@@ -102,7 +114,7 @@ class Service {
                     ORDER BY id ASC
                 ) AS media_urls
             FROM services
-            JOIN users ON services.freelancer_id = users.id
+            JOIN users ON services.freelancer_id = users.id AND users.is_banned = 0
             LEFT JOIN profiles ON users.id = profiles.user_id
             LEFT JOIN categories ON services.category_id = categories.id
             LEFT JOIN subcategories ON services.subcategory_id = subcategories.id
@@ -133,7 +145,7 @@ class Service {
                 LIMIT 1
             ) AS media_urls
             FROM services s
-            JOIN users u ON s.freelancer_id = u.id
+            JOIN users u ON s.freelancer_id = u.id AND u.is_banned = 0
             LEFT JOIN service_images si ON si.service_id = s.id
             WHERE s.freelancer_id = :freelancer_id AND s.id != :exclude_id
             GROUP BY s.id
@@ -164,7 +176,7 @@ class Service {
                 LIMIT 1
             ) AS media_urls
             FROM services s
-            JOIN users u ON s.freelancer_id = u.id
+            JOIN users u ON s.freelancer_id = u.id AND u.is_banned = 0
             LEFT JOIN service_images si ON si.service_id = s.id
             WHERE s.category_id = :category_id AND s.id != :exclude_id
             GROUP BY s.id
@@ -200,7 +212,7 @@ class Service {
                     ORDER BY id ASC LIMIT 1
                 ) AS media_urls
             FROM services
-            JOIN users ON services.freelancer_id = users.id
+            JOIN users ON services.freelancer_id = users.id AND users.is_banned = 0
             LEFT JOIN profiles ON users.id = profiles.user_id
             WHERE services.title LIKE :search OR users.name LIKE :search
             ORDER BY services.created_at DESC
@@ -234,7 +246,7 @@ class Service {
                     ORDER BY id ASC LIMIT 1
                 ) AS media_urls
             FROM services
-            JOIN users ON services.freelancer_id = users.id
+            JOIN users ON services.freelancer_id = users.id AND users.is_banned = 0
             WHERE (services.title LIKE :search OR users.name LIKE :search)
         ";
     
@@ -397,7 +409,7 @@ class Service {
                 ORDER BY id ASC LIMIT 1
             ) AS media_urls
             FROM services
-            JOIN users ON services.freelancer_id = users.id
+            JOIN users ON services.freelancer_id = users.id AND users.is_banned = 0
             JOIN profiles ON users.id = profiles.user_id
             WHERE services.freelancer_id = :freelancer_id
             ORDER BY services.created_at DESC

@@ -48,6 +48,7 @@ html, body {
 .public-profile .profile-header {
     display: inline-flex;
     align-items: center;
+    max-width: 100%;
     gap: 1em;
 }
 
@@ -111,6 +112,14 @@ html, body {
     justify-content: center;
 }
 
+.profile-info .name-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    width: 100%;
+}
+
 .profile-info h2 {
     margin: 0;
     font-size: 1.5em;
@@ -166,10 +175,30 @@ html, body {
     padding: 0.75em 1.5em;
     border-radius: 8px;
     transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-ban {
+    background-color: var(--button-danger);
 }
 
 .btn:hover {
     background-color: var(--main-theme-darker);
+}
+
+.btn-ban:hover {
+    background-color: var(--button-danger-hover);
+}
+
+.name-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-buttons {
+  display: flex;
+  gap: 0.5em;
 }
 
 .profile-controls .btn {

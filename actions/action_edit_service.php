@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST['id'])) {
 $serviceId = (int)$_POST['id'];
 $service = Service::getById($serviceId);
 
-if (!$service || $service->freelancerId !== $user->id) {
+if (!$service || ($service->freelancerId !== $user->id && !Session::isAdmin())) {
     http_response_code(403);
     exit('You are not authorized to edit this service.');
 }

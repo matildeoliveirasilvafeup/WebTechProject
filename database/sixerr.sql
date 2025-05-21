@@ -7,6 +7,7 @@ CREATE TABLE users (
     email TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     role TEXT CHECK(role IN ('user', 'admin')) DEFAULT 'user',
+    is_banned INTEGER DEFAULT 0 CHECK (is_banned IN (0, 1)),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

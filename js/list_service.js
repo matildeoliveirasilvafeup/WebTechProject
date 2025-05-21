@@ -99,8 +99,7 @@ document.querySelector('.create-form').addEventListener('submit', function (even
     let oldImageCount = 0;
 
     oldMedia.forEach(item => {
-        const mediaUrl = item.dataset.mediaUrl;
-        const isImage = /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(mediaUrl);
+        const isImage = item.dataset.isImage === "true";
         const checkbox = item.querySelector('input[type="checkbox"]');
         const markedForDeletion = checkbox?.checked;
 

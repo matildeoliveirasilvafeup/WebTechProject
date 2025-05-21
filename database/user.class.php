@@ -2,12 +2,14 @@
 declare(strict_types=1);
 require_once(__DIR__ . '/../includes/database.php');
 require_once(__DIR__ . '/../database/profiles.class.php');
+require_once(__DIR__ . '/../database/review.class.php');
 
 class User {
     public int $id;
     public string $name;
     public string $username;
     public string $email;
+    public int $is_banned = 0;
     public string $role;
     public string $createdAt;
     public string $password_hash;
@@ -18,6 +20,7 @@ class User {
         $this->name = $data['name'];
         $this->username = $data['username'];
         $this->email = $data['email'];
+        $this->is_banned = (int)$data['is_banned'] ?? 0;
         $this->role = $data['role'] ?? 'user';
         $this->createdAt = $data['created_at'] ?? '';
         $this->password_hash = $data['password_hash'] ?? '';
@@ -171,7 +174,7 @@ class User {
             ];
         }
     }
-    
+
     public static function getIdByUsername(string $username): ?int {
         $db = Database::getInstance();
         $stmt = $db->prepare("SELECT id FROM users WHERE username = ?");
@@ -188,5 +191,55 @@ class User {
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data ? new User($data) : null;
+    }
+
+    public static function promoteToAdmin(int $userId): array {
+        $session = Session::getInstance();
+        $currentUser = $session->getUser();
+
+        if (!$currentUser || $currentUser->role !== 'admin') {
+            http_response_code(403);
+            return ["success" => false, "message" => "Only admins can promote users."];
+        }
+
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare("UPDATE users SET role = 'admin' WHERE id = ?");
+        if ($stmt->execute([$userId])) {
+            return ["success" => true, "message" => "User promoted to admin successfully."];
+        } else {
+            http_response_code(500);
+            return ["success" => false, "message" => "Failed to promote user."];
+        }
+    }
+
+    public static function banUser(string $username): array {
+        $session = Session::getInstance();
+        $currentUser = $session->getUser();
+
+        if (!$currentUser || $currentUser->role !== 'admin') {
+            http_response_code(403);
+            return ['success' => false, 'message' => 'Access denied. Only admins can ban users.'];
+        }
+
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare("UPDATE users SET is_banned = 1 WHERE username = :username");
+        $stmt->execute([':username' => $username]);
+
+        $userId = self::getIdByUsername($username);
+
+        $stmt = $db->prepare("UPDATE users SET is_banned = 1 WHERE id = :id");
+        $stmt->execute([':id' => $userId]);
+
+        $stmt = $db->prepare("SELECT service_id FROM reviews WHERE client_id = :user_id");
+        $stmt->execute([':user_id' => $userId]);
+        $serviceIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        foreach ($serviceIds as $serviceId) {
+            Review::updateServiceRating((int)$serviceId);
+        }
+
+        return ['success' => true, 'message' => "User '$username' was banned successfully."];
     }
 }

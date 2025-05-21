@@ -1,5 +1,5 @@
 
-<?php function drawProfile($profile, $profile_preferences, $user, $isPrivate = true) { ?>
+<?php function drawProfile($profile, $profile_preferences, $user, $isPrivate = true, $isAdmin = false) { ?>
     <?php if (!$isPrivate) { ?>
         <h1><?= htmlspecialchars($user->name) ?>'s Profile</h1>
     <?php } ?>
@@ -9,7 +9,7 @@
             <div class="profile-header">
 
                 <?php drawIcon($profile); ?>
-                <?php drawInfo($profile, $user, $isPrivate); ?>
+                <?php drawInfo($profile, $user, $isPrivate, $isAdmin); ?>
                 
             </div>
             
@@ -45,9 +45,30 @@
     </div>
 <?php } ?>
 
-<?php function drawInfo($profile, $user, $isPrivate) { ?>
+<?php function drawInfo($profile, $user, $isPrivate, $isAdmin) { ?>
     <div class="profile-info">
-        <h2><?= htmlspecialchars($user->name) ?></h2>
+        <div class="name-line">
+            <h2><?php if ($user->role === 'admin') { ?> Admin <?php } ?>
+            <?= htmlspecialchars($user->name) ?></h2>
+
+            <?php if (!$isPrivate && $isAdmin && $user->role !== 'admin'): ?>
+                <div class="admin-buttons">
+                    <form method="POST" action="/actions/action_promote_admin.php" class="admin-action-form">
+                        <input type="hidden" name="id" value="<?= htmlspecialchars($user->id) ?>">
+                        <button type="submit" class="btn btn-promote" title="Promote to Admin">
+                            <i class="fa-solid fa-user-shield"></i> Promote to Admin
+                        </button>
+                    </form>
+
+                    <form method="POST" action="/actions/action_ban_user.php">
+                        <input type="hidden" name="username" value="<?= htmlspecialchars($user->username) ?>">
+                        <button type="submit" class="btn btn-ban">
+                            <i class="fa-solid fa-user-slash"></i> Ban
+                        </button>
+                    </form>
+                </div>    
+            <?php endif; ?>
+        </div>
         <p class="username">@<?= htmlspecialchars($user->username) ?></p>
         <p><i class="fas fa-map-marker-alt"></i> Located in <?= htmlspecialchars($profile->location) ?></p>
         <p><i class="fas fa-calendar-alt"></i> Joined in <?= date('F Y', strtotime($user->createdAt)) ?></p>

@@ -14,14 +14,16 @@
     require_once(__DIR__ .  '/../templates/chat.tpl.php');
     require_once (__DIR__ . '/../templates/common/utils.tpl.php'); 
 
+    $session = Session::getInstance();
     $categoriesMenu = Category::getAllWithSubcategories();
     $testimonials = Review::getLatestReviews(3);
     $featuredServices = Service::getFeatured(100);
+    $isAdmin = Session::isAdmin();
 
     drawHeader();
     drawCategoryMenu($categoriesMenu); 
     drawHero();
-    drawCategorySection($categoriesMenu); 
+    drawCategorySection($categoriesMenu, $isAdmin); 
     drawFeaturedServices($featuredServices);
     drawHowItWorks();
     drawTestimonials($testimonials);

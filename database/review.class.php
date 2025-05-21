@@ -35,7 +35,7 @@ class Review {
                 users.name AS client_name,
                 services.title AS service_title
             FROM reviews
-            JOIN users ON reviews.client_id = users.id
+            JOIN users ON reviews.client_id = users.id AND users.is_banned = 0
             JOIN services ON reviews.service_id = services.id
             ORDER BY reviews.created_at DESC
             LIMIT :limit
@@ -69,7 +69,7 @@ class Review {
         $reviewsStmt = $db->prepare("
             SELECT r.*, u.name AS client_name, u.username AS client_username, p.profile_picture
             FROM reviews r
-            JOIN users u ON u.id = r.client_id
+            JOIN users u ON u.id = r.client_id AND u.is_banned = 0
             LEFT JOIN profiles p ON p.user_id = u.id
             WHERE r.service_id = ?
             ORDER BY r.created_at DESC
@@ -109,8 +109,9 @@ class Review {
             SELECT 
                 ROUND(AVG(rating), 1) AS avg_rating,
                 COUNT(*) AS total_reviews
-            FROM reviews
-            WHERE service_id = :service_id
+            FROM reviews r
+            JOIN users u ON r.client_id = u.id
+            WHERE r.service_id = :service_id AND u.is_banned = 0
         ");
         $stmt->execute([':service_id' => $serviceId]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);

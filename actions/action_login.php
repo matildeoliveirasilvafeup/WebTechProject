@@ -12,8 +12,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = User::getByEmailAndPassword($email,$password);
 
     if ($user != null) {
-        Session::getInstance()->login($user);
+        if ($user->is_banned) {
+            Session::getInstance()->setError('This account has been banned.');
+            header('Location: ../pages/login.php');
+            exit;
+        }
 
+        Session::getInstance()->login($user);
         header('Location: ../pages/dashboard.php');
         exit;
     } else {
