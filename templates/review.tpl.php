@@ -14,7 +14,7 @@ function renderStars(float $rating): string {
 ?>
 
 
-<?php function drawReviewsSummary($averageRating) { ?>
+<?php function drawReviewsSummary($service, $averageRating) { ?>
     <div class="reviews-summary">
         <h2>Reviews</h2>
         <p><strong><?= $averageRating['average'] ?>★</strong> out of 5 — <?= $averageRating['total'] ?> reviews</p>
@@ -48,7 +48,8 @@ function renderStars(float $rating): string {
             <div class="modal-content">
                 <span class="close-btn" onclick="closeReviewModal()">&times;</span>
                 <h2>Write a Review</h2>
-                <form id="review-form">
+                <form id="review-form" action="../actions/action_submit_review.php" method="POST">
+                    <input type="hidden" name="service_id" value="<?= htmlspecialchars((string)$service->id) ?>">
                     <label for="rating">Rating</label>
                     <div class="star-rating" id="star-rating-input">
                         <i class="fa-regular fa-star" data-value="1"></i>
@@ -78,7 +79,11 @@ function renderStars(float $rating): string {
                 data-date="<?= htmlspecialchars($review->createdAt) ?>"
                 style="<?= $index >= 3 ? 'display: none;' : '' ?>">
                 <div class="review-header">
-                    <img src="<?= htmlspecialchars($review->profilePicture ?? 'https://via.placeholder.com/40') ?>" alt="Foto do cliente">
+                    <?php if (!empty($review->profilePicture)): ?>
+                        <img src="<?= htmlspecialchars($review->profilePicture) ?>" alt="Foto do freelancer">
+                    <?php else: ?>
+                        <i class="fa-solid fa-image-portrait"></i>
+                    <?php endif; ?>
                     <div>
                         <strong><?= renderUserLink($review->clientUsername,$review->clientName) ?></strong><br>
                         <?= renderStars($review->rating) ?>
@@ -125,9 +130,9 @@ function renderStars(float $rating): string {
     </div>
 <?php } ?>
 
-<?php function drawReviewBlock($reviews, $averageRating) {
+<?php function drawReviewBlock($service, $reviews, $averageRating) {
     if (count($reviews) > 0) { 
-        drawReviewsSummary($averageRating);
+        drawReviewsSummary($service,$averageRating);
         drawReviewSection($reviews);    
     } else {
         drawEmptyReviewSection();

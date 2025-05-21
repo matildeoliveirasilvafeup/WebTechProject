@@ -130,5 +130,27 @@ class Review {
             ':service_id' => $serviceId
         ]);
     }
+
+    public static function addReview(int $clientId, int $serviceId, int $rating, string $comment): bool {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare("
+            INSERT INTO reviews (client_id, service_id, rating, comment)
+            VALUES (:client_id, :service_id, :rating, :comment)
+        ");
+
+        $success = $stmt->execute([
+            ':client_id' => $clientId,
+            ':service_id' => $serviceId,
+            ':rating' => $rating,
+            ':comment' => $comment
+        ]);
+
+        if ($success) {
+            self::updateServiceRating($serviceId);
+        }
+
+        return $success;
+    }
 }
 ?>

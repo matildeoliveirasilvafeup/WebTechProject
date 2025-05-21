@@ -6,15 +6,6 @@ function closeReviewModal() {
     document.getElementById('review-modal').classList.add('hidden');
 }
 
-document.getElementById('review-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    
-    const rating = this.rating.value;
-    const comment = this.comment.value;
-
-    closeReviewModal();
-});
-
 document.addEventListener('DOMContentLoaded', () => {
     const stars = document.querySelectorAll('#star-rating-input i');
     const ratingInput = document.getElementById('rating');

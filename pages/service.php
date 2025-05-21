@@ -43,7 +43,7 @@
     drawHeader();
     drawCategoryMenu($categories);
     drawServicePage($service, $ratingInfo);
-    drawReviewBlock($reviews, $averageRating);
+    drawReviewBlock($service, $reviews, $averageRating);
     drawMoreFromFreelancer($service, $moreFromFreelancer); 
     drawRelatedServices($relatedServices); 
     drawCopyToast();

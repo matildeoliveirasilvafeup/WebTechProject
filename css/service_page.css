@@ -43,9 +43,11 @@
 }
 
 .freelancer-box img,
-.freelancer-box i {
-    width: 50px;
-    height: 50px;
+.freelancer-box i, 
+.review-header img,
+.review-header i {
+    width: 40px;
+    height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -55,6 +57,12 @@
     border-radius: 50%;
     border: 2px solid var(--soft-line);
     object-fit: cover;
+}
+
+.freelancer-box img,
+.freelancer-box i {
+    width: 50px;
+    height: 50px;
 }
 
 .service-details .price {
