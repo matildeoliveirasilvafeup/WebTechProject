@@ -445,3 +445,71 @@
 .carousel-wrapper:has(video + video) ~ .carousel-btn{
     display: block;
 }
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--secondary);
+    padding: 2em;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 2px 20px var(--box-shadow);
+}
+
+.close-btn {
+    position: absolute;
+    top: 0.5em;
+    right: 1em;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+#review-form textarea {
+    width: 100%;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+}
+
+#review-form h2 {
+    margin-bottom: 1em;
+}
+
+#review-form label {
+    margin: 1em;
+    font-size: large;
+}
+
+.star-rating {
+    display: flex;
+    gap: 0.4em;
+    font-size: 2em;
+    color: var(--soft-line);
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+.star-rating .fa-star,
+.star-rating .fa-star-half-alt,
+.star-rating .fa-star.checked {
+    color: var(--star-yellow);
+    transition: color 0.2s ease-in-out;
+}

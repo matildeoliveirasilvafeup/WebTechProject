@@ -43,6 +43,30 @@ function renderStars(float $rating): string {
                 <option value="lowest">Worst rating</option>
             </select>
         </div>
+
+        <div id="review-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeReviewModal()">&times;</span>
+                <h2>Write a Review</h2>
+                <form id="review-form">
+                    <label for="rating">Rating</label>
+                    <div class="star-rating" id="star-rating-input">
+                        <i class="fa-regular fa-star" data-value="1"></i>
+                        <i class="fa-regular fa-star" data-value="2"></i>
+                        <i class="fa-regular fa-star" data-value="3"></i>
+                        <i class="fa-regular fa-star" data-value="4"></i>
+                        <i class="fa-regular fa-star" data-value="5"></i>
+                        <input type="hidden" name="rating" id="rating" required>
+                    </div>
+
+                    <label for="comment">Comment</label>
+                    <textarea id="comment" name="comment" rows="5" required></textarea>
+
+                    <button type="submit" class="btn-add-cart">Submit Review</button>
+                </form>
+            </div>
+        </div>
+        <script src="../js/review_form.js"></script>
     </div>
 <?php } ?>
 
