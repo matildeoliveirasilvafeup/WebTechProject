@@ -1,5 +1,5 @@
 
-<?php function drawProfile($profile, $profile_preferences, $user, $isPrivate = true) { ?>
+<?php function drawProfile($profile, $profile_preferences, $user, $isPrivate = true, $isAdmin = false) { ?>
     <?php if (!$isPrivate) { ?>
         <h1><?= htmlspecialchars($user->name) ?>'s Profile</h1>
     <?php } ?>
@@ -9,7 +9,7 @@
             <div class="profile-header">
 
                 <?php drawIcon($profile); ?>
-                <?php drawInfo($profile, $user, $isPrivate); ?>
+                <?php drawInfo($profile, $user, $isPrivate, $isAdmin); ?>
                 
             </div>
             
@@ -45,12 +45,12 @@
     </div>
 <?php } ?>
 
-<?php function drawInfo($profile, $user, $isPrivate) { ?>
+<?php function drawInfo($profile, $user, $isPrivate, $isAdmin) { ?>
     <div class="profile-info">
         <div class="name-line">
             <h2><?= htmlspecialchars($user->name) ?></h2>
 
-            <?php if (!$isPrivate): ?>
+            <?php if (!$isPrivate && $isAdmin): ?>
                 <div class="admin-buttons">
                     <form method="POST" action="/actions/action_promote_admin.php" class="admin-action-form">
                         <input type="hidden" name="id" value="<?= htmlspecialchars($user->id) ?>">

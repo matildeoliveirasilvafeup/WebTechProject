@@ -109,8 +109,9 @@ class Review {
             SELECT 
                 ROUND(AVG(rating), 1) AS avg_rating,
                 COUNT(*) AS total_reviews
-            FROM reviews
-            WHERE service_id = :service_id
+            FROM reviews r
+            JOIN users u ON r.client_id = u.id
+            WHERE r.service_id = :service_id AND u.is_banned = 0
         ");
         $stmt->execute([':service_id' => $serviceId]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);

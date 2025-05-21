@@ -11,7 +11,6 @@
     }
 
     $username = $_POST['username'] ?? '';
-    $reason = $_POST['reason'] ?? 'No reason provided';
 
     if (empty($username)) {
         http_response_code(400);
@@ -19,7 +18,7 @@
         exit;
     }
 
-    $response = User::banUser($username, $reason);
+    $response = User::banUser($username);
 
     header('Location: /index.php');
     echo json_encode($response);

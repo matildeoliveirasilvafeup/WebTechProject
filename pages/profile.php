@@ -29,11 +29,13 @@ $userId = User::getIdByUsername($username);
 $user = User::getById($userId);
 $profile = Profile::getByUserId($userId);
 $profile_preferences = ProfilePreferences::getByUserId($userId);
+$session = Session::getInstance();
+$isAdmin = Session::isAdmin();
 
 drawPublicProfileStart();
 drawHeader();
 drawCategoryMenu($categoriesMenu);
-drawProfile($profile, $profile_preferences, $user, false);
+drawProfile($profile, $profile_preferences, $user, false, $isAdmin);
 drawChat();
 drawFooter();
 drawPublicProfileEnd();

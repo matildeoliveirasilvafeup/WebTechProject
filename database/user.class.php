@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require_once(__DIR__ . '/../includes/database.php');
 require_once(__DIR__ . '/../database/profiles.class.php');
+require_once(__DIR__ . '/../database/review.class.php');
 
 class User {
     public int $id;
@@ -212,7 +213,7 @@ class User {
         }
     }
 
-    public static function banUser(string $username, string $reason): array {
+    public static function banUser(string $username): array {
         $session = Session::getInstance();
         $currentUser = $session->getUser();
 
@@ -225,6 +226,19 @@ class User {
 
         $stmt = $db->prepare("UPDATE users SET is_banned = 1 WHERE username = :username");
         $stmt->execute([':username' => $username]);
+
+        $userId = self::getIdByUsername($username);
+
+        $stmt = $db->prepare("UPDATE users SET is_banned = 1 WHERE id = :id");
+        $stmt->execute([':id' => $userId]);
+
+        $stmt = $db->prepare("SELECT service_id FROM reviews WHERE client_id = :user_id");
+        $stmt->execute([':user_id' => $userId]);
+        $serviceIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        foreach ($serviceIds as $serviceId) {
+            Review::updateServiceRating((int)$serviceId);
+        }
 
         return ['success' => true, 'message' => "User '$username' was banned successfully."];
     }
