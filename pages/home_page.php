@@ -7,15 +7,15 @@
     require_once(__DIR__ .  '/../database/hirings.class.php');
     require_once(__DIR__ .  '/../database/user.class.php');
 
-    require_once(__DIR__ .  '/../templates/common/header.tpl.php');
     require_once(__DIR__ .  '/../templates/category.tpl.php');
     require_once(__DIR__ .  '/../templates/review.tpl.php');
-    require_once(__DIR__ .  '/../templates/common/footer.tpl.php'); 
     require_once(__DIR__ .  '/../templates/service.tpl.php');
     require_once(__DIR__ .  '/../templates/home.tpl.php');
     require_once(__DIR__ .  '/../templates/chat.tpl.php');
-    require_once (__DIR__ . '/../templates/common/utils.tpl.php');
     require_once(__DIR__ .  '/../templates/hirings.tpl.php');
+    require_once(__DIR__ .  '/../templates/common/header.tpl.php');
+    require_once(__DIR__ .  '/../templates/common/footer.tpl.php');
+    require_once (__DIR__ . '/../templates/common/utils.tpl.php');
 
     $session = Session::getInstance();
     $categoriesMenu = Category::getAllWithSubcategories();
@@ -26,7 +26,7 @@
     drawHeader();
     drawCategoryMenu($categoriesMenu); 
     drawHero();
-    drawCategorySection($categoriesMenu, $isAdmin); 
+    drawCategorySection($categoriesMenu, $isAdmin);
     drawFeaturedServices($featuredServices);
     drawHowItWorks();
     drawTestimonials($testimonials);

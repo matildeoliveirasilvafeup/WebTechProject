@@ -11,12 +11,12 @@
     require_once(__DIR__ .  '/../database/hirings.class.php');
     require_once(__DIR__ .  '/../database/user.class.php');
 
-    require_once(__DIR__ .  '/../templates/common/header.tpl.php');
     require_once(__DIR__ .  '/../templates/category.tpl.php');
     require_once(__DIR__ .  '/../templates/review.tpl.php');
     require_once(__DIR__ .  '/../templates/service.tpl.php');
     require_once(__DIR__ .  '/../templates/chat.tpl.php');
     require_once(__DIR__ .  '/../templates/hirings.tpl.php');
+    require_once(__DIR__ .  '/../templates/common/header.tpl.php');
     require_once(__DIR__ .  '/../templates/common/footer.tpl.php');
     require_once(__DIR__ .  '/../templates/common/toast.tpl.php');
     require_once(__DIR__ .  '/../templates/common/utils.tpl.php');
@@ -26,7 +26,6 @@
         header("Location: index.php");
         exit;
     }
-
 
     $categories = Category::getAllWithSubcategories();
     $service = Service::getById((int)$serviceId);

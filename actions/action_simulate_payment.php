@@ -32,11 +32,19 @@ $data = [
     'postal_code'    => $_POST['postal_code'],
 ];
 
-$result = Payment::create($data);
+try {
+    $result = Payment::create($data);
 
-if ($result['success']) {
-    echo json_encode(['success' => true]);
-} else {
+    if ($result['success']) {
+        echo json_encode(['success' => true]);
+    } else {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'error' => $result['message']]);
+    }
+} catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(['success' => false, 'error' => $result['message']]);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Exception: ' . $e->getMessage()
+    ]);
 }

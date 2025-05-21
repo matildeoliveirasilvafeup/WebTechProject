@@ -1,10 +1,30 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+:where(body) > .payment-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+:where(body) > .payment-page-wrapper main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2em 1em;
+    box-sizing: border-box;
+}
+
 .payment-wrapper {
-    max-width: 31.25rem;
+    width: 31.25rem;
     margin: 2.5rem auto;
     padding: 1.5625rem;
-    background: #fff;
+    background: white;
     border-radius: 0.625rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--background-disabled);
     box-shadow: 0 0.3125rem 0.9375rem rgba(0,0,0,0.1);
     font-family: Arial, sans-serif;
 }
@@ -20,6 +40,10 @@
 .payment-step h3 {
     margin-bottom: 1rem;
     font-size: 1.2em;
+}
+
+.payment-step input[type="email"] {
+    margin-bottom: 1rem;
 }
 
 #to-payment,
@@ -43,13 +67,13 @@
     background: var(--button-background-selected);
 }
 
-.success {
-    color: #10b981;
+#result .success {
+    color: var(--success);
     margin-top: 1.25rem;
 }
 
-.error {
-    color: red;
+#result .error {
+    color: var(--error);
     margin-top: 1.25rem;
 }
 
@@ -60,8 +84,8 @@
 .method-form {
     margin: 1rem 0;
     padding: 1rem;
-    border: 1px dashed #ccc;
-    background: #f9f9f9;
+    border: 1px dashed var(--background-disabled);
+    background: var(--main-background-darker);
     border-radius: 0.5rem;
 }
 
@@ -72,4 +96,8 @@
 .method-form label {
     display: block;
     margin-bottom: 0.5rem;
+}
+
+.hidden {
+    display: none !important;
 }

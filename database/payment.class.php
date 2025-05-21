@@ -27,7 +27,7 @@ class Payment {
     public static function create(array $data): array {
         $db = Database::getInstance();
 
-        $allowedMethods = ['paypal', 'credit_card', 'pix'];
+        $allowedMethods = ['paypal', 'debit_card', 'pix', 'mbway', 'paysafecard'];
         if (!in_array($data['payment_method'], $allowedMethods)) {
             return ["success" => false, "message" => "Invalid payment method."];
         }
@@ -55,7 +55,8 @@ class Payment {
         if ($success) {
             return ["success" => true, "message" => "Payment recorded."];
         } else {
-            return ["success" => false, "message" => "Database error while saving payment."];
+            $errorInfo = $stmt->errorInfo();
+            return ["success" => false, "message" => "Database error: " . $errorInfo[2]];
         }
     }
 
