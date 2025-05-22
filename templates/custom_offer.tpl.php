@@ -16,17 +16,39 @@
         <?php foreach ($offers as $offer) : ?>
         <li class="offer-card">
             <div class="offer-left">
-                <p><strong>Price: €</strong><?= htmlspecialchars($offer->price) ?></p>
+                <p><strong>Price: </strong>€<?= htmlspecialchars($offer->price) ?></p>
                 <p><strong>Delivery: </strong><?= htmlspecialchars($offer->delivery_time) ?> days</p>
                 <p><strong>Revisions: </strong><?= htmlspecialchars($offer->number_of_revisions) ?></p>
             </div>
             <div class="offer-right">
-                <span class="status-badge status-<?= strtolower(htmlspecialchars($offer->status)) ?>">
-                    <?= htmlspecialchars($offer->status) ?>
-                </span>
-                <span class="createdAt-badge">
-                    <?= htmlspecialchars(date('Y-m-d H:i', strtotime($offer->created_at))) ?>
-                </span>
+                <div class="status-createdAt-badge">
+                    <div class="css-status-badge-corrector">
+                        <span class="status-badge status-<?= strtolower(htmlspecialchars($offer->status)) ?>">
+                            <?= htmlspecialchars($offer->status) ?>
+                        </span>
+                    </div>
+                        <span class="createdAt-badge">
+                        <?= htmlspecialchars(date('Y-m-d H:i', strtotime($offer->created_at))) ?>
+                    </span>
+                </div>
+
+                <div class="offer-actions">
+                    <?php if (strtolower($offer->status) === 'pending'): ?>
+                        <?php if ($userId === $offer->sender_id): ?>
+                            <form method="POST" action="/actions/action_update_offer_status.php">
+                                <input type="hidden" name="offer_id" value="<?= htmlspecialchars($offer->id) ?>">
+                                <input type="hidden" name="new_status" value="Cancelled">
+                                <button type="submit" class="cancel-btn">Cancel</button>
+                            </form>
+                        <?php elseif ($userId === $offer->receiver_id): ?>
+                            <form method="POST" action="/actions/action_update_offer_status.php">
+                                <input type="hidden" name="offer_id" value="<?= htmlspecialchars($offer->id) ?>">
+                                <button type="submit" name="new_status" value="Accepted" class="accept-btn">Accept</button>
+                                <button type="submit" name="new_status" value="Rejected" class="reject-btn">Reject</button>
+                            </form>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
             </div>
         </li>
         <?php endforeach; ?>
@@ -35,7 +57,6 @@
     <button class="create-offer-btn">New Offer</button>
 </section>
 
-<!-- Modal for Creating/Editing Offers -->
 <div id="custom-offer-modal" class="custom-offer-modal hidden">
     <form action="/actions/action_create_custom_offer.php" method="POST" class="custom-offer-form">
         <h1>Custom Offer</h1>
@@ -62,4 +83,12 @@
 </div>
 
 <script src="/js/custom_offer.js" defer></script>
+<?php } ?>
+
+<?php function drawCustomOfferPageStart() { ?>
+    <div class="custom-offer-page-wrapper">
+<?php } 
+
+function drawCustomOfferPageEnd() { ?>
+    </div>
 <?php } ?>

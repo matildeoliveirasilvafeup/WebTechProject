@@ -24,7 +24,9 @@
         exit;
     }
 
+    drawCustomOfferPageStart();
     drawHeader();
     drawCustomOfferForm($hiringId, $userId1, $userId2);
     drawFooter();
+    drawCustomOfferPageEnd();
 ?>

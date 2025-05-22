@@ -45,51 +45,46 @@ class CustomOffer {
         return ['success' => $success];
     }
 
-    public static function getByReceiver(int $receiverId): array {
-        $db = Database::getInstance();
-
-        $stmt = $db->prepare('
-            SELECT * FROM custom_offers
-            WHERE receiver_id = ?
-            ORDER BY created_at DESC
-        ');
-        $stmt->execute([$receiverId]);
-
-        return $stmt->fetchAll(PDO::FETCH_CLASS, 'CustomOffer');
-    }
-
-    public static function getOffers(int $hiringId, int $senderId, int $receiverId): array {
-        $db = Database::getInstance();
-
-        $stmt = $db->prepare('
-            SELECT * FROM custom_offers
-            WHERE hiring_id = ? AND sender_id = ? AND receiver_id = ?
-            ORDER BY created_at DESC
-        ');
-        $stmt->execute([$hiringId, $senderId, $receiverId]);
-
-        return $stmt->fetchAll(PDO::FETCH_CLASS, 'CustomOffer');
-    }
-
-    public static function getById(int $id): ?CustomOffer {
+    public static function getById(int $offerId): ?object {
         $db = Database::getInstance();
 
         $stmt = $db->prepare('SELECT * FROM custom_offers WHERE id = ?');
-        $stmt->execute([$id]);
+        $stmt->execute([$offerId]);
+        $offer = $stmt->fetch(PDO::FETCH_OBJ);
 
-        $offer = $stmt->fetchObject('CustomOffer');
-        return $offer !== false ? $offer : null;
+        return $offer ?: null;
     }
 
-    public static function updateStatus(int $id, string $status): bool {
+    public static function getOffers(int $hiringId, int $userId1, int $userId2): array {
         $db = Database::getInstance();
 
         $stmt = $db->prepare('
-            UPDATE custom_offers
-            SET status = ?, ended_at = CURRENT_TIMESTAMP
-            WHERE id = ?
+            SELECT * FROM custom_offers
+            WHERE hiring_id = ? AND
+                (
+                    (sender_id = ? AND receiver_id = ?) OR
+                    (sender_id = ? AND receiver_id = ?)
+                )
+            ORDER BY created_at DESC
         ');
-        return $stmt->execute([$status, $id]);
+        $stmt->execute([$hiringId, $userId1, $userId2, $userId2, $userId1]);
+
+        return $stmt->fetchAll(PDO::FETCH_CLASS, 'CustomOffer');
+    }
+
+    public static function updateStatus(int $offerId, string $newStatus): bool {
+        $validStatuses = ['Pending', 'Accepted', 'Rejected', 'Cancelled'];
+
+        $normalizedStatus = ucfirst(strtolower($newStatus));
+
+        if (!in_array($normalizedStatus, $validStatuses, true)) {
+            return false;
+        }
+
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare('UPDATE custom_offers SET status = ? WHERE id = ?');
+        return $stmt->execute([$normalizedStatus, $offerId]);
     }
 }
 ?>

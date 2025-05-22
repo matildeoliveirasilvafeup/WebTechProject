@@ -1,16 +1,42 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+:where(body) > .custom-offer-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+:where(body) > .custom-offer-page-wrapper main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1em;
+    box-sizing: border-box;
+}
+
 .custom-offer-page {
     padding: 2em;
     background: var(--secondary);
     color: var(--main-text-color);
-    max-width: 600px;
+    max-width: 37.5rem;
     margin: 2em auto;
     border-radius: 12px;
 }
 
-.custom-offer-form {
+.custom-offer-form,
+.custom-offer-modal .custom-offer-form {
     display: flex;
     flex-direction: column;
     gap: 1.5em;
+    background: var(--secondary);
+    padding: 2em;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 31.25rem;
 }
 
 .custom-offer-form h1 {
@@ -39,32 +65,40 @@
 }
 
 .custom-offer-list {
-    max-width: 800px;
-    margin: 2em auto;
+    max-width: 50rem;
+    margin: 0 auto;
     padding: 2em;
     background: var(--main-background);
     border-radius: 12px;
+    justify-items: center;
 }
 
 .offer-cards {
     list-style: none;
     padding: 0;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(20rem, 1fr));
     gap: 1em;
+    max-width: 50rem;
+    margin: 0 auto;
+}
+
+.offer-cards > li:nth-child(odd):last-child {
+    justify-self: center;
 }
 
 .offer-card {
+    min-height: 7.5rem;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     background: var(--main-background-darker);
     padding: 1em 1.5em;
     border-radius: 10px;
     color: var(--main-text-color);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
     font-size: 0.95rem;
-    gap: 1em;
+    gap: 2em;
 }
 
 .offer-left,
@@ -77,6 +111,35 @@
 .offer-right {
     align-items: flex-end;
     text-align: right;
+    min-width: 8.75rem;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.status-createdAt-badge {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.offer-actions {
+    display: flex;
+    gap: 0.5em;
+}
+.offer-actions form {
+    display: flex;
+    gap: 0.5em;
+    margin: 0;
+}
+.offer-actions form button {
+    padding: 0.3em 0.7em;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease;
+    color: white;
 }
 
 .edit-offer-btn {
@@ -102,35 +165,24 @@
     z-index: 1000;
 }
 
-.custom-offer-modal .custom-offer-form {
-    background: var(--secondary);
-    padding: 2em;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 500px;
-}
-
 .hidden {
     display: none;
 }
 
 .create-offer-btn {
+    margin-top: 1em;
     display: inline-block;
-    padding: 12px 24px;
-    border-radius: 8px;
+    padding: 0.75em 1.5em;
     text-decoration: none;
     font-weight: bold;
     width: fit-content;
     transition: background 0.3s ease;
-    border: 2px solid var(--button-background);
-    font-size: medium;
+    border: 0.125em solid var(--button-background);
+    font-size: 1rem;
     cursor: pointer;
     background: var(--button-background);
     color: var(--secondary);
-    text-decoration: none;
     border-radius: 6px;
-    font-weight: bold;
-    transition: background-color 0.2s;
 }
 
 .create-offer-btn:hover {
