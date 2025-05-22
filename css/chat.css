@@ -276,7 +276,7 @@
 .conversation-item {
     position: relative;
     padding: 1em;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--background-disabled);
 }
 .conversation-unread {
     position: absolute;
@@ -355,11 +355,9 @@
 }
 
 .message-with-sub {
-    border: 1px solid #ccc;
-    padding: 10px;
+    border: 1px solid var(--background-disabled);
+    padding: 0.625rem;
     border-radius: 12px;
-    background-color: #f4f4f4;
-    margin-bottom: 5px;
 }
 .message-with-sub.status-pending, .message-with-sub.status-reopened { background-color: var(--pending-color); color: var(--pending-background) }
 .message-with-sub.status-accepted { background-color: var(--accepted-color); color: var(--accepted-background) }
@@ -368,8 +366,8 @@
 .message-with-sub.status-completed, .message-with-sub.status-closed { background-color: var(--completed-color); color: var(--completed-background) }
 
 .sub-message-bubble {
-    margin-top: 6px;
-    padding: 6px 10px;
+    margin-top: 0.375rem;
+    padding: 0.375rem 0.625rem;
     border-radius: 8px;
     font-size: 0.875rem;
     font-weight: bold;

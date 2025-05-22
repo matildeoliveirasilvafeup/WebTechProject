@@ -55,6 +55,7 @@
                             $clientUsername = $client ? $client->username : null;
                             return [
                                 'hiring_id' => $h->id,
+                                'created_at' => $h->created_at,
                                 'owner_id' => $h->owner_id,
                                 'client_id' => $h->client_id,
                                 'client_name' => $clientUsername,
@@ -131,7 +132,7 @@
                                     data-id='{$serviceHirings[0]->id}'
                                     onclick='highlightSelectedHiring({$serviceHirings[0]->id});'>
                                 <div class='hiring-service-header'
-                                    onclick='drawOwnHiringRequest($userUsernameJs, $ownerId, $serviceHiringsJson, $serviceId, $serviceTitleJs);'>
+                                    onclick='drawOwnHiringRequest($userUsernameJs, $serviceHiringsJson, $serviceId, $serviceTitleJs);'>
                                     <i class='fa fa-chevron-left'></i>
                                     <h5>$serviceTitle</h5>
                                 </div>

@@ -342,3 +342,10 @@
 .status-rejected { background-color: var(--rejected-color); color: var(--rejected-background) }
 .status-cancelled { background-color: var(--cancelled-color); color: var(--cancelled-background) }
 .status-completed, .status-closed { background-color: var(--completed-color); color: var(--completed-background) }
+
+.createdAt-badge {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: var(--text-lighter);
+    margin-left: 0.5rem;
+}

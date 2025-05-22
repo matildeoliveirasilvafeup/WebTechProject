@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         body.innerHTML = clients.map(client => `
             <div class="client-hiring-card">
                 <span class="client-username" id="client-username">${client.client_name}</span>
+                <span class="createdAt-badge ">${formatDateTimeWithoutSeconds(client.created_at)}</span>
                 <div class="hiring-actions">
                     ${client.status === 'Pending' ? `
                         <button onclick="updateHiringStatus(${client.hiring_id}, 'Accepted');
@@ -117,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
-    function drawOwnHiringRequest(ownerUsername, ownerId, hirings, serviceId, serviceTitle) {
+    function drawOwnHiringRequest(ownerUsername, hirings, serviceId, serviceTitle) {
         
         const body = document.getElementById("hirings-body");
         const headerName = document.getElementById("hirings-freelancer-name");
@@ -136,12 +137,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const status = hiring.status;
             const showCancel = status === "Pending" || status === "Accepted" || status === "Completed";
             const statusBadge = `<span class="status-badge status-${status.toLowerCase()}">${status}</span>`;
+            const createdAt = hiring.created_at;
+            const createdAtBadge = `<span class="createdAt-badge ">${formatDateTimeWithoutSeconds(createdAt)}</span>`;
             
             html += `
             <div class="client-hiring-card">
                 <div class="card-header">
                     ${statusBadge}
                 </div>
+                ${createdAtBadge}
                 ${showCancel ? `
                     <div class="hiring-actions">
                         ${status === 'Completed' ? `
@@ -164,5 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         body.innerHTML = html;
+    }
+
+    function formatDateTimeWithoutSeconds(datetime) {
+        return datetime.slice(0, 16);
     }
 });
