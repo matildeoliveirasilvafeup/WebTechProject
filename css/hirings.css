@@ -1,0 +1,344 @@
+#hirings-toggle-btn {
+    position: fixed;
+    bottom: 5rem;
+    right: 1rem;
+    background-color: var(--main-theme-darker);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0.125rem 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+}
+
+#hirings-modal {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 60rem;
+    height: 32rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.hirings-wrapper {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hirings-received,
+.hirings-own {
+    width: 20%;
+    background-color: var(--chat-darker-white);
+    padding: 1rem;
+    border-right: 1px solid var(--soft-line);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.hirings-own {
+    border-right: none;
+    border-left: 1px solid var(--soft-line);
+}
+
+.hirings-received h4,
+.hirings-own h4 {
+    width: 100%;
+    text-align: center;
+    margin: 1em 0;
+}
+.hirings-received h4::after,
+.hirings-own h4::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: black;
+    margin: 0.75rem auto 0;
+    border-radius: 1px;
+}
+
+.hirings-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    padding: 1rem;
+    padding-bottom: 0;
+    overflow: hidden;
+    border: 1px solid var(--soft-line);
+    border-radius: 0.5rem;
+    background-color: #fff;
+    flex-grow: 1;
+    min-width: 15.625rem;
+}
+
+.hirings-header {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--soft-line);
+    margin-bottom: 1rem;
+}
+.hirings-footer {
+    display: flex;
+    padding-top: 1rem;
+    border-top: 1px solid var(--soft-line);
+}
+#hirings-form {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+#hirings-feedback-input {
+    flex: 1;
+    padding: 1rem;
+    margin: 0;
+    border: 1px solid var(--background-disabled);
+    border-radius: 1.25rem 0 0 1.25rem;
+    outline: none;
+    height: 3rem;
+    font-size: 1rem;
+}
+#hirings-submit-btn {
+    background-color: var(--main-theme-darker);
+    color: white;
+    border: none;
+    padding: 1rem 1rem;
+    border-radius: 0 1.25rem 1.25rem 0;
+    cursor: pointer;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#hirings-submit-btn i {
+    font-size: 1rem;
+}
+
+.hirings-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    align-items: center;
+}
+
+.hirings-badge,
+.hiring-item-badge {
+    background-color: red;
+    color: white;
+    font-size: 0.7rem;
+    border-radius: 0.75rem;
+    line-height: 1;
+    text-align: center;
+    z-index: 1;
+    padding: 0.125em 0.375em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.hiring-item-badge {
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+    position: static;
+}
+.hiring-item-badge.hidden {
+    display: none;
+}
+
+.close-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+}
+.close-button button {
+    background: transparent;
+    border: none;
+    color: var(--main-text);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+.close-button button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.hidden {
+    display: none;
+}
+
+.hiring-item,
+.client-hiring-card {
+    width: 92%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    background-color: #fff;
+    border: 1px solid var(--soft-line);
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.hiring-item:hover,
+.client-hiring-card:hover {
+    background-color: var(--hover-light);
+    border-color: var(--main-theme-darker);
+}
+.hiring-item.active {
+    border-color: var(--main-theme-darker);
+    background-color: var(--light-highlight);
+}
+.hiring-item-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.hiring-item-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--main-text);
+    margin: 0;
+}
+
+.hirings-scrollable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.hirings-scrollable {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE/Edge */
+}
+.hirings-scrollable::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.hiring-service-group {
+    width: 90%;
+    border-radius: 0.625rem;
+    margin-bottom: 1rem;
+    padding: 0.625rem;
+}
+.hiring-service-header {
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+.hiring-service-group:hover {
+    background-color: var(--soft-line);
+}
+.hiring-service-group.active {
+    background-color: var(--background-disabled);
+    font-weight: bold;
+}
+.hiring-service-header h5 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: normal;
+}
+.hirings-received .hiring-service-header h5 {
+    text-align: start;
+}
+.hirings-own .hiring-service-header h5 {
+    text-align: end;
+}
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+.toggle-icon.rotated {
+    transform: rotate(180deg);
+}
+.hiring-service-clients {
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.client-username,
+.client-name {
+    font-weight: bold;
+    color: var(--main-text);
+}
+.hiring-actions,
+.hiring-actions-center {
+    display: flex;
+    gap: 1rem;
+}
+.hiring-actions-center {
+    margin-top: 1rem;
+}
+
+.hiring-actions button,
+.accept-btn,
+.reopen-btn,
+.close-btn,
+.reject-btn,
+.cancel-btn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: white;
+}
+.accept-btn,
+.close-btn,
+.finish-btn {
+    background-color: #4CAF50;
+}
+.accept-btn:hover,
+.close-btn:hover,
+.finish-btn:hover {
+    background-color: #439c46;
+}
+.reject-btn,
+.reopen-btn,
+.cancel-btn {
+    background-color: #F44336;
+}
+.reject-btn:hover,
+.reopen-btn:hover,
+.cancel-btn:hover {
+    background-color: #d32f2f;
+}
+
+.status-label {
+    font-style: italic;
+    color: gray;
+}
+
+.status-badge {
+    padding: 0.25em 0.5em;
+    border-radius: 0.5em;
+    font-size: 0.8em;
+    font-weight: bold;
+    display: inline-block;
+}
+.status-pending { background-color: var(--pending-color); color: var(--pending-background) }
+.status-accepted { background-color: var(--accepted-color); color: var(--accepted-background) }
+.status-rejected { background-color: var(--rejected-color); color: var(--rejected-background) }
+.status-cancelled { background-color: var(--cancelled-color); color: var(--cancelled-background) }
+.status-completed, .status-closed { background-color: var(--completed-color); color: var(--completed-background) }

@@ -33,15 +33,17 @@ class Chat {
         return $conversation_id;
     }
 
-    public static function sendMessage(string $conversation_id, int $service_id, int $sender_id, int $receiver_id, ?string $message, ?string $file = null): array {
+    public static function sendMessage(string $conversation_id, int $service_id, int $sender_id, int $receiver_id, ?string $message, ?string $sub_message = null, ?string $file = null): array {
         $db = Database::getInstance();
 
+        self::createConversation($service_id, $sender_id, $receiver_id);
+
         $stmt = $db->prepare("
-            INSERT INTO messages (conversation_id, service_id, sender_id, receiver_id, message, file)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO messages (conversation_id, service_id, sender_id, receiver_id, message, sub_message, file)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         ");
         $success = $stmt->execute([
-            $conversation_id, $service_id, $sender_id, $receiver_id, $message, $file
+            $conversation_id, $service_id, $sender_id, $receiver_id, $message, $sub_message, $file
         ]);
 
         return [
@@ -59,6 +61,7 @@ class Chat {
                 sender_id,
                 receiver_id,
                 message,
+                sub_message,
                 file,
                 created_at AS message_created_at
             FROM messages
@@ -66,7 +69,22 @@ class Chat {
             ORDER BY created_at ASC
         ");
         $stmt->execute([$conversation_id, $service_id]);
-        $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $rawMessages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $messages = [];
+
+        foreach ($rawMessages as $msg) {
+            $statusClass = null;
+
+            if (!empty($msg['message']) && !empty($msg['sub_message'])) {
+                if (preg_match('/\b(\w+)\!$/', $msg['message'], $matches)) {
+                    $statusClass = strtolower($matches[1]);
+                }
+            }
+
+            $msg['status_class'] = $statusClass;
+            $messages[] = $msg;
+        }
 
         $stmtConv = $db->prepare("
             SELECT user1_id, user2_id, service_id
@@ -100,6 +118,7 @@ class Chat {
         ];
     }
 
+
     public static function getUserConversations(int $user_id): array {
         $db = Database::getInstance();
 
@@ -117,10 +136,10 @@ class Chat {
         $db = Database::getInstance();
 
         $stmt = $db->prepare("
-            SELECT conversation_id, COUNT(*) AS unread_count
+            SELECT conversation_id, service_id, COUNT(*) AS unread_count
             FROM messages
             WHERE receiver_id = ? AND is_read = 0
-            GROUP BY conversation_id
+            GROUP BY conversation_id, service_id
         ");
         $stmt->execute([$userId]);
 

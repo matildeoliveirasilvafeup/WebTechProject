@@ -184,13 +184,17 @@ class User {
         return $result ? (int)$result['id'] : null;
     }
 
-    public static function getById(int $id): ?User {
+    public static function getById(int $userId) {
         $db = Database::getInstance();
-        $stmt = $db->prepare("SELECT * FROM users WHERE id = ?");
-        $stmt->execute([$id]);
+        $stmt = $db->prepare('SELECT * FROM users WHERE id = :id');
+        $stmt->execute([':id' => $userId]);
 
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $data ? new User($data) : null;
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($userData) {
+            return new User($userData);
+        }
+
+        return null;
     }
 
     public static function promoteToAdmin(int $userId): array {

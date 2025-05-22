@@ -1,22 +1,31 @@
-let CURRENT_CONVERSATION_ID = null;
-let CURRENT_SERVICE_ID = null;
-let CURRENT_USER_ID = null;
-let CURRENT_RECEIVER_ID = null;
+window.ChatState = {
+    CURRENT_CONVERSATION_ID: null,
+    CURRENT_SERVICE_ID: null,
+    CURRENT_USER_ID: null,
+    CURRENT_RECEIVER_ID: null
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     checkUnreadMessages();
+
+    window.drawMessages = drawMessages;
 
     const toggleBtn = document.getElementById('chat-toggle-btn');
     const closeBtn = document.getElementById('chat-close-btn');
     const modal = document.getElementById('chat-modal');
 
-    toggleBtn.addEventListener('click', () => {
-        modal.classList.toggle('hidden');
-    });
+    if (toggleBtn && modal) {
+        toggleBtn.addEventListener('click', () => {
+            modal.classList.toggle('hidden');
+            checkUnreadMessages();
+        });
+    }
     
-    closeBtn.addEventListener('click', () => {
-        modal.classList.toggle('hidden');
-    });
+    if (closeBtn && modal) {
+        closeBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    }
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -24,35 +33,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('chat-toggle-btn').addEventListener('click', () => {
-        document.getElementById('chat-modal').classList.remove('hidden');
-        checkUnreadMessages();
+    document.querySelectorAll('.chat-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const conversationId = item.dataset.conversationId;
+            const serviceId = item.dataset.serviceId;
+            const userId = item.dataset.userId;
+
+            drawMessages(conversationId, serviceId, userId);
+            highlightSelectedChat(conversationId, serviceId);
+        });
     });
 
     const fileInput = document.getElementById('chat-file');
     const fileDisplay = document.getElementById('file-name-display');
 
-    fileInput.addEventListener('change', function () {
-        if (this.files.length > 0) {
-            const fileName = this.files[0].name;
+    if (fileInput) {
+        fileInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                const fileName = this.files[0].name;
 
-            fileDisplay.innerHTML = `
-                <div class="file-preview-chat">
-                <i class="fa-solid fa-file"></i> ${fileName}
-                <button type="button" id="cancel-file-btn" title="Remove file">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-                </div>
-            `;
+                fileDisplay.innerHTML = `
+                    <div class="file-preview-chat">
+                    <i class="fa-solid fa-file"></i> ${fileName}
+                    <button type="button" id="cancel-file-btn" title="Remove file">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    </div>
+                `;
 
-            document.getElementById('cancel-file-btn').addEventListener('click', () => {
-                fileInput.value = '';
+                document.getElementById('cancel-file-btn').addEventListener('click', () => {
+                    fileInput.value = '';
+                    fileDisplay.innerHTML = '';
+                });
+            } else {
                 fileDisplay.innerHTML = '';
-            });
-        } else {
-            fileDisplay.innerHTML = '';
-        }
-    });
+            }
+        });
+    }
     
     const openChat = localStorage.getItem('openChat');
     if (openChat) {
@@ -70,6 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('openChat');
         }
     }
+
+    const openHiring = localStorage.getItem('openHiring');
+    if (openHiring === 'true') {
+        document.getElementById('hirings-modal')?.classList.remove('hidden');
+        localStorage.removeItem('openHiring');
+    } 
 });
 
 
@@ -84,10 +107,11 @@ function drawMessages(conversationId, serviceId, userId) {
     fetch(`/actions/action_get_messages.php?conversation_id=${conversationId}&service_id=${serviceId}&user_id=${userId}`)
         .then(res => res.json())
         .then(data => {
-            CURRENT_CONVERSATION_ID = conversationId;
-            CURRENT_SERVICE_ID = serviceId;
-            CURRENT_USER_ID = userId;
-            CURRENT_RECEIVER_ID = data.receiver_id;
+            
+            window.ChatState.CURRENT_CONVERSATION_ID = conversationId;
+            window.ChatState.CURRENT_SERVICE_ID = serviceId;
+            window.ChatState.CURRENT_USER_ID = userId;
+            window.ChatState.CURRENT_RECEIVER_ID = data.receiver_id;
 
             usernameSpan.textContent = data.receiver_username;
             usernameSpan.style.cursor = 'pointer';
@@ -116,7 +140,7 @@ function drawMessages(conversationId, serviceId, userId) {
                 const currentSenderId = msg.sender_id;
                 const currentIsoUTC = msg.message_created_at.replace(' ', 'T') + 'Z';
                 const currentTimeUTC = new Date(currentIsoUTC);
-                const isUser = currentSenderId === userId;
+                const isUser = currentSenderId === parseInt(userId, 10);
 
                 if (
                     lastSenderId !== currentSenderId ||
@@ -134,7 +158,33 @@ function drawMessages(conversationId, serviceId, userId) {
                 const msgText = document.createElement('div');
                 msgText.classList.add('msg-text');
 
-                if (msg.message) {
+                if (msg.message && msg.sub_message) {
+                    const bubble = document.createElement('div');
+                    bubble.classList.add('message-with-sub');
+
+                    const mainText = document.createElement('p');
+                    mainText.textContent = msg.message;
+                    bubble.appendChild(mainText);
+
+                    const subText = document.createElement('p');
+                    subText.textContent = msg.sub_message;
+                    subText.classList.add('sub-message-bubble');
+
+                    if (msg.status_class) {
+                        bubble.classList.add(`status-${msg.status_class.toLowerCase()}`);
+                        subText.classList.add(`status-${msg.status_class.toLowerCase()}`);
+                    }
+
+                    subText.style.cursor = 'pointer';
+                    subText.onclick = () => {
+                        localStorage.setItem('openHiring', 'true');
+                        location.reload();
+                    };
+
+                    bubble.appendChild(subText);
+                    msgText.appendChild(bubble);
+                } else if (msg.message) {
+
                     const textEl = document.createElement('p');
                     textEl.textContent = msg.message;
                     msgText.appendChild(textEl);
@@ -218,11 +268,12 @@ function sendMessage(event) {
     if (!message && (!fileInput || fileInput.files.length === 0)) return;
 
     const formData = new FormData();
-    formData.append('conversation_id', CURRENT_CONVERSATION_ID);
-    formData.append('service_id', CURRENT_SERVICE_ID);
-    formData.append('sender_id', CURRENT_USER_ID);
-    formData.append('receiver_id', CURRENT_RECEIVER_ID);
-
+    formData.append('conversation_id', window.ChatState.CURRENT_CONVERSATION_ID);
+    formData.append('service_id', window.ChatState.CURRENT_SERVICE_ID);
+    formData.append('sender_id', window.ChatState.CURRENT_USER_ID);
+    formData.append('receiver_id', window.ChatState.CURRENT_RECEIVER_ID);
+    formData.append('sub_message', '');
+    
     if (fileInput && fileInput.files.length > 0) {
         formData.append('file', fileInput.files[0]);
         formData.append('message', message ? message : '');
@@ -242,7 +293,7 @@ function sendMessage(event) {
         if (!data.success) {
             console.error('Error sending message:', data.error || 'Unknown error');
         } else {
-            drawMessages(CURRENT_CONVERSATION_ID, CURRENT_SERVICE_ID, CURRENT_USER_ID);
+            drawMessages(window.ChatState.CURRENT_CONVERSATION_ID, window.ChatState.CURRENT_SERVICE_ID, window.ChatState.CURRENT_USER_ID);
             fileInput.value = '';
             fileDisplay.innerHTML = '';
         }
@@ -266,39 +317,6 @@ function highlightSelectedChat(conversationId, serviceId) {
     }
 }
 
-function startConversation(serviceId, user1Id, user2Id) {
-    if (user1Id == user2Id) {
-        console.warn('Cannot start a conversation with yourself.');
-        return;
-    }
-    
-    const formData = new FormData();
-    formData.append('service_id', serviceId);
-    formData.append('user1_id', user1Id);
-    formData.append('user2_id', user2Id);
-
-    fetch('/actions/action_start_conversation.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            localStorage.setItem('openChat', JSON.stringify({
-                conversation_id: data.conversation_id,
-                service_id: data.service_id,
-                user_id: user1Id
-            }));
-            location.reload();
-        } else {
-            alert('Error: ' + data.error);
-        }
-    })
-    .catch(err => {
-        console.error('Failed to start conversation:', err);
-    });
-}
-
 function checkUnreadMessages() {
     fetch('/actions/action_get_unread_messages.php')
         .then(res => res.json())
@@ -307,7 +325,8 @@ function checkUnreadMessages() {
             const unreadMap = {};
 
             data.forEach(entry => {
-                unreadMap[entry.conversation_id] = entry.unread_count;
+                const key = `${entry.conversation_id}-${entry.service_id}`;
+                unreadMap[key] = entry.unread_count;
             });
 
             const total = Object.keys(unreadMap).length;
@@ -320,12 +339,16 @@ function checkUnreadMessages() {
 
             document.querySelectorAll('.chat-item').forEach(item => {
                 const conversationId = item.dataset.conversationId;
-                const convBadge = document.getElementById(`unread-badge-${conversationId}`);
+                const serviceId = item.dataset.serviceId;
+                const key = `${conversationId}-${serviceId}`;
+                
+                const badgeId = `unread-badge-${conversationId}-${serviceId}`;
+                const convBadge = document.getElementById(badgeId);
 
-                if (unreadMap[conversationId]) {
-                    convBadge.textContent = unreadMap[conversationId];
+                if (unreadMap[key]) {
+                    convBadge.textContent = unreadMap[key];
                     convBadge.classList.remove('hidden');
-                } else {
+                } else if (convBadge) {
                     convBadge.classList.add('hidden');
                 }
             });

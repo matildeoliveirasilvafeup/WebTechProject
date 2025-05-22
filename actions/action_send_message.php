@@ -13,6 +13,7 @@ $serviceId = (int)$_POST['service_id'] ?? null;
 $senderId = (int)$_POST['sender_id'] ?? null;
 $receiverId = (int)$_POST['receiver_id'] ?? null;
 $message = $_POST['message'] ?? null;
+$subMessage = $_POST['sub_message'] ?? null;
 $file = $_FILES['file'] ?? null;
 
 if (!$conversationId || !$serviceId || !$senderId || !$receiverId || !($message || $file)) {
@@ -49,7 +50,7 @@ if (!empty($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
     }
 }
 
-$result = Chat::sendMessage($conversationId, $serviceId, $senderId, $receiverId, $message, $fileName);
+$result = Chat::sendMessage($conversationId, $serviceId, $senderId, $receiverId, $message, $subMessage, $fileName);
 
 if (!$result['success']) {
     http_response_code(500);

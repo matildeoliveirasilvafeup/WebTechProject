@@ -54,7 +54,6 @@ CREATE TABLE conversations (
     PRIMARY KEY (id, service_id)
 );
 
-
 CREATE TABLE messages (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     conversation_id VARCHAR(50) NOT NULL,
@@ -62,6 +61,7 @@ CREATE TABLE messages (
     sender_id INTEGER NOT NULL,
     receiver_id INTEGER NOT NULL,
     message TEXT NOT NULL,
+    sub_message TEXT DEFAULT '',
     file TEXT,
     is_read INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -87,22 +87,25 @@ CREATE TABLE services (
     favorites_count INTEGER DEFAULT 0
 );
 
+CREATE TABLE payments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    service_id INTEGER NOT NULL,
+    client_id INTEGER NOT NULL,
+    freelancer_id INTEGER NOT NULL,
+    method TEXT NOT NULL,
+    billing_name TEXT NOT NULL,
+    billing_email TEXT NOT NULL,
+    billing_address TEXT NOT NULL,
+    billing_city TEXT NOT NULL,
+    billing_postal TEXT NOT NULL,
+    status TEXT DEFAULT 'Completed',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE service_images (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
     media_url TEXT NOT NULL
-);
-
-CREATE TABLE orders_services (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    client_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    freelancer_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
-    total_price REAL NOT NULL,
-    status TEXT CHECK(status IN ('pending', 'in_progress', 'completed', 'cancelled')) DEFAULT 'pending',
-    reviewed INTEGER DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE reviews (
@@ -126,6 +129,16 @@ CREATE TABLE subcategories (
     category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     UNIQUE(category_id, name)
+);
+
+CREATE TABLE hirings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
+    client_id INTEGER,
+    owner_id INTEGER,
+    status TEXT NOT NULL DEFAULT 'Pending' CHECK (status IN ('Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed', 'Closed')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ended_at TIMESTAMP
 );
 
 INSERT INTO users (name, username, email, password_hash, role) VALUES
@@ -239,12 +252,6 @@ INSERT INTO service_images (service_id, media_url) VALUES
 (6, 'https://picsum.photos/300?landing2'),
 (7, 'https://picsum.photos/300?identity1');
 
-INSERT INTO orders_services (client_id, freelancer_id, service_id, total_price, status) VALUES
-(4, 1, 1, 75.00, 'completed'),
-(2, 3, 2, 150.00, 'in_progress'),
-(3, 1, 1, 75.00, 'in_progress'),
-(1, 1, 1, 75.00, 'in_progress');
-
 INSERT INTO reviews (service_id, client_id, rating, comment) VALUES
 (1, 4, 5, 'Excellent service, highly recommended!'),
 (1, 3, 5, 'Perfect service, amazing work!'),
@@ -268,3 +275,12 @@ INSERT INTO messages (conversation_id, service_id, sender_id, receiver_id, messa
 ('5_6', 1, 5, 6, 'Olá Ana! Claro, como posso ajudar?');
 -- ('5_6', 2, 5, 6, 'Preciso de ajuda com o site da empresa.'),
 -- ('5_6', 2, 5, 6, 'Claro, posso marcar uma call para hoje.');
+
+INSERT INTO hirings (service_id, client_id, owner_id) VALUES
+(1, 5, 6),
+(1, 7, 6),
+(3, 5, 6),
+(6, 5, 6),
+(5, 6, 5),
+(4, 6, 5),
+(2, 6, 5);
