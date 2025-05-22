@@ -112,10 +112,10 @@ CREATE TABLE reviews (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
     client_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    hiring_id INTEGER UNIQUE REFERENCES hirings(id) ON DELETE CASCADE,
     rating INTEGER CHECK (rating BETWEEN 1 AND 5),
     comment TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(service_id, client_id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE categories (

@@ -6,6 +6,7 @@ class Review {
     public int $id;
     public int $serviceId;
     public int $clientId;
+    public ?int $hiringId;
     public int $rating;
     public string $comment;
     public string $createdAt;
@@ -18,6 +19,7 @@ class Review {
         $this->id = (int)$data['id'] ?? 0;
         $this->serviceId = (int)$data['service_id'] ?? 0;
         $this->clientId = (int)$data['client_id'] ?? 0;
+        $this->hiringId = isset($data['hiring_id']) ? (int)$data['hiring_id'] : null;
         $this->rating = (int)$data['rating'] ?? 0;
         $this->comment = $data['comment'] ?? '';
         $this->createdAt = $data['created_at'] ?? date('Y-m-d H:i:s');
@@ -131,17 +133,18 @@ class Review {
         ]);
     }
 
-    public static function addReview(int $clientId, int $serviceId, int $rating, string $comment): bool {
+    public static function addReview(int $clientId, int $serviceId, int $hiringId, int $rating, string $comment): bool {
         $db = Database::getInstance();
 
         $stmt = $db->prepare("
-            INSERT INTO reviews (client_id, service_id, rating, comment)
-            VALUES (:client_id, :service_id, :rating, :comment)
+            INSERT INTO reviews (client_id, service_id, hiring_id, rating, comment)
+            VALUES (:client_id, :service_id, :hiring_id, :rating, :comment)
         ");
 
         $success = $stmt->execute([
             ':client_id' => $clientId,
             ':service_id' => $serviceId,
+            ':hiring_id' => $hiringId,
             ':rating' => $rating,
             ':comment' => $comment
         ]);
@@ -154,22 +157,22 @@ class Review {
     }
 
     public static function deleteReview(int $reviewId): bool {
-    $db = Database::getInstance();
+        $db = Database::getInstance();
 
-    $stmt = $db->prepare("SELECT service_id FROM reviews WHERE id = :id");
-    $stmt->execute([':id' => $reviewId]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$row) return false;
-    $serviceId = (int)$row['service_id'];
+        $stmt = $db->prepare("SELECT service_id FROM reviews WHERE id = :id");
+        $stmt->execute([':id' => $reviewId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$row) return false;
+        $serviceId = (int)$row['service_id'];
 
-    $delStmt = $db->prepare("DELETE FROM reviews WHERE id = :id");
-    $success = $delStmt->execute([':id' => $reviewId]);
+        $delStmt = $db->prepare("DELETE FROM reviews WHERE id = :id");
+        $success = $delStmt->execute([':id' => $reviewId]);
 
-    if ($success) {
-        self::updateServiceRating($serviceId);
+        if ($success) {
+            self::updateServiceRating($serviceId);
+        }
+
+        return $success;
     }
-
-    return $success;
-}
 }
 ?>

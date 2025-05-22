@@ -41,12 +41,12 @@
     $relatedServices = Service::getRelated($service->categoryId, $service->id, 100);
     $averageRating = Review::getAverageRating($reviews);
     $isAdmin = Session::isAdmin();
-    $isEligibleToReview = Service::userHasClosedHiring($userId, $serviceId);
+    $eligibleHiringId = Service::getEligibleHiringIdForReview($userId, $serviceId);
 
     drawHeader();
     drawCategoryMenu($categories);
     drawServicePage($service, $ratingInfo);
-    drawReviewBlock($service, $reviews, $averageRating, $isAdmin, $isEligibleToReview);
+    drawReviewBlock($service, $reviews, $averageRating, $isAdmin, $eligibleHiringId);
     drawMoreFromFreelancer($service, $moreFromFreelancer);
     drawRelatedServices($relatedServices); 
     drawCopyToast();
