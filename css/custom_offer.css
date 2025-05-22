@@ -1,0 +1,138 @@
+.custom-offer-page {
+    padding: 2em;
+    background: var(--secondary);
+    color: var(--main-text-color);
+    max-width: 600px;
+    margin: 2em auto;
+    border-radius: 12px;
+}
+
+.custom-offer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+.custom-offer-form h1 {
+    font-size: 2em;
+    margin-bottom: 1em;
+    color: var(--button-background);
+}
+
+.custom-offer-form label {
+    font-weight: 600;
+}
+
+.custom-offer-form input {
+    padding: 0.75em;
+    border: 1px solid var(--background-disabled);
+    border-radius: 10px;
+    background: var(--main-background-darker);
+    color: var(--main-text-color);
+    font-size: 1rem;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+}
+
+.custom-offer-list {
+    max-width: 800px;
+    margin: 2em auto;
+    padding: 2em;
+    background: var(--main-background);
+    border-radius: 12px;
+}
+
+.offer-cards {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.offer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--main-background-darker);
+    padding: 1em 1.5em;
+    border-radius: 10px;
+    color: var(--main-text-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    font-size: 0.95rem;
+    gap: 1em;
+}
+
+.offer-left,
+.offer-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+}
+
+.offer-right {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.edit-offer-btn {
+    margin-top: 1em;
+    padding: 0.5em 1em;
+    background-color: var(--button-background);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.custom-offer-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.custom-offer-modal .custom-offer-form {
+    background: var(--secondary);
+    padding: 2em;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.hidden {
+    display: none;
+}
+
+.create-offer-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    width: fit-content;
+    transition: background 0.3s ease;
+    border: 2px solid var(--button-background);
+    font-size: medium;
+    cursor: pointer;
+    background: var(--button-background);
+    color: var(--secondary);
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.create-offer-btn:hover {
+    background: var(--button-background-selected);
+}

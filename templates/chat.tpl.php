@@ -112,7 +112,7 @@
 <?php function drawCustomOrder($userId) { ?>
     <div id="custom-order-modal" class="custom-order-popup hidden">
         <div class="custom-order-content">
-            <!-- <h3>Hirings</h3> -->
+            <h3>Offer a custom service on</h3>
             <div id="hirings-list">
                 <p>Loading...</p>
             </div>
