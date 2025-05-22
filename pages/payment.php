@@ -19,7 +19,7 @@
     $freelancer = User::getById($freelancerId);
 
     if (!$service || !$client || !$freelancer) {
-        die("Missing required parameters.");
+        header("Location: /pages/login.php");
     }
 
     drawPaymentPageStart();

@@ -130,7 +130,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
                 </div>
 
                 <div class="button-group">
-                    <a href="#" class="btn-hire" onclick="startConversation(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ?>, <?= $service->freelancerId ?>, 'true')">Contact</a>
+                    <a href="#" class="btn-hire" onclick="startConversation(<?= $service->id ?>, <?= Session::getInstance()->getUser()->id ? Session::getInstance()->getUser()->id : 0 ?>, <?= $service->freelancerId ?>, 'true')">Contact</a>
 
                     <a href="/pages/payment.php?service_id=<?= $service->id ?>&client_id=<?= Session::getInstance()->getUser()->id ?>&freelancer_id=<?= $service->freelancerId ?>"
                         class="btn-add-cart">

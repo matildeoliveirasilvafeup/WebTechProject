@@ -1,6 +1,10 @@
 window.startConversation = startConversation;
 
 export function startConversation(serviceId, user1Id, user2Id, flag) {
+    if (!serviceId || !user1Id || !user2Id) {
+        window.location.href = `/pages/login.php`;
+    }
+
     if (user1Id == user2Id) {
         console.warn('Cannot start a conversation with yourself.');
         return Promise.resolve();
