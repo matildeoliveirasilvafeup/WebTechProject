@@ -81,9 +81,9 @@
                             </div>
                         ";
                     }
-                    echo "</div>";
+                echo "</div>";
             }
-            ?>
+        ?>
     </div>
 <?php } ?>
 

@@ -99,3 +99,7 @@ export function sendStatusMessage(status, senderId, receiverId, serviceId, servi
         throw err;
     });
 }
+
+export function formatDateTimeWithoutSeconds(datetime) {
+    return datetime.slice(0, 16);
+}

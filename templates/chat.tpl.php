@@ -23,13 +23,15 @@
                     drawMainChat();
 
                     drawCloseButton();
+
+                    drawCustomOrder($userId);
                 ?>
 
             </div>
         </div>
     </div>
 
-    <script src="/js/chat.js"></script>
+    <script type="module" src="/js/chat.js"></script>
 <?php } ?>
 
 <?php function drawChatSidebar($userId) { ?>
@@ -102,6 +104,19 @@
 
 <?php function drawCloseButton() { ?>
     <div class="close-button">
+        <button id="chat-custom-order"><i class="fa-solid fa-ellipsis-vertical"></i></button>
         <button id="chat-close-btn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+<?php } ?>
+
+<?php function drawCustomOrder($userId) { ?>
+    <div id="custom-order-modal" class="custom-order-popup hidden">
+        <div class="custom-order-content">
+            <!-- <h3>Hirings</h3> -->
+            <div id="hirings-list">
+                <p>Loading...</p>
+            </div>
+            <button id="custom-order-close-btn">Close</button>
+        </div>
     </div>
 <?php } ?>

@@ -1,3 +1,5 @@
+import { formatDateTimeWithoutSeconds } from './chat_hiring_utils.js';
+
 window.ChatState = {
     CURRENT_CONVERSATION_ID: null,
     CURRENT_SERVICE_ID: null,
@@ -93,8 +95,66 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('hirings-modal')?.classList.remove('hidden');
         localStorage.removeItem('openHiring');
     } 
-});
 
+    const customOrderBtn = document.getElementById('chat-custom-order');
+    const customOrderModal = document.getElementById('custom-order-modal');
+    const hiringsList = document.getElementById('hirings-list');
+    const customOrderCloseBtn = document.getElementById('custom-order-close-btn');
+
+    customOrderBtn?.addEventListener('click', () => {
+        customOrderModal.classList.toggle('hidden');
+
+        const serviceId = window.ChatState.CURRENT_SERVICE_ID;
+        const userId = window.ChatState.CURRENT_USER_ID;
+        const receiverId = window.ChatState.CURRENT_RECEIVER_ID;
+
+        if (!serviceId || !userId || !receiverId) {
+            hiringsList.innerHTML = "<p>No service or user selected.</p>";
+            return;
+        }
+
+        hiringsList.innerHTML = "<p>Loading...</p>";
+
+        fetch(`/actions/action_get_hirings_by_service.php?service_id=${serviceId}&user_id1=${userId}&user_id2=${receiverId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!Array.isArray(data) || data.length === 0) {
+                    hiringsList.innerHTML = "<p>No hirings found.</p>";
+                    return;
+                }
+
+                hiringsList.innerHTML = '';
+
+                data.forEach(hiring => {
+                    const div = document.createElement('div');
+                    div.classList.add('client-hiring-card');
+
+                    div.innerHTML = `
+                        <div class="card-header">
+                            <span class="status-badge status-${hiring.status.toLowerCase()}">${hiring.status}</span>
+                        </div>
+                        <span class="createdAt-badge">${formatDateTimeWithoutSeconds(hiring.createdAt)}</span>
+                    `;
+
+                    div.style.cursor = 'pointer';
+                    div.addEventListener('click', () => {
+                        console.log("Hiring service clicked");
+                        // window.location.href = `/pages/custom_order.php?hiring_id=${hiring.id}`;
+                    });
+
+                    hiringsList.appendChild(div);
+                });
+            })
+            .catch(err => {
+                hiringsList.innerHTML = "<p>Error loading hirings.</p>";
+                console.error(err);
+            });
+    });
+
+    customOrderCloseBtn?.addEventListener('click', () => {
+        customOrderModal.classList.add('hidden');
+    });
+});
 
 function drawMessages(conversationId, serviceId, userId) {
     const chatMain = document.getElementById('chat-main');

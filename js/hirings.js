@@ -1,4 +1,4 @@
-import { sendStatusMessage } from './chat_hiring_utils.js';
+import { sendStatusMessage, formatDateTimeWithoutSeconds } from './chat_hiring_utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -168,9 +168,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         body.innerHTML = html;
-    }
-
-    function formatDateTimeWithoutSeconds(datetime) {
-        return datetime.slice(0, 16);
     }
 });
