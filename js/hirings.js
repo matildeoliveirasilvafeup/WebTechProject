@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${status === 'Completed' ? `
                             <button onclick="updateHiringStatus(${hiring.id}, 'Closed');
                                 sendStatusMessage('Closed', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')" 
-                                class="close-btn">Approve
+                                class="approve-btn">Approve
                             </button>
                             <button onclick="updateHiringStatus(${hiring.id}, 'Pending');
                                 sendStatusMessage('Reopened', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')" 

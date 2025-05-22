@@ -510,4 +510,18 @@ class Service {
     
         return $stmt->execute();
     }
+
+    public static function userHasClosedHiring(int $userId, int $serviceId): bool {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("
+            SELECT COUNT(*) FROM hirings
+            WHERE client_id = :user_id
+            AND service_id = :service_id
+            AND status = 'Closed'
+        ");
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':service_id', $serviceId, PDO::PARAM_INT);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn() > 0;
+    }
 }
