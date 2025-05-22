@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 sendStatusMessage('Closed', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')" 
                                 class="close-btn">Approve
                             </button>
-                            <button onclick="updateHiringStatus(${hiring.id}, 'Reopened');
+                            <button onclick="updateHiringStatus(${hiring.id}, 'Pending');
                                 sendStatusMessage('Reopened', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')" 
                                 class="reopen-btn">Reopen Hiring
                             </button>
