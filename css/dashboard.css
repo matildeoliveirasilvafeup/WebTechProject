@@ -150,9 +150,9 @@
     width: 100%;
     min-height: 70vh;
     display: flex;
-    flex-direction: column; 
-    align-items: flex-start; 
-    justify-content: flex-start; 
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
     position: relative;
     box-sizing: border-box;
     gap: 1rem;
@@ -196,7 +196,7 @@
 .price-actions {
     display: flex;
     justify-content: space-between;
-    align-items: center; 
+    align-items: center;
 }
 
 .price {
@@ -224,4 +224,143 @@
 
 .inline-form {
     display: inline;
+}
+
+@media (max-width: 768px) {
+
+	/* Redefine CSS variables for mobile layout */
+	:root {
+		--sidebar-width: 100%;
+		/* Sidebar should take full width on mobile */
+		--icon-width: 3em;
+		/* Keep icons a consistent size */
+		--text-offset: 1em;
+		/* Slightly smaller offset for text next to icons */
+	}
+
+	/* Stack the dashboard vertically instead of side-by-side */
+	.dashboard {
+		flex-direction: column;
+	}
+
+	/* Make the sidebar a horizontal nav bar on small screens */
+	.sidebar {
+		position: relative;
+		/* Let it flow with the content */
+		width: 100%;
+		/* Full width for better usability */
+		padding: 1em;
+		/* Slightly reduced padding */
+		box-shadow: none;
+		/* Remove shadow to keep things clean */
+		display: flex;
+		flex-direction: row;
+		/* Lay out items in a row */
+		flex-wrap: wrap;
+		/* Allow items to wrap if they don’t fit */
+		justify-content: space-around;
+		/* Distribute items evenly */
+	}
+
+	/* Prevent the hover effect from resizing the sidebar on mobile */
+	.sidebar:hover {
+		width: 100%;
+	}
+
+	/* Adjust the title style for smaller viewports */
+	.sidebar h3 {
+		font-size: 1.5em;
+		/* Slightly smaller title */
+		margin-bottom: 0.5em;
+		width: 100%;
+		text-align: center;
+	}
+
+	/* Show the full title text (span) on mobile */
+	.sidebar h3 span {
+		display: inline;
+	}
+
+	/* Hide the icon in place of the title text */
+	.sidebar h3 i {
+		display: none;
+	}
+
+	/* Turn the sidebar menu into a row-based list */
+	.sidebar ul {
+		display: flex;
+		flex-wrap: wrap;
+		/* Wrap items to next row if needed */
+		justify-content: center;
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	/* Reduce spacing around list items */
+	.sidebar ul li {
+		margin: 0.5em;
+	}
+
+	/* Make links smaller and more compact */
+	.sidebar ul li a {
+		padding: 0.5em;
+		font-size: 0.9rem;
+		justify-content: center;
+	}
+
+	/* Show menu text inline (no hover reveal on mobile) */
+	.sidebar ul li a span {
+		position: static;
+		opacity: 1;
+		display: inline;
+		width: auto;
+	}
+
+	/* Remove left margin from the content area */
+	.dashboard-content {
+		margin-left: 0;
+		padding: 1em;
+	}
+
+	/* Smaller heading for mobile */
+	.dashboard-content h2 {
+		font-size: 1.5em;
+	}
+
+	/* Center dashboard content on small screens */
+	.dashboard-details {
+		padding: 0.5em;
+		align-items: center;
+	}
+
+	/* Stack cards vertically and center them */
+	.dashboard-details .dashboard-grid {
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	/* Make cards take full width on mobile */
+	.dashboard-details .dashboard-card {
+		max-width: 100%;
+		width: 100%;
+	}
+
+	/* Stack price and buttons vertically */
+	.price-actions {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.5rem;
+	}
+
+	/* Make action buttons align right */
+	.card-actions {
+		width: 100%;
+		justify-content: flex-end;
+	}
+
+	/* Slightly increase icon size for better tap targets */
+	.icon-btn {
+		font-size: 1.25rem;
+	}
 }

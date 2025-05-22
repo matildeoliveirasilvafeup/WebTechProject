@@ -414,3 +414,109 @@
     border-radius: 4px;
     cursor: pointer;
 }
+
+
+@media (max-width: 600px) {
+
+	/* Make the chat modal take up almost the full screen */
+	#chat-modal {
+		width: 95vw;
+		height: 90vh;
+		bottom: 0.5rem;
+		right: 0.5rem;
+		border-radius: 8px;
+	}
+
+	/* Adjust the toggle button size and placement */
+	#chat-toggle-btn {
+		padding: 0.75rem;
+		font-size: 0.9rem;
+		bottom: 0.75rem;
+		right: 0.75rem;
+	}
+
+	/* Stack chat layout vertically instead of side-by-side */
+	.chat-wrapper {
+		flex-direction: column;
+	}
+
+	/* Sidebar should shrink or hide on small screens */
+	.chat-sidebar {
+		width: 100%;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+		padding: 0.5rem;
+		border-right: none;
+		border-bottom: 1px solid var(--soft-line);
+	}
+
+	.chat-sidebar h4 {
+		font-size: 1rem;
+		margin: 0.5em;
+	}
+
+	.chat-item {
+		font-size: 0.9rem;
+		padding: 0.5em 1em;
+	}
+
+	/* Chat main area should use available space below sidebar */
+	.chat-main {
+		padding: 0.75rem;
+	}
+
+	.chat-body {
+		padding: 0.5rem 0.25rem;
+	}
+
+	.chat-footer {
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	#chat-input {
+		font-size: 0.9rem;
+		height: 2.8rem;
+		padding-left: 2rem;
+	}
+
+	#chat-send-btn {
+		height: 2.8rem;
+		font-size: 0.9rem;
+		padding: 0.75rem 1rem;
+	}
+
+	#chat-file-label {
+		top: 0.5rem;
+		left: 0.5rem;
+		font-size: 0.9rem;
+	}
+
+	.message-group {
+		max-width: 100%;
+	}
+
+	.msg-text {
+		font-size: 0.8rem;
+		padding: 0.4rem 0.4rem;
+	}
+
+	.msg-time {
+		font-size: 0.7rem;
+	}
+
+	.chat-image {
+		max-width: 100%;
+		height: auto;
+	}
+
+	#file-name-display {
+		font-size: 0.75rem;
+	}
+
+	.file-preview-chat {
+		gap: 0.25rem;
+		padding: 0.4rem 0.6rem;
+	}
+}

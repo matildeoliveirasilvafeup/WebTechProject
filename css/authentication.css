@@ -123,3 +123,55 @@ html, body {
     color: var(--text-disabled);
     cursor: default;
 }
+
+@media (max-width: 600px) {
+
+	/* Make container take up most of the screen on mobile */
+	.auth-container {
+		max-width: 90vw;
+		padding: 1.5em;
+		border-radius: 8px;
+		/* slightly softer corners for smaller screens */
+	}
+
+	/* Scale down the heading a bit for better balance */
+	.auth-container h2 {
+		font-size: 1.5em;
+		top: 0;
+		/* removing the offset looks cleaner on mobile */
+	}
+
+	/* Shrink inputs slightly to fit smaller screens */
+	.auth-container input {
+		font-size: 0.9em;
+		padding: 0.5em;
+	}
+
+	/* Reduce the main padding to save horizontal space */
+	:where(body)>.auth-page-wrapper main {
+		padding: 1em 0.5em;
+	}
+
+	/* Slightly smaller button for mobile */
+	.auth-container #btn {
+		padding: 0.8em;
+		font-size: 0.95em;
+	}
+
+	/* Tweak label spacing and font size */
+	.auth-container label {
+		margin-top: 0.5em;
+		font-size: 0.95em;
+	}
+
+	/* Adjust eye icon position and size for better alignment */
+	.auth-container .eye-button {
+		font-size: 1em;
+		top: 1.4em;
+	}
+
+	/* Slightly smaller text for password rules list */
+	#password-requirements {
+		font-size: 13px;
+	}
+}

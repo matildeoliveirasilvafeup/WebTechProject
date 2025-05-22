@@ -37,8 +37,8 @@
     transition: transform 0.2s ease;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
-    align-items: center; 
+    justify-content: center;
+    align-items: center;
 }
 
 .category-card#admin {
@@ -117,4 +117,61 @@
 
 .iconpicker-popover.popover .popover-title input[type=search].iconpicker-search {
     max-width: 100%;
+}
+
+@media (max-width: 600px) {
+
+	/* Adjust carousel padding on smaller screens */
+	.carousel-wrapper {
+		padding: 0 1em;
+	}
+
+	/* Stack category cards more compactly */
+	.category-carousel {
+		gap: 10px;
+		padding: 0.5em 0;
+	}
+
+	/* Make cards larger and more readable on smaller devices */
+	.category-card {
+		width: 35vw;
+		height: 30vw;
+		font-size: 0.9em;
+		padding: 0.8em;
+	}
+
+	/* Scale down icons to fit mobile layout */
+	.category-icon {
+		font-size: 1.8em;
+		margin-bottom: 0.3em;
+	}
+
+	/* Improve touch target size and spacing for menu items */
+	.category-menu ul {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.category-menu .category-item {
+		padding: 10px 0;
+		text-align: center;
+	}
+
+	/* Subcategories appear in a stacked mobile-friendly layout */
+	.category-menu .subcategories {
+		position: static;
+		box-shadow: none;
+		min-width: auto;
+		background-color: transparent;
+	}
+
+	.category-menu .subcategories li {
+		padding: 8px 0;
+		text-align: center;
+	}
+
+	/* Ensure iconpicker search input fits screen */
+	.iconpicker-popover.popover .popover-title input[type="search"].iconpicker-search {
+		width: 100%;
+	}
 }
