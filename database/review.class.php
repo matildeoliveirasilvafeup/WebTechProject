@@ -174,5 +174,22 @@ class Review {
 
         return $success;
     }
+
+    public static function getFreelancerReceivedReviews(int $freelancerId): array {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("
+            SELECT r.*, u.name AS client_name, u.username AS client_username, p.profile_picture, s.title AS service_title
+            FROM reviews r
+            JOIN services s ON r.service_id = s.id
+            JOIN users u ON r.client_id = u.id AND u.is_banned = 0
+            LEFT JOIN profiles p ON p.user_id = u.id
+            WHERE s.freelancer_id = ?
+            ORDER BY r.created_at DESC
+        ");
+        $stmt->execute([$freelancerId]);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return array_map(fn($row) => new Review($row), $rows);
+    }
 }
 ?>

@@ -1,5 +1,5 @@
 
-<?php function drawProfile($profile, $profile_preferences, $user, $isPrivate = true, $isAdmin = false) { ?>
+<?php function drawProfile($profile, $profile_preferences, $user, $isPrivate = true, $isAdmin = false, $freelancerReviews = []) { ?>
     <?php if (!$isPrivate) { ?>
         <h1><?= htmlspecialchars($user->name) ?>'s Profile</h1>
     <?php } ?>
@@ -29,8 +29,7 @@
                 drawControls($user); ?>
         </div>
 
-        <?php if ($isPrivate)
-            drawReviews(); ?>
+        <?php drawReviews($freelancerReviews); ?>
     </div>
     
 <?php } ?>
@@ -143,15 +142,44 @@
     </div>
 <?php } ?>
 
-<?php function drawReviews() { ?>
+<?php function drawReviews($freelancerReviews) { ?>
     <div class="freelancer-reviews-section">
         <div class="reviews-list">
-            <h3>Reviews from freelancers</h3>
+            <h3>Feedback on his services</h3>
 
             <hr class="section-divider">
 
             <div class="freelancer-reviews">
-                <!-- TODO -->
+                <?php if (empty($freelancerReviews)): ?>
+                    <p id="no_reviews">No reviews received yet.</p>
+                <?php else: ?>
+                    <?php foreach ($freelancerReviews as $review): ?>
+                        <div class="review">
+                            <div class="review-header">
+                                <?php if (!empty($review->profilePicture)): ?>
+                                    <img src="<?= htmlspecialchars($review->profilePicture) ?>" alt="Profile Picture" class="review-profile-pic">
+                                <?php else: ?>
+                                    <i class="fa-solid fa-image-portrait"></i>
+                                <?php endif; ?>
+                                <span class="review-client">
+                                    <a href="/pages/profile.php?user=<?= urlencode($review->clientUsername) ?>">
+                                        <?= htmlspecialchars($review->clientUsername) ?>
+                                    </a>
+                                </span>
+                                <span class="review-rating"><?= str_repeat('★', (int)$review->rating) ?><?= str_repeat('☆', 5 - (int)$review->rating) ?></span>
+                                <span class="review-date"><?= htmlspecialchars(date('d M Y', strtotime($review->createdAt))) ?></span>
+                            </div>
+                            <div class="review-body">
+                                <p><?= htmlspecialchars($review->comment) ?></p>
+                                <p id="service">on 
+                                    <a href="/pages/service.php?id=<?= urlencode($review->serviceId) ?>">
+                                        <?= htmlspecialchars($review->serviceTitle) ?>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>

@@ -40,9 +40,12 @@ html, body {
     margin: 1em;
 }
 
-.public-profile .personal-details {
-    min-width: 50vw;
-    max-width: 85%;
+.public-profile .personal-details,
+.public-profile .freelancer-reviews-section {
+    min-width: 40vw;
+    max-width: 45vw;
+    min-height: 40vh;
+    max-height: 45vh;
 } 
 
 .public-profile .profile-header {
@@ -205,3 +208,112 @@ html, body {
     flex-grow: 1;
 }
 
+.freelancer-reviews-section {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.reviews-list h3 {
+    color: var(--main-theme);
+    margin-bottom: 0.5em;
+    font-size: 1.3em;
+    text-align: left;
+}
+
+.freelancer-reviews {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    margin-top: 1em;
+    overflow-y: auto;      
+    padding-right: 0.5em;
+    max-height: 35vh; 
+}
+
+.freelancer-reviews #no_reviews {
+    margin-top: 6em;
+}
+
+.review {
+    background: var(--main-background-darker);
+    border-radius: 10px;
+    box-shadow: 0 1px 4px var(--box-shadow);
+    padding: 1.2em 1.5em;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    transition: box-shadow 0.2s;
+}
+
+.review:hover {
+    box-shadow: 0 4px 16px var(--box-shadow);
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    margin-bottom: 0.3em;
+}
+
+.review-profile-pic {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--main-theme);
+    background: var(--secondary);
+}
+
+.review-header i {
+    font-size: 2em;
+    color: var(--main-theme);
+    background: var(--icon-background);
+    border-radius: 50%;
+    padding: 0.05em;
+    border: 2px solid var(--main-theme);
+}
+
+.review-rating {
+    color: var(--star-yellow);
+    font-size: 1.1em;
+    margin-left: auto;
+    margin-right: 0.5em;
+    letter-spacing: 1px;
+    font-family: 'Arial Black', Arial, sans-serif;
+}
+
+.review-date {
+    color: var(--text-Xlight);
+    font-size: 0.95em;
+    margin-left: 0.5em;
+    white-space: nowrap;
+}
+
+.review-body {
+    margin-left: 3.5em;
+    font-size: 0.9em;
+    color: var(--main-text);
+    font-weight: 400;
+}
+
+.review-body #service {
+    color: var(--text-Xlight);
+    font-size: 0.9em;
+    font-style: italic;
+    text-align: right;
+    display: block;
+    margin-left: auto;
+}
+
+.review-body #service a {
+    text-decoration: none;
+    color: var(--text-Xlight);
+    transition: color 0.3s;
+}
+
+.review-body #service a:hover {
+    color: black;
+    transition: color 0.3s;
+}    
