@@ -2,8 +2,6 @@
     require_once(__DIR__ .  '/../includes/session.php');
 
     require_once(__DIR__ .  '/../database/service.class.php');
-
-    require_once(__DIR__ .  '/../database/service.class.php');
     require_once(__DIR__ .  '/../database/category.class.php');
     require_once(__DIR__ .  '/../database/review.class.php');
     require_once(__DIR__ .  '/../database/favorites.class.php');

@@ -481,7 +481,7 @@
     box-shadow: 0 2px 20px var(--box-shadow);
 }
 
-.close-btn {
+.modal-content .close-btn {
     position: absolute;
     top: 0.5em;
     right: 1em;
