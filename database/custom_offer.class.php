@@ -72,9 +72,8 @@ class CustomOffer {
         return $stmt->fetchAll(PDO::FETCH_CLASS, 'CustomOffer');
     }
 
-    public static function updateStatus(int $offerId, string $newStatus): bool {
+    public static function updateStatus(int $offerId, int $hiring_id, string $newStatus): bool {
         $validStatuses = ['Pending', 'Accepted', 'Rejected', 'Cancelled'];
-
         $normalizedStatus = ucfirst(strtolower($newStatus));
 
         if (!in_array($normalizedStatus, $validStatuses, true)) {
@@ -82,9 +81,26 @@ class CustomOffer {
         }
 
         $db = Database::getInstance();
+        $db->beginTransaction();
 
-        $stmt = $db->prepare('UPDATE custom_offers SET status = ? WHERE id = ?');
-        return $stmt->execute([$normalizedStatus, $offerId]);
+        try {
+            $stmt = $db->prepare('UPDATE custom_offers SET status = ? WHERE id = ?');
+            $stmt->execute([$normalizedStatus, $offerId]);
+
+            if ($normalizedStatus === 'Accepted') {
+                $stmtRejectOthers = $db->prepare(
+                    'UPDATE custom_offers SET status = ? WHERE hiring_id = ? AND id != ?'
+                );
+                $stmtRejectOthers->execute(['Rejected', $hiring_id, $offerId]);
+            }
+
+            $db->commit();
+            return true;
+        } catch (Exception $e) {
+            $db->rollBack();
+            error_log("Error updating offer status: " . $e->getMessage());
+            return false;
+        }
     }
 
     public static function checkHiringOffersStatus(int $hiringId): string {

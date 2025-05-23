@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $offerId = isset($_POST['offer_id']) ? (int)$_POST['offer_id'] : null;
+$hiringId = isset($_POST['hiring_id']) ? (int)$_POST['hiring_id'] : null;
 $newStatus = ucfirst(strtolower($_POST['new_status'] ?? ''));
 
 $validStatuses = ['Pending', 'Accepted', 'Rejected', 'Cancelled'];
@@ -28,7 +29,7 @@ if (!in_array($newStatus, $validStatuses, true)) {
     exit('Invalid status update');
 }
 
-$success = CustomOffer::updateStatus($offerId, $newStatus);
+$success = CustomOffer::updateStatus($offerId, $hiringId, $newStatus);
 
 if (!$success) {
     http_response_code(500);

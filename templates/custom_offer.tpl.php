@@ -21,7 +21,7 @@
                 <?php
                     drawOfferLeft($offer);
 
-                    drawOfferRight($offer, $hiringId, $senderId, $receiverId, $serviceId);
+                    drawOfferRight($userId, $offer, $hiringId, $senderId, $receiverId, $serviceId);
                 ?>
                 
             </li>
@@ -47,7 +47,7 @@
     </div>
 <?php } ?>
 
-<?php function drawOfferRight($offer, $hiringId, $senderId, $receiverId, $serviceId) { ?>
+<?php function drawOfferRight($userId, $offer, $hiringId, $senderId, $receiverId, $serviceId) { ?>
     <div class="offer-right">
         <div class="status-createdAt-badge">
             <div class="css-status-badge-corrector">
@@ -65,12 +65,14 @@
                 <?php if ($userId === $offer->sender_id): ?>
                     <form method="POST" action="/actions/action_update_offer_status.php">
                         <input type="hidden" name="offer_id" value="<?= htmlspecialchars($offer->id) ?>">
+                        <input type="hidden" name="hiring_id" value="<?= htmlspecialchars($hiringId) ?>">
                         <input type="hidden" name="new_status" value="Cancelled">
                         <button type="submit" class="cancel-btn" onclick="updateOfferStatus('Cancelled', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Cancel</button>
                     </form>
                 <?php elseif ($userId === $offer->receiver_id): ?>
                     <form method="POST" action="/actions/action_update_offer_status.php">
                         <input type="hidden" name="offer_id" value="<?= htmlspecialchars($offer->id) ?>">
+                        <input type="hidden" name="hiring_id" value="<?= htmlspecialchars($hiringId) ?>">
                         <button type="submit" name="new_status" value="Accepted" class="accept-btn" onclick="updateOfferStatus('Accepted', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Accept</button>
                         <button type="submit" name="new_status" value="Rejected" class="reject-btn" onclick="updateOfferStatus('Rejected', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Reject</button>
                     </form>
