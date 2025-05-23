@@ -45,7 +45,6 @@ html, body {
     min-width: 40vw;
     max-width: 45vw;
     min-height: 40vh;
-    max-height: 45vh;
 } 
 
 .public-profile .profile-header {
@@ -144,6 +143,7 @@ html, body {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    word-break: break-word;
 }
 
 .profile-preferences .content {
@@ -227,7 +227,6 @@ html, body {
     margin-top: 1em;
     overflow-y: auto;      
     padding-right: 0.5em;
-    max-height: 35vh; 
 }
 
 .freelancer-reviews #no_reviews {
