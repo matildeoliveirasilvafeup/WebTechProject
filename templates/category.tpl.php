@@ -59,7 +59,11 @@ require_once(__DIR__ .  '/../database/category.class.php');
     <script src="../js/slider.js"></script>
 <?php } ?>
 
-<?php function drawCategoryForm() { ?>
+<?php function drawCategoryForm() { 
+    $allCategories = Category::getAll();
+    $categoryNames = array_map(fn($cat) => strtolower($cat->name), $allCategories);    
+    ?>
+
     <section class="service-page" id="create_category">
         <form action="/actions/action_create_category.php" method="POST" enctype="multipart/form-data" class="create-form">
             <h1>New Category</h1>
@@ -87,8 +91,11 @@ require_once(__DIR__ .  '/../database/category.class.php');
         </form>
     </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/js/fontawesome-iconpicker.min.js"></script>    
-<script src="../js/category_form.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/js/fontawesome-iconpicker.min.js"></script>    
+    <script>
+        window.existingCategoryNames = <?= json_encode($categoryNames) ?>;
+    </script>
+    <script src="../js/category_form.js"></script>
 
 <?php } ?>

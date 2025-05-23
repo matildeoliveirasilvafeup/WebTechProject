@@ -6,6 +6,7 @@
     require_once(__DIR__ . '/../database/category.class.php');
     require_once(__DIR__ . '/../database/chat.class.php');
     require_once(__DIR__ . '/../database/hirings.class.php');
+    require_once(__DIR__ . '/../database/service.class.php');
 
     require_once(__DIR__ . '/../templates/category.tpl.php');
     require_once(__DIR__ . '/../templates/chat.tpl.php');
@@ -19,7 +20,7 @@
     if (!Session::isAdmin()) {
         header('Location: home_page.php');
         exit;
-    }
+    }   
 
     drawHeader();
     drawCategoryMenu($categoriesMenu);
