@@ -1,66 +1,93 @@
-<?php function drawCustomOfferForm(int $hiringId, int $senderId, int $receiverId, int $serviceId): void {
-    $offers = CustomOffer::getOffers($hiringId, $senderId, $receiverId);
+<?php function drawCustomOfferForm(int $hiringId, int $senderId, int $receiverId, int $serviceId): void { ?>
+    <?php
+        $offers = CustomOffer::getOffers($hiringId, $senderId, $receiverId);
 
-    $session = Session::getInstance();
-    $user = $session->getUser();
-    $userId = $user->id;
-?>
-<section class="custom-offer-list">
-    <h2>Custom Offers</h2>
+        $session = Session::getInstance();
+        $user = $session->getUser();
+        $userId = $user->id;
+    ?>
 
-    <?php if (empty($offers)) : ?>
-        <p>No custom offers have been made yet.</p>
-    <?php endif; ?>
+    <section class="custom-offer-list">
+        <h2>Custom Offers</h2>
 
-    <ul class="offer-cards">
-        <?php foreach ($offers as $offer) : ?>
-        <li class="offer-card">
-            <div class="offer-left">
-                <p><strong>Price: </strong>€<?= htmlspecialchars($offer->price) ?></p>
-                <p><strong>Delivery: </strong><?= htmlspecialchars($offer->delivery_time) ?> days</p>
-                <p><strong>Revisions: </strong><?= htmlspecialchars($offer->number_of_revisions) ?></p>
+        <?php if (empty($offers)) : ?>
+            <p>No custom offers have been made yet.</p>
+        <?php endif; ?>
+
+        <ul class="offer-cards">
+            <?php foreach ($offers as $offer) : ?>
+            <li class="offer-card">
+
+                <?php
+                    drawOfferLeft($offer);
+
+                    drawOfferRight($offer, $hiringId, $senderId, $receiverId, $serviceId);
+                ?>
+                
+            </li>
+            <?php endforeach; ?>
+        </ul>
+        
+        <?php drawCustomOfferButton($serviceId); ?>
+        
+    </section>
+
+    <div id="custom-offer-modal" class="custom-offer-modal hidden">
+        <?php drawCustomOfferModal($hiringId, $serviceId, $senderId, $receiverId); ?>
+    </div>
+
+    <script src="/js/custom_offer.js" defer></script>
+<?php } ?>
+
+<?php function drawOfferLeft($offer) { ?>
+    <div class="offer-left">
+        <p><strong>Price: </strong>€<?= htmlspecialchars($offer->price) ?></p>
+        <p><strong>Delivery: </strong><?= htmlspecialchars($offer->delivery_time) ?> days</p>
+        <p><strong>Revisions: </strong><?= htmlspecialchars($offer->number_of_revisions) ?></p>
+    </div>
+<?php } ?>
+
+<?php function drawOfferRight($offer, $hiringId, $senderId, $receiverId, $serviceId) { ?>
+    <div class="offer-right">
+        <div class="status-createdAt-badge">
+            <div class="css-status-badge-corrector">
+                <span class="status-badge status-<?= strtolower(htmlspecialchars($offer->status)) ?>">
+                    <?= htmlspecialchars($offer->status) ?>
+                </span>
             </div>
-            <div class="offer-right">
-                <div class="status-createdAt-badge">
-                    <div class="css-status-badge-corrector">
-                        <span class="status-badge status-<?= strtolower(htmlspecialchars($offer->status)) ?>">
-                            <?= htmlspecialchars($offer->status) ?>
-                        </span>
-                    </div>
-                        <span class="createdAt-badge">
-                        <?= htmlspecialchars(date('Y-m-d H:i', strtotime($offer->created_at))) ?>
-                    </span>
-                </div>
+                <span class="createdAt-badge">
+                <?= htmlspecialchars(date('Y-m-d H:i', strtotime($offer->created_at))) ?>
+            </span>
+        </div>
 
-                <div class="offer-actions">
-                    <?php if (strtolower($offer->status) === 'pending'): ?>
-                        <?php if ($userId === $offer->sender_id): ?>
-                            <form method="POST" action="/actions/action_update_offer_status.php">
-                                <input type="hidden" name="offer_id" value="<?= htmlspecialchars($offer->id) ?>">
-                                <input type="hidden" name="new_status" value="Cancelled">
-                                <button type="submit" class="cancel-btn" onclick="updateOfferStatus('Cancelled', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Cancel</button>
-                            </form>
-                        <?php elseif ($userId === $offer->receiver_id): ?>
-                            <form method="POST" action="/actions/action_update_offer_status.php">
-                                <input type="hidden" name="offer_id" value="<?= htmlspecialchars($offer->id) ?>">
-                                <button type="submit" name="new_status" value="Accepted" class="accept-btn" onclick="updateOfferStatus('Accepted', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Accept</button>
-                                <button type="submit" name="new_status" value="Rejected" class="reject-btn" onclick="updateOfferStatus('Rejected', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Reject</button>
-                            </form>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </li>
-        <?php endforeach; ?>
-    </ul>
+        <div class="offer-actions">
+            <?php if (strtolower($offer->status) === 'pending'): ?>
+                <?php if ($userId === $offer->sender_id): ?>
+                    <form method="POST" action="/actions/action_update_offer_status.php">
+                        <input type="hidden" name="offer_id" value="<?= htmlspecialchars($offer->id) ?>">
+                        <input type="hidden" name="new_status" value="Cancelled">
+                        <button type="submit" class="cancel-btn" onclick="updateOfferStatus('Cancelled', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Cancel</button>
+                    </form>
+                <?php elseif ($userId === $offer->receiver_id): ?>
+                    <form method="POST" action="/actions/action_update_offer_status.php">
+                        <input type="hidden" name="offer_id" value="<?= htmlspecialchars($offer->id) ?>">
+                        <button type="submit" name="new_status" value="Accepted" class="accept-btn" onclick="updateOfferStatus('Accepted', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Accept</button>
+                        <button type="submit" name="new_status" value="Rejected" class="reject-btn" onclick="updateOfferStatus('Rejected', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Reject</button>
+                    </form>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php } ?>
 
+<?php function drawCustomOfferButton($serviceId) { ?>
     <div class="custom-offer-button">
         <button class="create-offer-btn">New Offer</button>
         <button class="go-to-service-btn" onclick="location.href='/pages/service.php?id=<?= htmlspecialchars($serviceId) ?>'">Go to original service</button>
     </div>
-</section>
+<?php } ?>
 
-<div id="custom-offer-modal" class="custom-offer-modal hidden">
+<?php function drawCustomOfferModal($hiringId, $serviceId, $senderId, $receiverId) { ?>
     <form action="/actions/action_create_custom_offer.php" method="POST" class="custom-offer-form">
         <h1>Custom Offer</h1>
 
@@ -84,9 +111,6 @@
             <button type="button" class="btn-hire close-modal">Cancel</button>
         </div>
     </form>
-</div>
-
-<script src="/js/custom_offer.js" defer></script>
 <?php } ?>
 
 <?php function drawCustomOfferPageStart() { ?>
