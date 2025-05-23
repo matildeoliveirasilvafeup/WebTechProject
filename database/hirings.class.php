@@ -85,7 +85,7 @@ class Hiring {
     public static function updateStatus(int $id, string $newStatus): array {
         $db = Database::getInstance();
 
-        $validStatuses = ['Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed', 'Closed'];
+        $validStatuses = ['Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed', 'Closed', 'Disabled'];
         if (!in_array($newStatus, $validStatuses)) {
             throw new InvalidArgumentException("Invalid status: $newStatus");
         }

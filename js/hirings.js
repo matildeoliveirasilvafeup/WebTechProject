@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             clients = JSON.parse(clientsJSON);
         } catch (e) {
-            console.error("Erro ao parsear clientes", e);
+            console.error("Error parsing clients", e);
             return;
         }
 

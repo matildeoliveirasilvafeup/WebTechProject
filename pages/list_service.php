@@ -3,6 +3,7 @@
 
     require_once (__DIR__ . '/../database/chat.class.php');
     require_once (__DIR__ . '/../database/hirings.class.php');
+    require_once (__DIR__ . '/../database/custom_offer.class.php');
 
     require_once (__DIR__ . '/../templates/common/header.tpl.php');
     require_once (__DIR__ . '/../templates/category.tpl.php');

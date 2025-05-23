@@ -86,5 +86,29 @@ class CustomOffer {
         $stmt = $db->prepare('UPDATE custom_offers SET status = ? WHERE id = ?');
         return $stmt->execute([$normalizedStatus, $offerId]);
     }
+
+    public static function checkHiringOffersStatus(int $hiringId): string {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare('SELECT status FROM custom_offers WHERE hiring_id = ?');
+        $stmt->execute([$hiringId]);
+
+        $offers = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        if (!$offers) {
+            return 'Pending';
+        }
+
+        if (in_array('Accepted', $offers)) {
+            return 'Accepted';
+        }
+
+        if (!in_array('Pending', $offers)) {
+            return 'Pending';
+        }
+
+        return 'Disabled';
+    }
+
 }
 ?>

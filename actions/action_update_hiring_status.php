@@ -10,7 +10,7 @@ $status = trim($_POST['status'] ?? '');
 
 if (!$hiringId || empty($status)) {
     http_response_code(400);
-    echo json_encode(["success" => false, "message" => "Dados inválidos."]);
+    echo json_encode(["success" => false, "message" => "Invalid data."]);
     exit;
 }
 
@@ -25,5 +25,5 @@ try {
     echo json_encode(["success" => false, "message" => $e->getMessage()]);
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["success" => false, "message" => "Erro interno: " . $e->getMessage()]);
+    echo json_encode(["success" => false, "message" => "Internal error: " . $e->getMessage()]);
 }

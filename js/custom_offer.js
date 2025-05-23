@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const receiver_id = form.querySelector('input[name="receiver_id"]').value;
 
             sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id);
+            updateOfferStatus(status, hiring_id, sender_id, receiver_id, service_id);
         }
     });
 });
@@ -116,4 +117,54 @@ function sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id,
 function updateOfferStatus(status, hiringId, senderId, receiverId, serviceId) {
     CURRENT_STATUS = status;
     sendOfferMessage(status, hiringId, senderId, receiverId, serviceId);
+
+    const formData1 = new FormData();
+    formData1.append('hiring_id', hiringId);
+
+    fetch('/actions/action_check_hiring_status.php', {
+        method: 'POST',
+        body: formData1
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error checking status');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            const newStatus = data.status;
+
+            console.log('Status checked:', newStatus);
+            alert(`Status changed to ${newStatus}`);
+
+            const formData2 = new FormData();
+            formData2.append('id', hiringId);
+            formData2.append('status', newStatus);
+
+            return fetch('/actions/action_update_hiring_status.php', {
+                method: 'POST',
+                body: formData2
+            });
+        } else {
+            throw new Error('Failed to check status');
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error updating hiring status');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response from update:', data);
+        if (data.success) {
+            console.log('Hiring status updated successfully');
+        } else {
+            console.error('Update failed with message:', data.message);
+            throw new Error(data.message || 'Unknown error from hiring update');
+        }
+    })
+    .catch(error => {
+    });
 }

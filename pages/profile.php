@@ -10,6 +10,7 @@
     require_once (__DIR__ . '/../database/hirings.class.php');
     require_once (__DIR__ . '/../database/service.class.php');
     require_once (__DIR__ . '/../database/review.class.php');
+    require_once (__DIR__ . '/../database/custom_offer.class.php');
 
     require_once (__DIR__ . '/../templates/chat.tpl.php');
     require_once (__DIR__ . '/../templates/hirings.tpl.php');
