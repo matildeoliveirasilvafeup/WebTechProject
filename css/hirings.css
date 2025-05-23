@@ -24,7 +24,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    z-index: 1000;
+    z-index: 1050;
 }
 
 .hirings-wrapper {
@@ -349,4 +349,99 @@
     font-weight: bold;
     color: var(--text-lighter);
     margin-left: 0.5rem;
+}
+
+@media (max-width: 600px) {
+
+	/* Resize modal to fit screen width and height on mobile */
+	#hirings-modal {
+		width: 95%;
+		height: 90%;
+		bottom: 0.5rem;
+		right: 0.5rem;
+		left: 0.5rem;
+		top: 0.5rem;
+		margin: auto;
+		border-radius: 0.75rem;
+		flex-direction: column;
+	}
+
+	/* Stack the sidebar sections and main section vertically */
+	.hirings-wrapper {
+		flex-direction: column;
+		overflow-y: auto;
+	}
+
+	/* Full width for each sidebar section */
+	.hirings-received,
+	.hirings-own {
+		width: 100%;
+		border: none;
+		border-bottom: 1px solid var(--soft-line);
+		padding: 1rem;
+		box-sizing: border-box;
+	}
+
+	/* Main chat area takes remaining vertical space */
+	.hirings-main {
+		width: 100%;
+		border: none;
+		border-top: 1px solid var(--soft-line);
+		padding: 1rem;
+		box-sizing: border-box;
+		flex: 1;
+	}
+
+	/* Footer layout adapts to small screens */
+	.hirings-footer {
+		flex-direction: column;
+		padding-top: 1rem;
+		gap: 1rem;
+	}
+
+	/* Feedback input and submit button take full width */
+	#hirings-feedback-input {
+		border-radius: 1rem;
+		margin-bottom: 0.5rem;
+		width: 100%;
+	}
+
+	#hirings-submit-btn {
+		width: 100%;
+		border-radius: 1rem;
+	}
+
+	/* Cards adapt layout for small screens */
+	.hiring-item,
+	.client-hiring-card {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.5rem;
+	}
+
+	/* Reposition close button to top corner */
+	.close-button {
+		top: 0.25rem;
+		right: 0.25rem;
+	}
+	#hirings-toggle-btn {
+		position: fixed;
+			/* ensure stacking context */
+		z-index: 15;
+			/* below modal but above sidebar */
+		top: 30rem;
+		right: 1rem;
+		left: 1rem;
+		width: 2.8rem;
+		height: 2.8rem;
+		border-radius: 50%;
+		z-index: 15;
+		/* above sidebar which z-index is 10 */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0;
+		}
+
+
 }

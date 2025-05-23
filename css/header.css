@@ -24,3 +24,33 @@ nav a {
 nav a:hover {
     color: var(--main-theme);
 }
+
+@media (max-width: 768px) {
+
+	/* Make the header padding a bit smaller on phones */
+	header {
+		padding: 1em;
+	}
+
+	/* Shrink the logo so it fits nicely on small screens */
+	.logo img {
+		max-height: 2.5em;
+	}
+
+	/* Stack nav links vertically on phones */
+	nav {
+		flex-direction: column;
+		gap: 10px;
+		/* Less space between links */
+		align-items: center;
+		/* Center links horizontally */
+	}
+
+	/* Make nav links easier to tap on small screens */
+	nav a {
+		padding: 10px 15px;
+		font-size: 1rem;
+		width: 100%;
+		/* Full width for easier tapping */
+		text-align: center;
+	} }

@@ -21,7 +21,7 @@ html, body {
     display: flex;
     flex-direction: column;
 }
- 
+
 :where(body) > .public-profile main {
     flex: 1;
     display: flex;
@@ -225,7 +225,7 @@ html, body {
     flex-direction: column;
     gap: 1.5em;
     margin-top: 1em;
-    overflow-y: auto;      
+    overflow-y: auto;
     padding-right: 0.5em;
 }
 
@@ -315,4 +315,74 @@ html, body {
 .review-body #service a:hover {
     color: black;
     transition: color 0.3s;
-}    
+}
+@media (max-width: 600px) {
+
+	/* Ensure main container stacks vertically on small screens */
+	.public-profile main {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	/* Make personal details section full width and properly padded */
+	.personal-details {
+		width: 100% !important;
+		max-width: 100% !important;
+		margin: 0 auto 1em auto;
+		padding: 1.5em;
+		box-sizing: border-box;
+	}
+
+	/* Reviews section also takes full width and is spaced properly */
+	.freelancer-reviews-section {
+		width: 100% !important;
+		max-width: 100% !important;
+		margin: 0 auto 2em auto;
+		padding: 1.5em;
+		box-sizing: border-box;
+		font-size: 1em;
+		text-align: center;
+	}
+
+	/* Stack profile header vertically */
+	.profile-header {
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		text-align: center;
+	}
+
+	/* Resize profile icon for mobile */
+	.profile-icon {
+		width: 30vw;
+		height: 30vw;
+		margin-bottom: 1em;
+	}
+
+	/* Stack buttons vertically and make them full width */
+	.profile-controls {
+		flex-direction: column;
+		gap: 1em;
+		width: 100%;
+		padding: 1em;
+		box-sizing: border-box;
+	}
+
+	.profile-controls .btn {
+		width: 100%;
+		max-width: 100%;
+		flex-grow: 0;
+		flex-basis: auto;
+		box-sizing: border-box;
+	}
+
+	/* Ensure profile sections stack correctly */
+	#profile {
+		flex-direction: column;
+	}
+
+	/* Add extra spacing above reviews on mobile */
+	.freelancer-reviews-section {
+		margin-top: 2rem;
+	}
+}
