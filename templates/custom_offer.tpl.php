@@ -1,4 +1,4 @@
-<?php function drawCustomOfferForm(int $hiringId, int $senderId, int $receiverId): void {
+<?php function drawCustomOfferForm(int $hiringId, int $senderId, int $receiverId, int $serviceId): void {
     $offers = CustomOffer::getOffers($hiringId, $senderId, $receiverId);
 
     $session = Session::getInstance();
@@ -54,7 +54,10 @@
         <?php endforeach; ?>
     </ul>
 
-    <button class="create-offer-btn">New Offer</button>
+    <div class="custom-offer-button">
+        <button class="create-offer-btn">New Offer</button>
+        <button class="go-to-service-btn" onclick="location.href='/pages/service.php?id=<?= htmlspecialchars($serviceId) ?>'">Go to original service</button>
+    </div>
 </section>
 
 <div id="custom-offer-modal" class="custom-offer-modal hidden">
@@ -63,6 +66,7 @@
 
         <input type="hidden" name="offer_id" id="offer_id">
         <input type="hidden" name="hiring_id" value="<?= $hiringId ?>">
+        <input type="hidden" name="service_id" value="<?= $serviceId ?>">
         <input type="hidden" name="sender_id" value="<?= $senderId ?>">
         <input type="hidden" name="receiver_id" value="<?= $receiverId ?>">
 

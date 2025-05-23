@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     div.style.cursor = 'pointer';
                     div.addEventListener('click', () => {
                         console.log("Hiring service clicked");
-                        window.location.href = `/pages/custom_offer.php?hiring_id=${hiring.id}&user_id1=${userId}&user_id2=${receiverId}`;
+                        window.location.href = `/pages/custom_offer.php?hiring_id=${hiring.id}&user_id1=${userId}&user_id2=${receiverId}&service_id=${serviceId}`;
                     });
 
                     hiringsList.appendChild(div);

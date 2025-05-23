@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $hiringId = isset($_POST['hiring_id']) ? (int)$_POST['hiring_id'] : null;
+$serviceId = isset($_POST['service_id']) ? (int)$_POST['service_id'] : null;
 $senderId = isset($_POST['sender_id']) ? (int)$_POST['sender_id'] : null;
 $receiverId = isset($_POST['receiver_id']) ? (int)$_POST['receiver_id'] : null;
 $price = isset($_POST['price']) ? (float)$_POST['price'] : null;
@@ -36,5 +37,5 @@ if (!$result['success']) {
     exit("Failed to create custom offer.");
 }
 
-header("Location: /pages/custom_offer.php?hiring_id=$hiringId&user_id1=$senderId&user_id2=$receiverId");
+header("Location: /pages/custom_offer.php?hiring_id=$hiringId&user_id1=$senderId&user_id2=$receiverId&service_id=$serviceId");
 exit;

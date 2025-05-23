@@ -80,11 +80,7 @@ html, body {
     grid-template-columns: repeat(2, minmax(20rem, 1fr));
     gap: 1em;
     max-width: 50rem;
-    margin: 0 auto;
-}
-
-.offer-cards > li:nth-child(odd):last-child {
-    justify-self: center;
+    margin: 1rem auto;
 }
 
 .offer-card {
@@ -169,7 +165,8 @@ html, body {
     display: none;
 }
 
-.create-offer-btn {
+.create-offer-btn,
+.go-to-service-btn {
     margin-top: 1em;
     display: inline-block;
     padding: 0.75em 1.5em;
@@ -188,3 +185,14 @@ html, body {
 .create-offer-btn:hover {
     background: var(--button-background-selected);
 }
+
+.go-to-service-btn {
+    background: var(--secondary);
+    color: var(--main-text-color);
+}
+
+.go-to-service-btn:hover {
+    background: var(--button-background);
+    color: var(--secondary);
+}
+
