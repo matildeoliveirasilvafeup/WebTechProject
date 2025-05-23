@@ -318,13 +318,11 @@ html, body {
 }
 @media (max-width: 600px) {
 
-	/* Ensure main container stacks vertically on small screens */
 	.public-profile main {
 		flex-direction: column;
 		align-items: stretch;
 	}
 
-	/* Make personal details section full width and properly padded */
 	.personal-details {
 		width: 100% !important;
 		max-width: 100% !important;
@@ -333,7 +331,6 @@ html, body {
 		box-sizing: border-box;
 	}
 
-	/* Reviews section also takes full width and is spaced properly */
 	.freelancer-reviews-section {
 		width: 100% !important;
 		max-width: 100% !important;
@@ -344,7 +341,6 @@ html, body {
 		text-align: center;
 	}
 
-	/* Stack profile header vertically */
 	.profile-header {
 		flex-direction: column;
 		align-items: center;
@@ -352,14 +348,12 @@ html, body {
 		text-align: center;
 	}
 
-	/* Resize profile icon for mobile */
 	.profile-icon {
 		width: 30vw;
 		height: 30vw;
 		margin-bottom: 1em;
 	}
 
-	/* Stack buttons vertically and make them full width */
 	.profile-controls {
 		flex-direction: column;
 		gap: 1em;
@@ -376,12 +370,10 @@ html, body {
 		box-sizing: border-box;
 	}
 
-	/* Ensure profile sections stack correctly */
 	#profile {
 		flex-direction: column;
 	}
 
-	/* Add extra spacing above reviews on mobile */
 	.freelancer-reviews-section {
 		margin-top: 2rem;
 	}

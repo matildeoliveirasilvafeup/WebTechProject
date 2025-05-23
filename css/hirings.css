@@ -353,7 +353,6 @@
 
 @media (max-width: 600px) {
 
-	/* Resize modal to fit screen width and height on mobile */
 	#hirings-modal {
 		width: 95%;
 		height: 90%;
@@ -366,13 +365,11 @@
 		flex-direction: column;
 	}
 
-	/* Stack the sidebar sections and main section vertically */
 	.hirings-wrapper {
 		flex-direction: column;
 		overflow-y: auto;
 	}
 
-	/* Full width for each sidebar section */
 	.hirings-received,
 	.hirings-own {
 		width: 100%;
@@ -382,7 +379,6 @@
 		box-sizing: border-box;
 	}
 
-	/* Main chat area takes remaining vertical space */
 	.hirings-main {
 		width: 100%;
 		border: none;
@@ -392,14 +388,12 @@
 		flex: 1;
 	}
 
-	/* Footer layout adapts to small screens */
 	.hirings-footer {
 		flex-direction: column;
 		padding-top: 1rem;
 		gap: 1rem;
 	}
 
-	/* Feedback input and submit button take full width */
 	#hirings-feedback-input {
 		border-radius: 1rem;
 		margin-bottom: 0.5rem;
@@ -411,7 +405,6 @@
 		border-radius: 1rem;
 	}
 
-	/* Cards adapt layout for small screens */
 	.hiring-item,
 	.client-hiring-card {
 		flex-direction: column;
@@ -419,16 +412,13 @@
 		gap: 0.5rem;
 	}
 
-	/* Reposition close button to top corner */
 	.close-button {
 		top: 0.25rem;
 		right: 0.25rem;
 	}
 	#hirings-toggle-btn {
 		position: fixed;
-			/* ensure stacking context */
 		z-index: 15;
-			/* below modal but above sidebar */
 		top: 30rem;
 		right: 1rem;
 		left: 1rem;
@@ -436,7 +426,6 @@
 		height: 2.8rem;
 		border-radius: 50%;
 		z-index: 15;
-		/* above sidebar which z-index is 10 */
 		display: flex;
 		justify-content: center;
 		align-items: center;

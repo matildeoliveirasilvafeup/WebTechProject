@@ -418,19 +418,13 @@
 
 @media (max-width: 600px) {
 
-	/* Chat modal takes up most of the screen on small devices */
 	#chat-modal {
 		position: fixed;
 		bottom: 6rem;
-		/* Positioned above the toggle button */
 		left: 1rem;
-		/* Align to the left */
 		width: 90vw;
-		/* Responsive width */
 		max-width: 50rem;
-		/* Max width limit */
 		height: 62.5vh;
-		/* Height relative to viewport */
 		background: white;
 		border-radius: 10px;
 		box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.3);
@@ -440,13 +434,10 @@
 		z-index: 1000;
 	}
 
-	/* Chat toggle button styling and positioning */
 	#chat-toggle-btn {
 		position: fixed;
 		bottom: 0.75rem;
-		/* Slightly above the screen bottom */
 		left: 0.75rem;
-		/* Align to the left */
 		padding: 0.75rem;
 		font-size: 0.9rem;
 		width: 3rem;
@@ -455,22 +446,18 @@
 		color: white;
 		border: none;
 		border-radius: 50%;
-		/* Perfect circle */
 		cursor: pointer;
 		box-shadow: 0.125rem 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		z-index: 1100;
-		/* Above the modal */
 	}
 
-	/* Layout stacking vertically on small screens */
 	.chat-wrapper {
 		flex-direction: column;
 	}
 
-	/* Sidebar styles for small screens */
 	.chat-sidebar {
 		width: 100%;
 		flex-direction: row;
@@ -491,7 +478,6 @@
 		padding: 0.5em 1em;
 	}
 
-	/* Main chat area padding */
 	.chat-main {
 		padding: 0.75rem;
 	}
@@ -500,34 +486,29 @@
 		padding: 0.5rem 0.25rem;
 	}
 
-	/* Footer styles stacked with gaps */
 	.chat-footer {
 		flex-direction: column;
 		gap: 0.5rem;
 	}
 
-	/* Input field styling */
 	#chat-input {
 		font-size: 0.9rem;
 		height: 2.8rem;
 		padding-left: 2rem;
 	}
 
-	/* Send button styling */
 	#chat-send-btn {
 		height: 2.8rem;
 		font-size: 0.9rem;
 		padding: 0.75rem 1rem;
 	}
 
-	/* File label position and font */
 	#chat-file-label {
 		top: 0.5rem;
 		left: 0.5rem;
 		font-size: 0.9rem;
 	}
 
-	/* Message group and text adjustments */
 	.message-group {
 		max-width: 100%;
 	}
@@ -541,38 +522,31 @@
 		font-size: 0.7rem;
 	}
 
-	/* Responsive chat images */
 	.chat-image {
 		max-width: 100%;
 		height: auto;
 	}
 
-	/* File name display */
 	#file-name-display {
 		font-size: 0.75rem;
 	}
 
-	/* File preview styling */
 	.file-preview-chat {
 		gap: 0.25rem;
 		padding: 0.4rem 0.6rem;
 	}
 }
 
-/* Default styles for toggle button outside media query */
 #chat-toggle-btn {
 	position: fixed;
 	bottom: 5rem;
-	/* Higher than in small screen */
 	left: 1rem;
-	/* Align to the left */
 	background-color: var(--main-theme-darker);
 	color: white;
 	border: none;
 	width: 3rem;
 	height: 3rem;
 	border-radius: 50%;
-	/* Circle */
 	cursor: pointer;
 	box-shadow: 0.125rem 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
 	font-size: 1rem;
@@ -582,13 +556,10 @@
 	z-index: 1100;
 }
 
-/* Default styles for chat modal outside media query */
 #chat-modal {
 	position: fixed;
 	bottom: 6rem;
-	/* Avoid overlap with toggle button */
 	left: 1rem;
-	/* Align left */
 	width: 90vw;
 	max-width: 50rem;
 	height: 62.5vh;

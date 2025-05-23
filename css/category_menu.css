@@ -242,18 +242,15 @@
 
 @media (max-width: 600px) {
 
-	/* Adjust carousel padding on smaller screens */
 	.carousel-wrapper {
 		padding: 0 1em;
 	}
 
-	/* Stack category cards more compactly */
 	.category-carousel {
 		gap: 10px;
 		padding: 0.5em 0;
 	}
 
-	/* Make cards larger and more readable on smaller devices */
 	.category-card {
 		width: 35vw;
 		height: 30vw;
@@ -261,16 +258,14 @@
 		padding: 0.8em;
 	}
 
-	/* Scale down icons to fit mobile layout */
 	.category-icon {
 		font-size: 1.8em;
 		margin-bottom: 0.3em;
 	}
 
-	/* HIDE the textual category menu on small screens */
 	.category-menu {
 		display: none;
 	}
 
-	
+
 }
