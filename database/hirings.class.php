@@ -90,4 +90,8 @@ class Hiring {
             $row['ended_at'] ?? null
         );
     }
+
+    public function getStatus(): string {
+        return $this->status;
+    }
 }

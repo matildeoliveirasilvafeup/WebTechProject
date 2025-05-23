@@ -43,9 +43,11 @@
 }
 
 .freelancer-box img,
-.freelancer-box i {
-    width: 50px;
-    height: 50px;
+.freelancer-box i, 
+.review-header img,
+.review-header i {
+    width: 40px;
+    height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -55,6 +57,12 @@
     border-radius: 50%;
     border: 2px solid var(--soft-line);
     object-fit: cover;
+}
+
+.freelancer-box img,
+.freelancer-box i {
+    width: 50px;
+    height: 50px;
 }
 
 .service-details .price {
@@ -304,18 +312,31 @@
     flex-wrap: wrap;
 }
 
-.reviews-controls input[type="text"] {
-    padding: 0.5em;
-    border-radius: 5px;
-    border: 1px solid var(--background-disabled);
-    width: 15vw;
+.reviews-controls .btn-add-cart {
+    background: var(--main-background-darker);
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+.reviews-controls .btn-add-cart:hover {
+    background: var(--button-background-selected);
 }
 
 .reviews-controls select {
-    padding: 0.5em;
     border-radius: 5px;
     border: 1px solid var(--background-disabled);
     max-width: 10vw;
+}
+
+.reviews-controls .btn-add-cart,
+.reviews-controls select {
+  vertical-align: middle; 
+  line-height: 1;         
+  font-size: 0.95em;       
+  height: 3em;          
+  box-sizing: border-box;
+  margin: 0;             
+  padding: 0.2em 1em;     
 }
 
 .load-more-btn {
@@ -431,4 +452,91 @@
 .carousel-wrapper:has(video + img) ~ .carousel-btn,
 .carousel-wrapper:has(video + video) ~ .carousel-btn{
     display: block;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--secondary);
+    padding: 2em;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 2px 20px var(--box-shadow);
+}
+
+.modal-content .close-btn {
+    position: absolute;
+    top: 0.5em;
+    right: 1em;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+#review-form textarea {
+    width: 100%;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+}
+
+#review-form h2 {
+    margin-bottom: 1em;
+}
+
+#review-form label {
+    margin: 1em;
+    font-size: large;
+}
+
+.star-rating {
+    display: flex;
+    gap: 0.4em;
+    font-size: 2em;
+    color: var(--soft-line);
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
+.star-rating .fa-star,
+.star-rating .fa-star-half-alt,
+.star-rating .fa-star.checked {
+    color: var(--star-yellow);
+    transition: color 0.2s ease-in-out;
+}
+
+.review-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-trash {
+    margin-left: auto;
+    cursor: pointer;
+    padding-left: 0.5em;
+    background: none; 
+    border: none;
+    transition: color 0.2s ease;
+}
+
+.review-trash:hover {
+    color: var(--button-danger);
 }

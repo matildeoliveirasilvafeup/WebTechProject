@@ -2,8 +2,6 @@
     require_once(__DIR__ .  '/../includes/session.php');
 
     require_once(__DIR__ .  '/../database/service.class.php');
-
-    require_once(__DIR__ .  '/../database/service.class.php');
     require_once(__DIR__ .  '/../database/category.class.php');
     require_once(__DIR__ .  '/../database/review.class.php');
     require_once(__DIR__ .  '/../database/favorites.class.php');
@@ -34,17 +32,22 @@
         exit;
     }
 
+    $session = Session::getInstance();
+    $user = $session->getUser();
+    $userId = $user ? $user->id : 0;
     $ratingInfo = Review::getServiceRatingInfo((int)$service->id);
     $reviews = Review::getServiceReviews((int)$service->id);
     $moreFromFreelancer = Service::getMoreFromFreelancer((int)$service->freelancerId, (int)$service->id, 100);
     $relatedServices = Service::getRelated($service->categoryId, $service->id, 100);
     $averageRating = Review::getAverageRating($reviews);
+    $isAdmin = Session::isAdmin();
+    $eligibleHiringId = Service::getEligibleHiringIdForReview($userId, $serviceId);
 
     drawHeader();
     drawCategoryMenu($categories);
     drawServicePage($service, $ratingInfo);
-    drawReviewBlock($reviews, $averageRating);
-    drawMoreFromFreelancer($service, $moreFromFreelancer); 
+    drawReviewBlock($service, $reviews, $averageRating, $isAdmin, $eligibleHiringId);
+    drawMoreFromFreelancer($service, $moreFromFreelancer);
     drawRelatedServices($relatedServices); 
     drawCopyToast();
     drawChat();

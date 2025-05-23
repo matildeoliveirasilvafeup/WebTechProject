@@ -14,7 +14,7 @@ function renderStars(float $rating): string {
 ?>
 
 
-<?php function drawReviewsSummary($averageRating) { ?>
+<?php function drawReviewsSummary($service, $averageRating, $eligibleHiringId) { ?>
     <div class="reviews-summary">
         <h2>Reviews</h2>
         <p><strong><?= $averageRating['average'] ?>★</strong> out of 5 — <?= $averageRating['total'] ?> reviews</p>
@@ -35,30 +35,52 @@ function renderStars(float $rating): string {
         </div>
 
         <div class="reviews-controls">
-            <input type="text" placeholder="Search in reviews...">
-            <select>
+            <?php if ($eligibleHiringId): ?>
+                <button class="btn-add-cart" onclick="openReviewModal()">Write a review</button>
+            <?php endif; ?>
+            <select id="review-sort">
                 <option value="latest">Newest</option>
                 <option value="oldest">Oldest</option>
                 <option value="highest">Best rating</option>
                 <option value="lowest">Worst rating</option>
             </select>
         </div>
+
+        <?php drawChatModal($service, $eligibleHiringId); ?>
     </div>
 <?php } ?>
 
-<?php function drawReviewSection($reviews) { ?>
+<?php function drawReviewSection($reviews, $isAdmin = false) { ?>
     <div class="reviews-section">
         <?php foreach ($reviews as $index => $review): ?>
-            <div class="review-card" data-index="<?= $index ?>" style="<?= $index >= 3 ? 'display: none;' : '' ?>">
+            <div class="review-card" data-index="<?= $index ?>" 
+                data-rating="<?= $review->rating ?>"
+                data-date="<?= htmlspecialchars($review->createdAt) ?>"
+                style="<?= $index >= 3 ? 'display: none;' : '' ?>">
                 <div class="review-header">
-                    <img src="<?= htmlspecialchars($review->profilePicture ?? 'https://via.placeholder.com/40') ?>" alt="Foto do cliente">
+                    <?php if (!empty($review->profilePicture)): ?>
+                        <img src="<?= htmlspecialchars($review->profilePicture) ?>" alt="Foto do freelancer">
+                    <?php else: ?>
+                        <i class="fa-solid fa-image-portrait"></i>
+                    <?php endif; ?>
                     <div>
                         <strong><?= renderUserLink($review->clientUsername,$review->clientName) ?></strong><br>
                         <?= renderStars($review->rating) ?>
                     </div>
                 </div>
                 <p class="review-comment">"<?= htmlspecialchars($review->comment) ?>"</p>
-                <small class="review-date"><?= date('d M Y', strtotime($review->createdAt)) ?></small>
+                <small class="review-date">
+                    <?= date('d M Y', strtotime($review->createdAt)) ?>
+                    
+                    <?php if ($isAdmin || (isset($_SESSION['user']) && $_SESSION['user']->id == $review->clientId)): ?>
+                        <form method="POST" action="../actions/action_delete_review.php">
+                            <input type="hidden" name="review_id" value="<?= $review->id ?>">
+                            <button type="submit" class="review-trash" title="Delete review">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    <?php endif; ?>
+                </small>
             </div>
         <?php endforeach; ?>
 
@@ -69,11 +91,46 @@ function renderStars(float $rating): string {
     <script src="../js/reviews.js"></script>    
 <?php } ?>
 
-<?php function drawEmptyReviewSection() { ?>
+<?php function drawEmptyReviewSection($service, $eligibleHiringId) { ?>
     <div class="reviews-summary">
         <h2>Reviews</h2>
         <p>This service doesn't have reviews yet.</p>
+        <div class="reviews-controls">
+            <?php if ($eligibleHiringId): ?>
+                <button class="btn-add-cart" onclick="openReviewModal()">Write a review</button>
+            <?php endif; ?>
+        </div>
+
+        <?php drawChatModal($service, $eligibleHiringId); ?>
     </div>
+<?php } ?>
+
+<?php function drawChatModal($service, $eligibleHiringId) { ?>
+    <div id="review-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeReviewModal()">&times;</span>
+            <h2>Write a Review</h2>
+            <form id="review-form" action="../actions/action_submit_review.php" method="POST">
+                <input type="hidden" name="service_id" value="<?= htmlspecialchars((string)$service->id) ?>">
+                <input type="hidden" name="hiring_id" value="<?= htmlspecialchars((string)$eligibleHiringId) ?>">
+                <label for="rating">Rating</label>
+                <div class="star-rating" id="star-rating-input">
+                    <i class="fa-regular fa-star" data-value="1"></i>
+                    <i class="fa-regular fa-star" data-value="2"></i>
+                    <i class="fa-regular fa-star" data-value="3"></i>
+                    <i class="fa-regular fa-star" data-value="4"></i>
+                    <i class="fa-regular fa-star" data-value="5"></i>
+                    <input type="hidden" name="rating" id="rating" required>
+                </div>
+
+                <label for="comment">Comment</label>
+                <textarea id="comment" name="comment" rows="5" required></textarea>
+
+                <button type="submit" class="btn-add-cart">Submit Review</button>
+            </form>
+        </div>
+    </div>
+    <scrip src="../js/review_form.js"></script>
 <?php } ?>
 
 <?php function drawTestimonials($testimonials) { ?>
@@ -98,11 +155,13 @@ function renderStars(float $rating): string {
     </div>
 <?php } ?>
 
-<?php function drawReviewBlock($reviews, $averageRating) {
+<?php function drawReviewBlock($service, $reviews, $averageRating, $isAdmin = false, $eligibleHiringId = false) {
     if (count($reviews) > 0) { 
-        drawReviewsSummary($averageRating);
-        drawReviewSection($reviews);    
+        drawReviewsSummary($service,$averageRating, $eligibleHiringId);
+        drawReviewSection($reviews, $isAdmin);    
     } else {
-        drawEmptyReviewSection();
+        drawEmptyReviewSection($service, $eligibleHiringId);
     }
-} ?>    
+?>
+    <script src="../js/review_form.js"></script>
+<?php } ?>    

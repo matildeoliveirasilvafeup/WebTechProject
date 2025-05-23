@@ -510,4 +510,24 @@ class Service {
     
         return $stmt->execute();
     }
+
+    public static function getEligibleHiringIdForReview(int $userId, int $serviceId): ?int {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("
+            SELECT h.id
+            FROM hirings h
+            LEFT JOIN reviews r ON r.hiring_id = h.id
+            WHERE h.client_id = :user_id
+            AND h.service_id = :service_id
+            AND h.status = 'Closed'
+            AND r.id IS NULL
+            LIMIT 1
+        ");
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':service_id', $serviceId, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? (int)$row['id'] : null;
+    }
+
 }

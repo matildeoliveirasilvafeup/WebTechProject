@@ -1,10 +1,10 @@
-<?php function drawDashboard($profile, $user, $profile_preferences, $favorites, $ownServices, $isAdmin) { ?>
+<?php function drawDashboard($profile, $user, $profile_preferences, $favorites, $ownServices, $isAdmin, $freelancerReviews) { ?>
 
     <div class="dashboard">
         <?php 
             drawSidebar($isAdmin);
 
-            drawContent($profile, $user, $profile_preferences, $favorites, $ownServices, $isAdmin);
+            drawContent($profile, $user, $profile_preferences, $favorites, $ownServices, $isAdmin, $freelancerReviews);
 
             drawEditModal($profile, $user, $profile_preferences);
         ?>       
@@ -26,10 +26,10 @@
     </div>
 <?php } ?>
 
-<?php function drawContent($profile, $user, $profile_preferences, $favorites, $ownServices, $isAdmin) { ?>
+<?php function drawContent($profile, $user, $profile_preferences, $favorites, $ownServices, $isAdmin, $freelancerReviews) { ?>
     <div class="dashboard-content">
         <?php 
-            drawProfile($profile, $profile_preferences, $user);
+            drawProfile($profile, $profile_preferences, $user, freelancerReviews:$freelancerReviews);
             drawFavorites($favorites); 
             drawOwnListings($ownServices, $isAdmin);
             drawSettings($user); 

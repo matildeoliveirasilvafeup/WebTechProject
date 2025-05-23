@@ -1,6 +1,10 @@
 <?php
 function drawPaymentForm(Service $service, User $client, User $freelancer): void {
-?>
+    if ($client->id === $freelancer->id) {
+        header('Location: /pages/service.php?id=' . htmlspecialchars($service->id));
+    }
+    ?>
+    
     <div class="payment-wrapper">
         <h2>Complete Your Hire</h2>
 

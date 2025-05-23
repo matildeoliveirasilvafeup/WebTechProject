@@ -52,11 +52,12 @@
 
                         $clientData = array_map(function ($h) {
                             $client = User::getById($h->client_id);
+                            $clientUsername = $client ? $client->username : null;
                             return [
                                 'hiring_id' => $h->id,
                                 'owner_id' => $h->owner_id,
                                 'client_id' => $h->client_id,
-                                'client_name' => $client->username,
+                                'client_name' => $clientUsername,
                                 'status' => $h->status,
                             ];
                         }, $serviceHirings);

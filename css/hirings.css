@@ -158,13 +158,13 @@
     display: none;
 }
 
-.close-button {
+.close-button #hirings-close-btn {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
     z-index: 10;
 }
-.close-button button {
+.close-button #hirings-close-btn {
     background: transparent;
     border: none;
     color: var(--main-text);
@@ -174,7 +174,7 @@
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
-.close-button button:hover {
+.close-button #hirings-close-btn:hover {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -294,7 +294,7 @@
 .hiring-actions button,
 .accept-btn,
 .reopen-btn,
-.close-btn,
+.approve-btn,
 .reject-btn,
 .cancel-btn {
     padding: 0.4rem 0.8rem;
@@ -305,12 +305,12 @@
     color: white;
 }
 .accept-btn,
-.close-btn,
+.approve-btn,
 .finish-btn {
     background-color: #4CAF50;
 }
 .accept-btn:hover,
-.close-btn:hover,
+.approve-btn:hover,
 .finish-btn:hover {
     background-color: #439c46;
 }

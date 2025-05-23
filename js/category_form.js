@@ -65,3 +65,17 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('.create-form');
+    const nameInput = document.getElementById('category-name');
+
+    form.addEventListener('submit', function (e) {
+        const inputName = nameInput.value.trim().toLowerCase();
+        if (existingCategoryNames.includes(inputName)) {
+            e.preventDefault();
+            alert('A category with this name already exists!');
+            nameInput.focus();
+        }
+    });
+});
