@@ -28,7 +28,7 @@
             <?php endforeach; ?>
         </ul>
         
-        <?php drawCustomOfferButton($serviceId); ?>
+        <?php drawCustomOfferButton($serviceId, $hiringId); ?>
         
     </section>
 
@@ -80,9 +80,12 @@
     </div>
 <?php } ?>
 
-<?php function drawCustomOfferButton($serviceId) { ?>
+<?php function drawCustomOfferButton($serviceId, $hiringId) { ?>
     <div class="custom-offer-button">
-        <button class="create-offer-btn">New Offer</button>
+        <?php
+            $hasAcceptedOffer = CustomOffer::checkHiringOffersStatus($hiringId) === 'Accepted';
+        ?>
+        <button class="create-offer-btn" <?= $hasAcceptedOffer ? 'disabled data-accepted-exists="true"' : '' ?>>New Offer</button>
         <button class="go-to-service-btn" onclick="location.href='/pages/service.php?id=<?= htmlspecialchars($serviceId) ?>'">Go to original service</button>
     </div>
 <?php } ?>

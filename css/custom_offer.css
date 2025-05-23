@@ -186,6 +186,11 @@ html, body {
     background: var(--button-background-selected);
 }
 
+.create-offer-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .go-to-service-btn {
     background: var(--secondary);
     color: var(--main-text-color);
