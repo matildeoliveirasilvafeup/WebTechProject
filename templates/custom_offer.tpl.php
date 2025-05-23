@@ -38,13 +38,13 @@
                             <form method="POST" action="/actions/action_update_offer_status.php">
                                 <input type="hidden" name="offer_id" value="<?= htmlspecialchars($offer->id) ?>">
                                 <input type="hidden" name="new_status" value="Cancelled">
-                                <button type="submit" class="cancel-btn">Cancel</button>
+                                <button type="submit" class="cancel-btn" onclick="updateOfferStatus('Cancelled', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Cancel</button>
                             </form>
                         <?php elseif ($userId === $offer->receiver_id): ?>
                             <form method="POST" action="/actions/action_update_offer_status.php">
                                 <input type="hidden" name="offer_id" value="<?= htmlspecialchars($offer->id) ?>">
-                                <button type="submit" name="new_status" value="Accepted" class="accept-btn">Accept</button>
-                                <button type="submit" name="new_status" value="Rejected" class="reject-btn">Reject</button>
+                                <button type="submit" name="new_status" value="Accepted" class="accept-btn" onclick="updateOfferStatus('Accepted', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Accept</button>
+                                <button type="submit" name="new_status" value="Rejected" class="reject-btn" onclick="updateOfferStatus('Rejected', <?= $hiringId ?>, <?= $senderId ?>, <?= $receiverId ?>, <?= $serviceId ?>)">Reject</button>
                             </form>
                         <?php endif; ?>
                     <?php endif; ?>

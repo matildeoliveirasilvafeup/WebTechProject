@@ -57,6 +57,7 @@ CREATE TABLE conversations (
 CREATE TABLE messages (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     conversation_id VARCHAR(50) NOT NULL,
+    hiring_id INTEGER,
     service_id INTEGER NOT NULL,
     sender_id INTEGER NOT NULL,
     receiver_id INTEGER NOT NULL,

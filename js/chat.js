@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkUnreadMessages();
 
     window.drawMessages = drawMessages;
+    window.sendMessage = sendMessage;
 
     const toggleBtn = document.getElementById('chat-toggle-btn');
     const closeBtn = document.getElementById('chat-close-btn');
@@ -223,7 +224,11 @@ function drawMessages(conversationId, serviceId, userId) {
                     bubble.classList.add('message-with-sub');
 
                     const mainText = document.createElement('p');
-                    mainText.textContent = msg.message;
+                    if (msg.hiring_id) {
+                        mainText.textContent = msg.message.replace(/\b\w+!$/, '').trim();
+                    } else {
+                        mainText.textContent = msg.message;
+                    }
                     bubble.appendChild(mainText);
 
                     const subText = document.createElement('p');
@@ -234,11 +239,15 @@ function drawMessages(conversationId, serviceId, userId) {
                         bubble.classList.add(`status-${msg.status_class.toLowerCase()}`);
                         subText.classList.add(`status-${msg.status_class.toLowerCase()}`);
                     }
-
+                    
                     subText.style.cursor = 'pointer';
                     subText.onclick = () => {
-                        localStorage.setItem('openHiring', 'true');
-                        location.reload();
+                        if (msg.hiring_id) {
+                            window.location.href = `/pages/custom_offer.php?hiring_id=${msg.hiring_id}&user_id1=${userId}&user_id2=${window.ChatState.CURRENT_RECEIVER_ID}&service_id=${serviceId}`;
+                        } else {
+                            localStorage.setItem('openHiring', 'true');
+                            location.reload();
+                        }
                     };
 
                     bubble.appendChild(subText);
@@ -329,6 +338,7 @@ function sendMessage(event) {
 
     const formData = new FormData();
     formData.append('conversation_id', window.ChatState.CURRENT_CONVERSATION_ID);
+    formData.append('hiring_id', null);
     formData.append('service_id', window.ChatState.CURRENT_SERVICE_ID);
     formData.append('sender_id', window.ChatState.CURRENT_USER_ID);
     formData.append('receiver_id', window.ChatState.CURRENT_RECEIVER_ID);

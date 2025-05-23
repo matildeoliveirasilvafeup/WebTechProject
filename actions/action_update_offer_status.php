@@ -28,21 +28,6 @@ if (!in_array($newStatus, $validStatuses, true)) {
     exit('Invalid status update');
 }
 
-if ($newStatus === 'Cancelled') {
-    if ($userId !== $offer->sender_id) {
-        http_response_code(403);
-        exit('Unauthorized');
-    }
-} elseif (in_array($newStatus, ['Accepted', 'Rejected'])) {
-    if ($userId !== $offer->receiver_id) {
-        http_response_code(403);
-        exit('Unauthorized');
-    }
-} else {
-    http_response_code(400);
-    exit('Invalid status update');
-}
-
 $success = CustomOffer::updateStatus($offerId, $newStatus);
 
 if (!$success) {

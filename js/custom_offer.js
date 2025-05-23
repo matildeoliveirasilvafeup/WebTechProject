@@ -1,3 +1,5 @@
+let CURRENT_STATUS = 'Pending';
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.custom-offer-form');
     const modal = document.getElementById('custom-offer-modal');
@@ -51,6 +53,67 @@ document.addEventListener('DOMContentLoaded', () => {
         if (errors.length > 0) {
             e.preventDefault();
             alert(errors.join('\n'));
+        } else {
+            const status = CURRENT_STATUS;
+            const hiring_id = form.querySelector('input[name="hiring_id"]').value;
+            const service_id = form.querySelector('input[name="service_id"]').value;
+            const sender_id = form.querySelector('input[name="sender_id"]').value;
+            const receiver_id = form.querySelector('input[name="receiver_id"]').value;
+
+            sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id);
         }
     });
 });
+
+function sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id, fileInput = null) {
+
+    let message;
+    if (status == 'Pending') {
+        message = `A new offer has been created. ${status}!`;
+    } else if (status == 'Accepted') {
+        message = `A offer has been accepted. ${status}!`;
+    } else if (status == 'Rejected') {
+        message = `A offer has been rejected. ${status}!`;
+    } else if (status == 'Cancelled') {
+        message = `A offer has been cancelled. ${status}!`;
+    }
+
+    const subMessage = 'Click to see details';
+
+    const ids = [sender_id, receiver_id].sort((a, b) => a - b);
+    const conversation_id = `${ids[0]}_${ids[1]}`;
+
+    const formData = new FormData();
+    formData.append('conversation_id', conversation_id);
+    formData.append('hiring_id', hiring_id);
+    formData.append('service_id', service_id);
+    formData.append('sender_id', sender_id);
+    formData.append('receiver_id', receiver_id);
+    formData.append('sub_message', subMessage);
+    formData.append('message', message);
+    
+    if (fileInput) {
+        formData.append('file', fileInput);
+    }
+
+    fetch('/actions/action_send_message.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success) {
+            console.error('Error sending message:', data.error || 'Unknown error');
+        } else {
+            console.log('Message sent successfully:', data);
+        }
+    })
+    .catch(err => {
+        console.error('Error sending:', err);
+    });
+}
+
+function updateOfferStatus(status, hiringId, senderId, receiverId, serviceId) {
+    CURRENT_STATUS = status;
+    sendOfferMessage(status, hiringId, senderId, receiverId, serviceId);
+}
