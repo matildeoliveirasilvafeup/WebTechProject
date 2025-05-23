@@ -5,16 +5,18 @@ require_once(__DIR__ . '/../includes/session.php');
 require_once(__DIR__ . '/../database/user.class.php');
 require_once(__DIR__ . '/../database/custom_offer.class.php');
 
+header('Content-Type: application/json');
+
 $session = Session::getInstance();
 $user = $session->getUser();
 
 if (!$user) {
-    header('Location: /login.php');
+    echo json_encode(['success' => false, 'error' => 'Not authenticated']);
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /index.php');
+    echo json_encode(['success' => false, 'error' => 'Invalid request method']);
     exit;
 }
 
@@ -23,18 +25,35 @@ $hiringId = isset($_POST['hiring_id']) ? (int)$_POST['hiring_id'] : null;
 $newStatus = ucfirst(strtolower($_POST['new_status'] ?? ''));
 
 $validStatuses = ['Pending', 'Accepted', 'Rejected', 'Cancelled'];
+if (!$offerId || !$hiringId || !in_array($newStatus, $validStatuses, true)) {
+    echo json_encode(['success' => false, 'error' => 'Invalid input']);
+    exit;
+}
 
-if (!in_array($newStatus, $validStatuses, true)) {
-    http_response_code(400);
-    exit('Invalid status update');
+$currentOffer = CustomOffer::getById($offerId);
+if (!$currentOffer) {
+    echo json_encode(['success' => false, 'error' => 'Offer not found']);
+    exit;
+}
+
+$currentStatus = ucfirst(strtolower($currentOffer->status ?? ''));
+
+if ($currentStatus === 'Cancelled' && in_array($newStatus, ['Accepted', 'Rejected'])) {
+    echo json_encode(['success' => false, 'error' => 'Offer has been cancelled']);
+    exit;
+}
+
+if (in_array($currentStatus, ['Accepted', 'Rejected']) && $newStatus === 'Cancelled') {
+    echo json_encode(['success' => false, 'error' => "Offer already {$currentStatus}"]);
+    exit;
 }
 
 $success = CustomOffer::updateStatus($offerId, $hiringId, $newStatus);
 
 if (!$success) {
-    http_response_code(500);
-    exit('Failed to update status');
+    echo json_encode(['success' => false, 'error' => 'Failed to update status']);
+    exit;
 }
 
-header('Location: ' . $_SERVER['HTTP_REFERER'] ?? '/');
+echo json_encode(['success' => true, 'message' => "Offer successfully {$newStatus}"]);
 exit;

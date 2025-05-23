@@ -201,3 +201,10 @@ html, body {
     color: var(--secondary);
 }
 
+.toast.success {
+  background-color: var(--success);
+}
+
+.toast.error {
+  background-color: var(--error);
+}

@@ -114,9 +114,32 @@ function sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id,
     });
 }
 
-function updateOfferStatus(status, hiringId, senderId, receiverId, serviceId) {
+async function updateOfferStatus(status, id, hiringId, senderId, receiverId, serviceId) {
     CURRENT_STATUS = status;
     sendOfferMessage(status, hiringId, senderId, receiverId, serviceId);
+
+    const formData = new FormData();
+    formData.append('offer_id', id);
+    formData.append('hiring_id', hiringId);
+    formData.append('new_status', status);
+
+    try {
+        const res = await fetch('/actions/action_update_offer_status.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            showToast(data.message, 'success');
+        } else {
+            showToast(data.error || 'Error updating status', 'error');
+        }
+    } catch (error) {
+        console.error(error);
+        showToast('Error communicating with server', 'error');
+    }
 
     const formData1 = new FormData();
     formData1.append('hiring_id', hiringId);
@@ -127,16 +150,14 @@ function updateOfferStatus(status, hiringId, senderId, receiverId, serviceId) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Error checking status');
+            throw new Error('Error checking hiring status');
         }
         return response.json();
     })
     .then(data => {
         if (data.success) {
             const newStatus = data.status;
-
             console.log('Status checked:', newStatus);
-            alert(`Status changed to ${newStatus}`);
 
             const formData2 = new FormData();
             formData2.append('id', hiringId);
@@ -147,7 +168,7 @@ function updateOfferStatus(status, hiringId, senderId, receiverId, serviceId) {
                 body: formData2
             });
         } else {
-            throw new Error('Failed to check status');
+            throw new Error(data.message || 'Error checking hiring status');
         }
     })
     .then(response => {
@@ -157,14 +178,32 @@ function updateOfferStatus(status, hiringId, senderId, receiverId, serviceId) {
         return response.json();
     })
     .then(data => {
-        console.log('Response from update:', data);
         if (data.success) {
             console.log('Hiring status updated successfully');
         } else {
-            console.error('Update failed with message:', data.message);
-            throw new Error(data.message || 'Unknown error from hiring update');
+            console.error('Falha ao atualizar:', data.message);
+            showToast(data.message || 'Error updating hiring status', 'error');
         }
     })
     .catch(error => {
+        console.error('Erro:', error);
+        showToast(error.message || 'Unexpected error', 'error');
     });
+
+    location.reload();
+}
+
+
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
