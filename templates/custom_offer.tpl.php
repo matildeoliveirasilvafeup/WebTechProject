@@ -36,7 +36,7 @@
         <?php drawCustomOfferModal($hiringId, $serviceId, $senderId, $receiverId); ?>
     </div>
 
-    <script src="/js/custom_offer.js" defer></script>
+    <script type="module" src="/js/custom_offer.js" defer></script>
 <?php } ?>
 
 <?php function drawOfferLeft($offer) { ?>
@@ -55,7 +55,9 @@
                     <?= htmlspecialchars($offer->status) ?>
                 </span>
             </div>
-                <span class="createdAt-badge">
+            <span 
+                class="createdAt-badge"
+                data-datetime="<?= htmlspecialchars($offer->created_at) ?>">
                 <?= htmlspecialchars(date('Y-m-d H:i', strtotime($offer->created_at))) ?>
             </span>
         </div>

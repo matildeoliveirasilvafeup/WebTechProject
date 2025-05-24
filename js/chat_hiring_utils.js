@@ -101,5 +101,22 @@ export function sendStatusMessage(status, senderId, receiverId, serviceId, servi
 }
 
 export function formatDateTimeWithoutSeconds(datetime) {
-    return datetime.slice(0, 16);
+    const date = new Date(datetime.replace(' ', 'T') + 'Z');
+
+    const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'Europe/Lisbon'
+    };
+    
+    const formatted = date.toLocaleString('pt-PT', options);
+    
+    const [day, month, yearAndTime] = formatted.split('/');
+    const [year, time] = yearAndTime.split(', ');
+
+    return `${year}-${month}-${day} ${time}`;
 }

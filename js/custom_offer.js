@@ -1,6 +1,14 @@
+import { formatDateTimeWithoutSeconds } from './chat_hiring_utils.js';
+
 let CURRENT_STATUS = 'Pending';
 
 document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.createdAt-badge').forEach(el => {
+        const raw = el.dataset.datetime;
+        const formatted = formatDateTimeWithoutSeconds(raw);
+        el.textContent = formatted;
+    });
+
     const form = document.querySelector('.custom-offer-form');
     const modal = document.getElementById('custom-offer-modal');
     const editButtons = document.querySelectorAll('.edit-offer-btn');
@@ -210,7 +218,7 @@ async function updateOfferStatus(status, id, hiringId, senderId, receiverId, ser
         showToast(error.message || 'Unexpected error', 'error');
     });
 
-    location.reload();
+    setTimeout(() => location.reload(), 1500);
 }
 
 
