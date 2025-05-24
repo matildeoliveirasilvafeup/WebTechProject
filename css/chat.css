@@ -38,7 +38,8 @@
     right: 0.5rem;
     z-index: 10;
 }
-.close-button .chat-close-btn {
+.close-button #chat-close-btn,
+.close-button #chat-custom-order {
     background: transparent;
     border: none;
     color: var(--main-text);
@@ -48,7 +49,8 @@
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
-.close-button .chat-close-btn:hover {
+.close-button #chat-close-btn:hover,
+.close-button #chat-custom-order:hover {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
