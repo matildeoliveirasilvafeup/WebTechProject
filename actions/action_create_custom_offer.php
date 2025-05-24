@@ -8,34 +8,37 @@ require_once(__DIR__ . '/../database/custom_offer.class.php');
 $session = Session::getInstance();
 $user = $session->getUser();
 
-if (!$user) {
-    header('Location: /login.php');
+if (!$user || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Unauthorized.']);
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /index.php');
+$hiringId = (int)($_POST['hiring_id'] ?? 0);
+$serviceId = (int)($_POST['service_id'] ?? 0);
+$senderId = (int)($_POST['sender_id'] ?? 0);
+$receiverId = (int)($_POST['receiver_id'] ?? 0);
+$price = (float)($_POST['price'] ?? -1);
+$deliveryTime = (int)($_POST['delivery'] ?? 0);
+$revisions = (int)($_POST['revisions'] ?? -1);
+
+if (!$hiringId || !$senderId || !$receiverId || $price < 0 || $deliveryTime < 1 || $revisions < 0) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Missing or invalid fields.']);
     exit;
-}
-
-$hiringId = isset($_POST['hiring_id']) ? (int)$_POST['hiring_id'] : null;
-$serviceId = isset($_POST['service_id']) ? (int)$_POST['service_id'] : null;
-$senderId = isset($_POST['sender_id']) ? (int)$_POST['sender_id'] : null;
-$receiverId = isset($_POST['receiver_id']) ? (int)$_POST['receiver_id'] : null;
-$price = isset($_POST['price']) ? (float)$_POST['price'] : null;
-$deliveryTime = isset($_POST['delivery']) ? (int)$_POST['delivery'] : null;
-$revisions = isset($_POST['revisions']) ? (int)$_POST['revisions'] : null;
-
-if (!isset($hiringId, $senderId, $receiverId, $price, $deliveryTime, $revisions)) {
-    die("Missing required fields.");
 }
 
 $result = CustomOffer::create($hiringId, $senderId, $receiverId, $price, $deliveryTime, $revisions);
 
 if (!$result['success']) {
     http_response_code(500);
-    exit("Failed to create custom offer.");
+    echo json_encode(['success' => false, 'message' => 'Failed to create custom offer.']);
+    exit;
 }
 
-header("Location: /pages/custom_offer.php?hiring_id=$hiringId&user_id1=$senderId&user_id2=$receiverId&service_id=$serviceId");
+echo json_encode([
+    'success' => true,
+    'id' => $result['id'],
+    'message' => 'Custom offer created successfully.'
+]);
 exit;

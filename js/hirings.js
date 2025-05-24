@@ -65,21 +65,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 showToast(data.message || `Status updated to ${newStatus}`, 'success');
                 sendStatusMessage(newStatus, user1Id, user2Id, serviceId, serviceTitle);
-                // if (newStatus === 'Accepted' || newStatus === 'Rejected'|| newStatus === 'Completed') {
-                // } else if (newStatus === 'Closed' || newStatus === 'Cancelled' || newStatus === 'Pending') {
-                //     sendStatusMessage(newStatus, user2Id, user1Id, serviceId, serviceTitle);
-                // }
-
             } else {
                 showToast(data.message || 'Error updating hiring status', 'error');
             }
-            localStorage.setItem('openHiring', 'true');
-            setTimeout(() => location.reload(), 1500);
         })
         .catch(error => {
             console.error('Erro:', error);
             showToast(error.message || 'Unexpected error', 'error');
         });
+
+        localStorage.setItem('openHiring', 'true');
+        setTimeout(() => location.reload(), 1500);
     }
 
     function drawServiceClients(element, serviceId, serviceTitle) {

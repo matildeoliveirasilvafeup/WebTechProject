@@ -31,7 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.add('hidden');
     });
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
         const price = parseFloat(form.price.value);
         const delivery = parseInt(form.delivery.value);
         const revisions = parseInt(form.revisions.value);
@@ -51,21 +53,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (errors.length > 0) {
-            e.preventDefault();
             alert(errors.join('\n'));
-        } else {
-            const status = CURRENT_STATUS;
-            const offer_id = form.querySelector('input[name="offer_id"]').value;
-            const hiring_id = form.querySelector('input[name="hiring_id"]').value;
-            const service_id = form.querySelector('input[name="service_id"]').value;
-            const sender_id = form.querySelector('input[name="sender_id"]').value;
-            const receiver_id = form.querySelector('input[name="receiver_id"]').value;
+            return;
+        }
 
-            console.log(service_id);
-            alert('teste');
-            updateOfferStatus(status, offer_id, hiring_id, sender_id, receiver_id, service_id);
+        const formData = new FormData(form);
+        const status = CURRENT_STATUS;
+
+        try {
+            const response = await fetch('/actions/action_create_custom_offer.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (result.success && result.id) {
+                const offerId = result.id;
+
+                const hiring_id = form.querySelector('input[name="hiring_id"]').value;
+                const service_id = form.querySelector('input[name="service_id"]').value;
+                const sender_id = form.querySelector('input[name="sender_id"]').value;
+                const receiver_id = form.querySelector('input[name="receiver_id"]').value;
+
+                updateOfferStatus(status, offerId, hiring_id, sender_id, receiver_id, service_id);
+            } else {
+                showToast(result.message || "Failed to create offer.", "error");
+            }
+        } catch (error) {
+            console.error('Error creating offer:', error);
+            showToast("Unexpected error while creating offer.", "error");
         }
     });
+
 });
 
 function sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id, fileInput = null) {
@@ -94,9 +114,6 @@ function sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id,
     formData.append('receiver_id', receiver_id);
     formData.append('sub_message', subMessage);
     formData.append('message', message);
-
-    console.log(conversation_id, hiring_id, service_id, sender_id, receiver_id, subMessage, message);
-    alert(`Sending message for status: ${status}`);
     
     if (fileInput) {
         formData.append('file', fileInput);
@@ -137,8 +154,6 @@ async function updateOfferStatus(status, id, hiringId, senderId, receiverId, ser
 
         if (data.success) {
             showToast(data.message, 'success');
-            console.log(serviceId);
-            alert(`Offer status updated to ${status}`);
             sendOfferMessage(status, hiringId, senderId, receiverId, serviceId);
         } else {
             showToast(data.error || 'Error updating status', 'error');
@@ -164,8 +179,6 @@ async function updateOfferStatus(status, id, hiringId, senderId, receiverId, ser
     .then(data => {
         if (data.success) {
             const newStatus = data.status;
-            console.log('Status checked:', newStatus);
-
             const formData2 = new FormData();
             formData2.append('id', hiringId);
             formData2.append('status', newStatus);
@@ -188,7 +201,7 @@ async function updateOfferStatus(status, id, hiringId, senderId, receiverId, ser
         if (data.success) {
             console.log('Hiring status updated successfully');
         } else {
-            console.error('Falha ao atualizar:', data.message);
+            console.error('Error updating:', data.message);
             showToast(data.message || 'Error updating hiring status', 'error');
         }
     })
