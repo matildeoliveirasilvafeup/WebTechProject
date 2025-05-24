@@ -25,7 +25,7 @@ nav a:hover {
     color: var(--main-theme);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 
 	header {
 		padding: 1em;

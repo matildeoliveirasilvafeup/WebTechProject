@@ -124,10 +124,10 @@ html, body {
     cursor: default;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 
 	.auth-container {
-		max-width: 90vw;
+		max-width: 80vw;
 		padding: 1.5em;
 		border-radius: 8px;
 	}

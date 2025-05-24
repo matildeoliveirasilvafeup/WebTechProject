@@ -199,7 +199,7 @@
     background: var(--button-secondary-selected);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 	.hero button i.fas.fa-search {
 		position: relative;
 		top: -0.25em;

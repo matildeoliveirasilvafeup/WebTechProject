@@ -45,7 +45,7 @@ html, body {
     min-width: 40vw;
     max-width: 45vw;
     min-height: 40vh;
-} 
+}
 
 .public-profile .profile-header {
     display: inline-flex;
@@ -316,7 +316,7 @@ html, body {
     color: black;
     transition: color 0.3s;
 }
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 
 	.public-profile main {
 		flex-direction: column;
@@ -378,19 +378,15 @@ html, body {
 		margin-top: 2rem;
 	}
 
-	@media (max-width: 600px) {
-		.profile-info .name-line {
-			justify-content: center !important;
-			flex-wrap: wrap;
-			gap: 10px;
-		}
+	.profile-info .name-line {
+		justify-content: center !important;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
 
-		.profile-info {
-			white-space: nowrap;
-			margin-bottom: 1.5em;
-		}
-
-
+	.profile-info {
+		white-space: nowrap;
+		margin-bottom: 1.5em;
 	}
 }
 

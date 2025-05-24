@@ -141,7 +141,7 @@ label {
     background-color: var(--button-danger);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
     #settings {
         flex-direction: column;
         align-items: center;

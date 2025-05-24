@@ -31,7 +31,7 @@
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 	#typing-effect {
 		font-size: 1.2em;
 		white-space: normal;

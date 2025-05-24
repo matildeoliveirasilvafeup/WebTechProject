@@ -171,11 +171,9 @@
 	right: 0;
 }
 
-/* MEDIA QUERIES */
 @media (max-width: 1024px) {
 	.service-card {
 		width: clamp(200px, 40%, 300px);
-		/* Slightly larger cards */
 	}
 }
 

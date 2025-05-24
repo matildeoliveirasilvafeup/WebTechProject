@@ -228,43 +228,32 @@
 	display: inline;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 	:root {
 		--sidebar-width: 100%;
-		/* sidebar ocupa toda a largura */
 		--icon-width: 3em;
-		/* mantém o ícone do mesmo tamanho */
 		--text-offset: 1em;
-		/* reduz o offset do texto */
 	}
 
 	.dashboard {
 		flex-direction: column;
-		/* empilha verticalmente */
 		min-height: auto;
-		/* ajusta altura mínima */
 	}
 
 	.sidebar {
 		position: relative;
-		/* deixa o sidebar no fluxo normal */
 		width: 100%;
-		/* ocupa largura total */
 		padding: 1em;
-		/* reduz padding */
 		box-shadow: none;
-		/* remove sombra lateral */
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: space-around;
 		transition: none;
-		/* desativa transições para suavizar */
 	}
 
 	.sidebar:hover {
 		width: 100%;
-		/* mantém 100% ao passar o rato */
 	}
 
 	.sidebar h3 {
@@ -277,12 +266,10 @@
 
 	.sidebar h3 span {
 		display: inline;
-		/* mostra o texto */
 	}
 
 	.sidebar h3 i {
 		display: none;
-		/* esconde o ícone */
 	}
 
 	.sidebar ul {
@@ -303,7 +290,6 @@
 		font-size: 0.9rem;
 		justify-content: center;
 		position: static;
-		/* remove posicionamento absoluto do texto */
 	}
 
 	.sidebar ul li a span {
