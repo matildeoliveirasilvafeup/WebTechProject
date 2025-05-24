@@ -7,14 +7,11 @@ window.ChatState = {
     CURRENT_RECEIVER_ID: null
 };
 
-let chatPollingInterval = null;
-
 document.addEventListener('DOMContentLoaded', () => {
     initChat();
-    //checkUnreadMessages();
 
-    //window.drawMessages = drawMessages;
-    //window.sendMessage = sendMessage;
+    window.drawMessages = drawMessages;
+    window.sendMessage = sendMessage;
 
     const toggleBtn = document.getElementById('chat-toggle-btn');
     const closeBtn = document.getElementById('chat-close-btn');
@@ -23,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (toggleBtn && modal) {
         toggleBtn.addEventListener('click', () => {
             modal.classList.toggle('hidden');
-            //checkUnreadMessages();
         });
     }
 
@@ -45,9 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const serviceId = item.dataset.serviceId;
             const userId = item.dataset.userId;
 
-            openChat(conversationId, serviceId, userId);
-            //drawMessages(conversationId, serviceId, userId);
-            //highlightSelectedChat(conversationId, serviceId);
+            openSelectedChat(conversationId, serviceId, userId);
         });
     });
 
@@ -75,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    /*const openChat = localStorage.getItem('openChat');
+    const openChat = localStorage.getItem('openChat');
     if (openChat) {
         try {
             const { conversation_id, service_id, user_id } = JSON.parse(openChat);
@@ -140,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     div.style.cursor = 'pointer';
                     div.addEventListener('click', () => {
-                        console.log("Hiring service clicked");
                         window.location.href = `/pages/custom_offer.php?hiring_id=${hiring.id}&user_id1=${userId}&user_id2=${receiverId}&service_id=${serviceId}`;
                     });
 
@@ -158,14 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function drawMessages(conversationId, serviceId, userId) {*/
 function drawMessages(conversationId, serviceId, userId, isPolling = false) {
     const chatMain = document.getElementById('chat-main');
-    /*const chatBody = document.getElementById('chat-body');
-    const usernameSpan = document.getElementById('chat-username');
-    const serviceTitleSpan = document.getElementById('chat-service-title');
 
-    chatMain.classList.remove('hidden');*/
     if (!isPolling) {
         chatMain.classList.remove('hidden');
     }
@@ -250,15 +238,12 @@ function renderChatMessages(data, conversationId, serviceId, userId, isPolling =
             bubble.classList.add('message-with-sub');
 
             const mainText = document.createElement('p');
-            mainText.textContent = msg.message;
+            if (msg.hiring_id) {
+                mainText.textContent = msg.message.replace(/\b\w+!$/, '').trim();
+            } else {
+                mainText.textContent = msg.message;
+            }
             bubble.appendChild(mainText);
-                    /*const mainText = document.createElement('p');
-                    if (msg.hiring_id) {
-                        mainText.textContent = msg.message.replace(/\b\w+!$/, '').trim();
-                    } else {
-                        mainText.textContent = msg.message;
-                    }
-                    bubble.appendChild(mainText);*/
 
             const subText = document.createElement('p');
             subText.textContent = msg.sub_message;
@@ -275,7 +260,7 @@ function renderChatMessages(data, conversationId, serviceId, userId, isPolling =
                 location.reload();
             };
 
-            /*if (msg.status_class) {
+            if (msg.status_class) {
                 bubble.classList.add(`status-${msg.status_class.toLowerCase()}`);
                 subText.classList.add(`status-${msg.status_class.toLowerCase()}`);
             }
@@ -288,7 +273,7 @@ function renderChatMessages(data, conversationId, serviceId, userId, isPolling =
                     localStorage.setItem('openHiring', 'true');
                     location.reload();
                 }
-            };*/
+            };
 
             bubble.appendChild(subText);
             msgText.appendChild(bubble);
@@ -363,7 +348,7 @@ function initChat() {
     }, 2000);
 }
 
-function openChat(conversationId, serviceId, userId) {
+function openSelectedChat(conversationId, serviceId, userId) {
     const modal = document.getElementById('chat-modal');
     modal.classList.remove('hidden');
     drawMessages(conversationId, serviceId, userId);
