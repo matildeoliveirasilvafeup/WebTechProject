@@ -47,18 +47,18 @@ form.alt-style .search-icon {
     font-size: 1.5em;
     font-weight: 800;
 }
-  
+
 .filter-form {
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
 }
-  
+
 .filter-group {
     display: flex;
     flex-direction: column;
 }
-  
+
 .filter-group label {
     font-weight: 600;
     margin-bottom: 0.4rem;
@@ -67,7 +67,7 @@ form.alt-style .search-icon {
     position: relative;
     padding-bottom: 0.3rem;
 }
-  
+
 .filter-group select,
 .filter-group input {
     padding: 0.4rem 0.6rem;
@@ -76,13 +76,13 @@ form.alt-style .search-icon {
     font-size: 0.95rem;
     transition: border-color 0.2s ease;
 }
-  
+
 .filter-group select:focus,
 .filter-group input:focus {
     border-color: var(--main-theme);
     outline: none;
 }
-  
+
 #subcategory-checkboxes label {
     display: flex;
     align-items: center;
@@ -91,11 +91,11 @@ form.alt-style .search-icon {
     margin-bottom: 0.3rem;
     color: var(--main-text);
 }
-  
+
 #subcategory-checkboxes input[type="checkbox"] {
     accent-color: var(--main-theme);
 }
-  
+
 .btn-filter {
     background-color: var(--main-theme);
     color: white;
@@ -107,7 +107,7 @@ form.alt-style .search-icon {
     font-weight: 600;
     transition: background-color 0.2s ease;
 }
-  
+
 .btn-filter:hover {
     background-color: var(--button-background-selected);
 }
@@ -143,4 +143,58 @@ form.alt-style .search-icon {
 .price-input {
     width: 100%;
     color: var(--text-lighter);
+}
+
+@media (max-width: 600px) {
+	form.alt-style {
+		flex-direction: column;
+		gap: 1rem;
+		margin: 1.5em auto;
+		width: 90%;
+		max-width: 400px;
+	}
+
+	form.alt-style input[type="text"] {
+		width: 100%;
+	}
+
+	.search-page {
+		display: flex;
+		flex-direction: column;
+		gap: 2em;
+		margin: 1em;
+		align-items: center;
+	}
+
+	.filters {
+		width: 90%;
+		max-width: 350px;
+		margin: 0 auto;
+	}
+
+	.search-page .services-grid {
+		grid-column: 1 / -1;
+		display: grid;
+		grid-template-columns: 1fr;
+		justify-items: center;
+		gap: 1.5rem;
+		width: 100%;
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.search-page .services-grid .service-card {
+		width: 100%;
+		max-width: 380px;
+	}
+
+	.price-input-container {
+		width: 100%;
+	}
+
+	.price-field input {
+		height: 2.5em;
+	}
+
+
 }

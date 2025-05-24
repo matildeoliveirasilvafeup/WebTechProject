@@ -130,13 +130,13 @@
     background: var(--main-background-darker);
     color: var(--main-text);
 }
- 
+
 .form-group label[for="images"] {
     font-weight: 600;
     color: var(--main-text-color);
     display: block;
 }
- 
+
 .button-group {
     margin-bottom: 2em;
 }
@@ -170,4 +170,13 @@
     width: 1.2em;
     height: 1.2em;
     accent-color: var(--main-theme);
+}
+
+@media (max-width: 600px) {
+	.icon-btn {
+		margin-top: -30px;
+	}
+	.icon-btn.delete {
+		margin-top: -30px;
+	}
 }

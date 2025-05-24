@@ -43,7 +43,7 @@
 }
 
 .freelancer-box img,
-.freelancer-box i, 
+.freelancer-box i,
 .review-header img,
 .review-header i {
     width: 40px;
@@ -88,7 +88,7 @@
     flex-wrap: wrap;
 }
 
-.btn-hire, 
+.btn-hire,
 .btn-add-cart {
     display: inline-block;
     padding: 12px 24px;
@@ -330,18 +330,18 @@
 
 .reviews-controls .btn-add-cart,
 .reviews-controls select {
-  vertical-align: middle; 
-  line-height: 1;         
-  font-size: 0.95em;       
-  height: 3em;          
+  vertical-align: middle;
+  line-height: 1;
+  font-size: 0.95em;
+  height: 3em;
   box-sizing: border-box;
-  margin: 0;             
-  padding: 0.2em 1em;     
+  margin: 0;
+  padding: 0.2em 1em;
 }
 
 .load-more-btn {
     display: flex;
-    grid-column: 1 / -1; 
+    grid-column: 1 / -1;
     justify-self: center;
     margin-top: 2em;
     padding: 0.75em 1.5em;
@@ -532,7 +532,7 @@
     margin-left: auto;
     cursor: pointer;
     padding-left: 0.5em;
-    background: none; 
+    background: none;
     border: none;
     transition: color 0.2s ease;
 }

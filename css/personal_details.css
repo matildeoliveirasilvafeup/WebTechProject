@@ -377,4 +377,20 @@ html, body {
 	.freelancer-reviews-section {
 		margin-top: 2rem;
 	}
+
+	@media (max-width: 600px) {
+		.profile-info .name-line {
+			justify-content: center !important;
+			flex-wrap: wrap;
+			gap: 10px;
+		}
+
+		.profile-info {
+			white-space: nowrap;
+			margin-bottom: 1.5em;
+		}
+
+
+	}
 }
+

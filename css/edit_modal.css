@@ -1,137 +1,4 @@
 .hidden {
-    display: none !important;
-}
-
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-}
-
-.modal-content {
-    background: white;
-    padding: 1.5em;
-    border-radius: 10px;
-    max-width: 35vw;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-sizing: border-box;
-}
-
-.modal-content h3 {
-    margin-top: 0;
-}
-
-.modal-content label {
-    display: block;
-    margin-top: 1em;
-}
-
-.modal-content input[type="text"],
-.modal-content input[type="time"],
-.modal-content input[type="file"],
-.modal-content select,
-.modal-content textarea {
-    width: 100%;
-    padding: 1em;
-    margin: 0.5em 0 1em;
-    border-radius: 6px;
-    border: 1px solid var(--background-disabled);
-    box-sizing: border-box;
-}
-
-.modal-content button {
-    padding: 1em;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 0.5em;
-}
-
-.modal-content button[type="submit"],
-.btn.save {
-    background-color: var(--main-theme);
-    color: white;
-    font-weight: bold;
-}
-
-.modal-content button[type="submit"]:hover,
-.btn.save:hover {
-    background-color: var(--main-theme-darker);
-}
-.modal-content button[type="submit"]:disabled,
-.btn.save:disabled {
-    background-color: var(--background-disabled);
-    color: var(--text-disabled);
-    cursor: default;
-}
-
-#cancelEditProfile,
-#cancelEditBio,
-#cancelEditPrefs,
-.btn.cancel {
-    background: var(--button-cancel);
-    color: var(--main-text);
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-#cancelEditProfile:hover,
-#cancelEditBio:hover,
-#cancelEditPrefs:hover,
-.btn.cancel:hover {
-    background-color: var(--button-cancel-hover);
-}
-
-.modal-content fieldset {
-    border: 1px solid var(--background-disabled);
-    border-radius: 8px;
-    padding: 1em;
-    margin-top: 1em;
-    background-color: var(--main-background-darker);
-}
-
-.modal-content legend {
-    font-weight: bold;
-    padding: 0 0.5em;
-    color: var(--main-text);
-}
-
-.modal-content fieldset > div:last-child {
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-}
-
-.day-time {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 0.5em;
-    margin-bottom: 1em;
-}
-
-.modal-buttons {
-    display: flex;
-    gap: 1em;
-    margin-top: 0.5em;
-    justify-content: flex-end;
-}
-
-#editBioModal textarea {
-    resize: vertical;
-}
-
-
-.hidden {
 	display: none !important;
 }
 
@@ -197,6 +64,11 @@
 	font-weight: bold;
 }
 
+.modal-content button[type="submit"]:hover,
+.btn.save:hover {
+	background-color: var(--main-theme-darker);
+}
+
 .modal-content button[type="submit"]:disabled,
 .btn.save:disabled {
 	background-color: var(--background-disabled);
@@ -211,7 +83,16 @@
 	background: var(--button-cancel);
 	color: var(--main-text);
 	font-weight: bold;
+	transition: background-color 0.3s ease;
 }
+
+#cancelEditProfile:hover,
+#cancelEditBio:hover,
+#cancelEditPrefs:hover,
+.btn.cancel:hover {
+	background-color: var(--button-cancel-hover);
+}
+
 .modal-content fieldset {
 	border: 1px solid var(--background-disabled);
 	border-radius: 8px;
@@ -226,14 +107,12 @@
 	color: var(--main-text);
 }
 
-/* Layout for grouped elements inside fieldset */
 .modal-content fieldset>div:last-child {
 	display: flex;
 	flex-direction: column;
 	gap: 1em;
 }
 
-/* Grid layout for days and times */
 .day-time {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -241,7 +120,6 @@
 	margin-bottom: 1em;
 }
 
-/* Container for modal action buttons */
 .modal-buttons {
 	display: flex;
 	gap: 1em;
@@ -249,7 +127,6 @@
 	justify-content: flex-end;
 }
 
-/* Bio textarea settings */
 #editBioModal textarea {
 	resize: vertical;
 }
@@ -273,6 +150,5 @@
 		align-items: flex-start;
 		padding-top: 5em;
 		justify-content: center;
-		/* mantém centrado horizontal */
 	}
 }
