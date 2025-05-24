@@ -126,5 +126,24 @@ class CustomOffer {
         return 'Disabled';
     }
 
+    public static function getOfferIdByCompositeKeys(
+        int $hiringId,
+        int $serviceId,
+        int $senderId,
+        int $receiverId
+    ): ?int {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare('
+            SELECT id FROM custom_offers
+            WHERE hiring_id = ? AND service_id = ? AND sender_id = ? AND receiver_id = ?
+            LIMIT 1
+        ');
+
+        $stmt->execute([$hiringId, $serviceId, $senderId, $receiverId]);
+        $id = $stmt->fetchColumn();
+
+        return $id !== false ? (int)$id : null;
+    }
 }
 ?>

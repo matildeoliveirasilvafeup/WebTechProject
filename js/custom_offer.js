@@ -55,13 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(errors.join('\n'));
         } else {
             const status = CURRENT_STATUS;
+            const offer_id = form.querySelector('input[name="offer_id"]').value;
             const hiring_id = form.querySelector('input[name="hiring_id"]').value;
             const service_id = form.querySelector('input[name="service_id"]').value;
             const sender_id = form.querySelector('input[name="sender_id"]').value;
             const receiver_id = form.querySelector('input[name="receiver_id"]').value;
 
-            sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id);
-            updateOfferStatus(status, hiring_id, sender_id, receiver_id, service_id);
+            console.log(service_id);
+            alert('teste');
+            updateOfferStatus(status, offer_id, hiring_id, sender_id, receiver_id, service_id);
         }
     });
 });
@@ -78,12 +80,12 @@ function sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id,
     } else if (status == 'Cancelled') {
         message = `A offer has been cancelled. ${status}!`;
     }
-
+    
     const subMessage = 'Click to see details';
-
+    
     const ids = [sender_id, receiver_id].sort((a, b) => a - b);
     const conversation_id = `${ids[0]}_${ids[1]}`;
-
+    
     const formData = new FormData();
     formData.append('conversation_id', conversation_id);
     formData.append('hiring_id', hiring_id);
@@ -92,11 +94,14 @@ function sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id,
     formData.append('receiver_id', receiver_id);
     formData.append('sub_message', subMessage);
     formData.append('message', message);
+
+    console.log(conversation_id, hiring_id, service_id, sender_id, receiver_id, subMessage, message);
+    alert(`Sending message for status: ${status}`);
     
     if (fileInput) {
         formData.append('file', fileInput);
     }
-
+    
     fetch('/actions/action_send_message.php', {
         method: 'POST',
         body: formData
@@ -116,7 +121,6 @@ function sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id,
 
 async function updateOfferStatus(status, id, hiringId, senderId, receiverId, serviceId) {
     CURRENT_STATUS = status;
-    sendOfferMessage(status, hiringId, senderId, receiverId, serviceId);
 
     const formData = new FormData();
     formData.append('offer_id', id);
@@ -133,6 +137,9 @@ async function updateOfferStatus(status, id, hiringId, senderId, receiverId, ser
 
         if (data.success) {
             showToast(data.message, 'success');
+            console.log(serviceId);
+            alert(`Offer status updated to ${status}`);
+            sendOfferMessage(status, hiringId, senderId, receiverId, serviceId);
         } else {
             showToast(data.error || 'Error updating status', 'error');
         }

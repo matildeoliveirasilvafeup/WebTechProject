@@ -96,7 +96,9 @@
     <form action="/actions/action_create_custom_offer.php" method="POST" class="custom-offer-form">
         <h1>Custom Offer</h1>
 
-        <input type="hidden" name="offer_id" id="offer_id">
+        <?php $id = CustomOffer::getOfferIdByCompositeKeys($hiringId, $serviceId, $senderId, $receiverId);?>
+
+        <input type="hidden" name="offer_id" id="offer_id" value="<?= $id ?>">
         <input type="hidden" name="hiring_id" value="<?= $hiringId ?>">
         <input type="hidden" name="service_id" value="<?= $serviceId ?>">
         <input type="hidden" name="sender_id" value="<?= $senderId ?>">
