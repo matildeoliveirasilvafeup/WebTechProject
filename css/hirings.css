@@ -228,11 +228,11 @@
 }
 
 .hirings-scrollable {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE/Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 .hirings-scrollable::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
 }
 
 .hiring-service-group {
@@ -416,21 +416,7 @@
 		top: 0.25rem;
 		right: 0.25rem;
 	}
-	#hirings-toggle-btn {
-		position: fixed;
-		z-index: 15;
-		top: 30rem;
-		right: 1rem;
-		left: 1rem;
-		width: 2.8rem;
-		height: 2.8rem;
-		border-radius: 50%;
-		z-index: 15;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: 0;
-		}
+
 
 
 }

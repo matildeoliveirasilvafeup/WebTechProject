@@ -8,7 +8,7 @@ require_once(__DIR__ . '/../templates/search.tpl.php');
     <div class="hero">
         <h1 id="typing-effect">Find the perfect freelancer for your project</h1>
         <?php drawSearchForm(); ?>
-    </div>  
+    </div>
 <?php } ?>
 
 <?php function drawHowItWorks() { ?>

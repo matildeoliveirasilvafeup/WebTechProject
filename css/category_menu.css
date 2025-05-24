@@ -243,24 +243,24 @@
 @media (max-width: 600px) {
 
 	.carousel-wrapper {
-		padding: 0 1em;
+		padding: 0 0.5em;
 	}
 
 	.category-carousel {
-		gap: 10px;
+		gap: 8px;
 		padding: 0.5em 0;
 	}
 
 	.category-card {
-		width: 35vw;
-		height: 30vw;
-		font-size: 0.9em;
-		padding: 0.8em;
+		width: 30vw;
+		height: 26vw;
+		font-size: 0.75em;
+		padding: 0.7em;
 	}
 
 	.category-icon {
-		font-size: 1.8em;
-		margin-bottom: 0.3em;
+		font-size: 1.5em;
+		margin-bottom: 0.2em;
 	}
 
 	.category-menu {
