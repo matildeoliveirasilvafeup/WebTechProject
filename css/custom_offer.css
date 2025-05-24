@@ -65,6 +65,7 @@ html, body {
 }
 
 .custom-offer-list {
+    display: grid;
     max-width: 50rem;
     margin: 0 auto;
     padding: 2em;
