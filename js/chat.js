@@ -8,7 +8,7 @@ window.ChatState = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    checkUnreadMessages();
+    initChat();
 
     window.drawMessages = drawMessages;
     window.sendMessage = sendMessage;
@@ -20,10 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (toggleBtn && modal) {
         toggleBtn.addEventListener('click', () => {
             modal.classList.toggle('hidden');
-            checkUnreadMessages();
         });
     }
-    
+
     if (closeBtn && modal) {
         closeBtn.addEventListener('click', () => {
             modal.classList.add('hidden');
@@ -32,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-          modal.classList.add('hidden');
+            modal.classList.add('hidden');
         }
     });
 
@@ -42,28 +41,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const serviceId = item.dataset.serviceId;
             const userId = item.dataset.userId;
 
-            drawMessages(conversationId, serviceId, userId);
-            highlightSelectedChat(conversationId, serviceId);
+            openSelectedChat(conversationId, serviceId, userId);
         });
     });
 
     const fileInput = document.getElementById('chat-file');
     const fileDisplay = document.getElementById('file-name-display');
-
     if (fileInput) {
-        fileInput.addEventListener('change', function () {
-            if (this.files.length > 0) {
-                const fileName = this.files[0].name;
-
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
                 fileDisplay.innerHTML = `
                     <div class="file-preview-chat">
-                    <i class="fa-solid fa-file"></i> ${fileName}
-                    <button type="button" id="cancel-file-btn" title="Remove file">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
+                        <i class="fa-solid fa-file"></i> ${fileName}
+                        <button type="button" id="cancel-file-btn" title="Remove file">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
                     </div>
                 `;
-
                 document.getElementById('cancel-file-btn').addEventListener('click', () => {
                     fileInput.value = '';
                     fileDisplay.innerHTML = '';
@@ -95,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (openHiring === 'true') {
         document.getElementById('hirings-modal')?.classList.remove('hidden');
         localStorage.removeItem('openHiring');
-    } 
+    }
 
     const customOrderBtn = document.getElementById('chat-custom-order');
     const customOrderModal = document.getElementById('custom-order-modal');
@@ -139,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     div.style.cursor = 'pointer';
                     div.addEventListener('click', () => {
-                        console.log("Hiring service clicked");
                         window.location.href = `/pages/custom_offer.php?hiring_id=${hiring.id}&user_id1=${userId}&user_id2=${receiverId}&service_id=${serviceId}`;
                     });
 
@@ -157,173 +151,208 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function drawMessages(conversationId, serviceId, userId) {
+function drawMessages(conversationId, serviceId, userId, isPolling = false) {
     const chatMain = document.getElementById('chat-main');
-    const chatBody = document.getElementById('chat-body');
-    const usernameSpan = document.getElementById('chat-username');
-    const serviceTitleSpan = document.getElementById('chat-service-title');
 
-    chatMain.classList.remove('hidden');
+    if (!isPolling) {
+        chatMain.classList.remove('hidden');
+    }
 
     fetch(`/actions/action_get_messages.php?conversation_id=${conversationId}&service_id=${serviceId}&user_id=${userId}`)
         .then(res => res.json())
         .then(data => {
-            
-            window.ChatState.CURRENT_CONVERSATION_ID = conversationId;
-            window.ChatState.CURRENT_SERVICE_ID = serviceId;
-            window.ChatState.CURRENT_USER_ID = userId;
-            window.ChatState.CURRENT_RECEIVER_ID = data.receiver_id;
+            renderChatMessages(data, conversationId, serviceId, userId, isPolling);
+        });
 
-            usernameSpan.textContent = data.receiver_username;
-            usernameSpan.style.cursor = 'pointer';
-            usernameSpan.onclick = () => {
-                window.location.href = `/pages/profile.php?user=${data.receiver_username}`;
-            };
+    if (!isPolling) {
+        fetch('/actions/action_mark_as_read.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `conversation_id=${conversationId}&service_id=${serviceId}`
+        }).then(checkUnreadMessages);
+    }
+}
 
-            serviceTitleSpan.textContent = `═─ Go to service page ─═`;
-            serviceTitleSpan.style.cursor = 'pointer';
-            serviceTitleSpan.onclick = () => {
-                window.location.href = `/pages/service.php?id=${serviceId}`;
-            };
+function renderChatMessages(data, conversationId, serviceId, userId, isPolling = false) {
+    const chatBody = document.getElementById('chat-body');
+    const usernameSpan = document.getElementById('chat-username');
+    const serviceTitleSpan = document.getElementById('chat-service-title');
 
-            chatBody.innerHTML = '';
+    window.ChatState.CURRENT_CONVERSATION_ID = conversationId;
+    window.ChatState.CURRENT_SERVICE_ID = serviceId;
+    window.ChatState.CURRENT_USER_ID = userId;
+    window.ChatState.CURRENT_RECEIVER_ID = data.receiver_id;
 
-            if (!data.messages || data.messages.length === 0) {
-                chatBody.innerHTML = '<p><em>No messages yet.</em></p>';
-                return;
-            }
+    usernameSpan.textContent = data.receiver_username;
+    usernameSpan.style.cursor = 'pointer';
+    usernameSpan.onclick = () => {
+        window.location.href = `/pages/profile.php?user=${data.receiver_username}`;
+    };
 
-            let lastSenderId = null;
-            let lastTime = null;
-            let messageGroup = null;
+    serviceTitleSpan.textContent = `═─ Go to service page ─═`;
+    serviceTitleSpan.style.cursor = 'pointer';
+    serviceTitleSpan.onclick = () => {
+        window.location.href = `/pages/service.php?id=${serviceId}`;
+    };
 
-            data.messages.forEach((msg, i) => {
-                const currentSenderId = msg.sender_id;
-                const currentIsoUTC = msg.message_created_at.replace(' ', 'T') + 'Z';
-                const currentTimeUTC = new Date(currentIsoUTC);
-                const isUser = currentSenderId === parseInt(userId, 10);
+    if (isPolling && chatBody.dataset.lastCount == data.messages.length) {
+        return;
+    }
+    chatBody.dataset.lastCount = data.messages.length;
 
-                if (
-                    lastSenderId !== currentSenderId ||
-                    !lastTime ||
-                    (currentTimeUTC - lastTime) / (1000 * 60) >= 3
-                ) {
-                    if (messageGroup) {
-                        chatBody.appendChild(messageGroup);
-                    }
+    chatBody.innerHTML = '';
 
-                    messageGroup = document.createElement('div');
-                    messageGroup.classList.add('message-group', isUser ? 'message-out' : 'message-in');
-                }
+    if (!data.messages || data.messages.length === 0) {
+        chatBody.innerHTML = '<p><em>No messages yet.</em></p>';
+        return;
+    }
 
-                const msgText = document.createElement('div');
-                msgText.classList.add('msg-text');
+    let lastSenderId = null;
+    let lastTime = null;
+    let messageGroup = null;
 
-                if (msg.message && msg.sub_message) {
-                    const bubble = document.createElement('div');
-                    bubble.classList.add('message-with-sub');
+    data.messages.forEach((msg, i) => {
+        const currentSenderId = msg.sender_id;
+        const currentIsoUTC = msg.message_created_at.replace(' ', 'T') + 'Z';
+        const currentTimeUTC = new Date(currentIsoUTC);
+        const isUser = currentSenderId === parseInt(userId, 10);
 
-                    const mainText = document.createElement('p');
-                    if (msg.hiring_id) {
-                        mainText.textContent = msg.message.replace(/\b\w+!$/, '').trim();
-                    } else {
-                        mainText.textContent = msg.message;
-                    }
-                    bubble.appendChild(mainText);
-
-                    const subText = document.createElement('p');
-                    subText.textContent = msg.sub_message;
-                    subText.classList.add('sub-message-bubble');
-
-                    if (msg.status_class) {
-                        bubble.classList.add(`status-${msg.status_class.toLowerCase()}`);
-                        subText.classList.add(`status-${msg.status_class.toLowerCase()}`);
-                    }
-                    
-                    subText.style.cursor = 'pointer';
-                    subText.onclick = () => {
-                        if (msg.hiring_id) {
-                            window.location.href = `/pages/custom_offer.php?hiring_id=${msg.hiring_id}&user_id1=${userId}&user_id2=${window.ChatState.CURRENT_RECEIVER_ID}&service_id=${serviceId}`;
-                        } else {
-                            localStorage.setItem('openHiring', 'true');
-                            location.reload();
-                        }
-                    };
-
-                    bubble.appendChild(subText);
-                    msgText.appendChild(bubble);
-                } else if (msg.message) {
-
-                    const textEl = document.createElement('p');
-                    textEl.textContent = msg.message;
-                    msgText.appendChild(textEl);
-                }
-
-                if (msg.file) {
-                    const fileUrl = `/uploads/chat/${msg.file}`;
-                    const fileExt = msg.file.split('.').pop().toLowerCase();
-
-                    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExt)) {
-                        const img = document.createElement('img');
-                        img.src = fileUrl;
-                        img.alt = 'image';
-                        img.classList.add('chat-image');
-                        img.onload = () => scrollToBottom();
-                        msgText.appendChild(img);
-                    } else {
-                        const fileLink = document.createElement('a');
-                        fileLink.href = fileUrl;
-                        fileLink.target = '_blank';
-                        fileLink.innerHTML = '<i class="fa-solid fa-file"></i> ' + msg.file;
-                        msgText.appendChild(fileLink);
-                    }
-                }
-
-                messageGroup.appendChild(msgText);
-
-                const nextMsg = data.messages[i + 1];
-                let nextTimeUTC = null;
-                if (nextMsg) {
-                    const nextIsoUTC = nextMsg.message_created_at.replace(' ', 'T') + 'Z';
-                    nextTimeUTC = new Date(nextIsoUTC);
-                }
-
-                const timeDiff = nextTimeUTC ? (nextTimeUTC - currentTimeUTC) / (1000 * 60) : null;
-
-                if (!nextMsg || nextMsg.sender_id !== currentSenderId || timeDiff >= 3) {
-                    const msgTime = document.createElement('div');
-                    msgTime.classList.add('msg-time');
-                    msgTime.textContent = currentTimeUTC.toLocaleTimeString('pt-PT', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        timeZone: 'Europe/Lisbon'
-                    });
-                    messageGroup.appendChild(msgTime);
-                }
-
-                lastSenderId = currentSenderId;
-                lastTime = currentTimeUTC;
-            });
-
+        if (
+            lastSenderId !== currentSenderId ||
+            !lastTime ||
+            (currentTimeUTC - lastTime) / (1000 * 60) >= 3
+        ) {
             if (messageGroup) {
                 chatBody.appendChild(messageGroup);
             }
-            
-            scrollToBottom();
 
-        })
-        .catch(error => {
-            console.error("Failed to load messages:", error);
-            chatBody.innerHTML = '<p class="error"><em>Error loading conversation.</em></p>';
-        });
+            messageGroup = document.createElement('div');
+            messageGroup.classList.add('message-group', isUser ? 'message-out' : 'message-in');
+        }
 
-    fetch('/actions/action_mark_as_read.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `conversation_id=${conversationId}&service_id=${serviceId}`
-    }).then(() => {
-        checkUnreadMessages();
+        const msgText = document.createElement('div');
+        msgText.classList.add('msg-text');
+
+        if (msg.message && msg.sub_message) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('message-with-sub');
+
+            const mainText = document.createElement('p');
+            if (msg.hiring_id) {
+                mainText.textContent = msg.message.replace(/\b\w+!$/, '').trim();
+            } else {
+                mainText.textContent = msg.message;
+            }
+            bubble.appendChild(mainText);
+
+            const subText = document.createElement('p');
+            subText.textContent = msg.sub_message;
+            subText.classList.add('sub-message-bubble');
+
+            if (msg.status_class) {
+                bubble.classList.add(`status-${msg.status_class.toLowerCase()}`);
+                subText.classList.add(`status-${msg.status_class.toLowerCase()}`);
+            }
+
+            subText.style.cursor = 'pointer';
+            subText.onclick = () => {
+                localStorage.setItem('openHiring', 'true');
+                location.reload();
+            };
+
+            if (msg.status_class) {
+                bubble.classList.add(`status-${msg.status_class.toLowerCase()}`);
+                subText.classList.add(`status-${msg.status_class.toLowerCase()}`);
+            }
+
+            subText.style.cursor = 'pointer';
+            subText.onclick = () => {
+                if (msg.hiring_id) {
+                    window.location.href = `/pages/custom_offer.php?hiring_id=${msg.hiring_id}&user_id1=${userId}&user_id2=${window.ChatState.CURRENT_RECEIVER_ID}&service_id=${serviceId}`;
+                } else {
+                    localStorage.setItem('openHiring', 'true');
+                    location.reload();
+                }
+            };
+
+            bubble.appendChild(subText);
+            msgText.appendChild(bubble);
+        } else if (msg.message) {
+            const textEl = document.createElement('p');
+            textEl.textContent = msg.message;
+            msgText.appendChild(textEl);
+        }
+
+        if (msg.file) {
+            const fileUrl = `/uploads/chat/${msg.file}`;
+            const fileExt = msg.file.split('.').pop().toLowerCase();
+
+            if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExt)) {
+                const img = document.createElement('img');
+                img.src = fileUrl;
+                img.alt = 'image';
+                img.classList.add('chat-image');
+                img.onload = () => scrollToBottom();
+                msgText.appendChild(img);
+            } else {
+                const fileLink = document.createElement('a');
+                fileLink.href = fileUrl;
+                fileLink.target = '_blank';
+                fileLink.innerHTML = '<i class="fa-solid fa-file"></i> ' + msg.file;
+                msgText.appendChild(fileLink);
+            }
+        }
+
+        messageGroup.appendChild(msgText);
+
+        const nextMsg = data.messages[i + 1];
+        let nextTimeUTC = null;
+        if (nextMsg) {
+            const nextIsoUTC = nextMsg.message_created_at.replace(' ', 'T') + 'Z';
+            nextTimeUTC = new Date(nextIsoUTC);
+        }
+
+        const timeDiff = nextTimeUTC ? (nextTimeUTC - currentTimeUTC) / (1000 * 60) : null;
+
+        if (!nextMsg || nextMsg.sender_id !== currentSenderId || timeDiff >= 3) {
+            const msgTime = document.createElement('div');
+            msgTime.classList.add('msg-time');
+            msgTime.textContent = currentTimeUTC.toLocaleTimeString('pt-PT', {
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZone: 'Europe/Lisbon'
+            });
+            messageGroup.appendChild(msgTime);
+        }
+
+        lastSenderId = currentSenderId;
+        lastTime = currentTimeUTC;
     });
+
+    if (messageGroup) {
+        chatBody.appendChild(messageGroup);
+    }
+    scrollToBottom();
+}
+
+function initChat() {
+    setInterval(() => {
+        checkUnreadMessages();
+
+        const modalOpen = !document.getElementById('chat-modal').classList.contains('hidden');
+        const { CURRENT_CONVERSATION_ID, CURRENT_SERVICE_ID, CURRENT_USER_ID } = window.ChatState;
+
+        if (modalOpen && CURRENT_CONVERSATION_ID && CURRENT_SERVICE_ID && CURRENT_USER_ID) {
+            drawMessages(CURRENT_CONVERSATION_ID, CURRENT_SERVICE_ID, CURRENT_USER_ID, true);
+        }
+    }, 2000);
+}
+
+function openSelectedChat(conversationId, serviceId, userId) {
+    const modal = document.getElementById('chat-modal');
+    modal.classList.remove('hidden');
+    drawMessages(conversationId, serviceId, userId);
+    highlightSelectedChat(conversationId, serviceId);
 }
 
 function sendMessage(event) {
