@@ -19,3 +19,11 @@
     transform: translateY(0);
     pointer-events: auto;
 }
+
+.toast.success {
+  background-color: var(--success);
+}
+
+.toast.error {
+  background-color: var(--error);
+}

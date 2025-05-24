@@ -57,17 +57,23 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Error updating status');
+                throw new Error('Error updating hiring status');
             }
             return response.json();
         })
         .then(data => {
+            if (data.success) {
+                showToast(data.message || `Status updated to ${newStatus}`, 'success');
+                
+            } else {
+                showToast(data.message || 'Error updating hiring status', 'error');
+            }
             localStorage.setItem('openHiring', 'true');
-            location.reload();
+            setTimeout(() => location.reload(), 1500);
         })
         .catch(error => {
-            console.error('Error requesting:', error);
-            alert('Error accepting status change.');
+            console.error('Erro:', error);
+            showToast(error.message || 'Unexpected error', 'error');
         });
     }
 
@@ -169,4 +175,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         body.innerHTML = html;
     }
+
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.style.opacity = '1';
+        });
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+
 });

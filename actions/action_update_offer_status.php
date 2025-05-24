@@ -43,7 +43,7 @@ if ($currentStatus === 'Cancelled' && in_array($newStatus, ['Accepted', 'Rejecte
     exit;
 }
 
-if (in_array($currentStatus, ['Accepted', 'Rejected']) && $newStatus === 'Cancelled') {
+if ($currentStatus === 'Rejected' && $newStatus === 'Cancelled') {
     echo json_encode(['success' => false, 'error' => "Offer already {$currentStatus}"]);
     exit;
 }
