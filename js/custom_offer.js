@@ -3,6 +3,9 @@ import { formatDateTimeWithoutSeconds } from './chat_hiring_utils.js';
 let CURRENT_STATUS = 'Pending';
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    window.updateOfferStatus = updateOfferStatus;
+
     document.querySelectorAll('.createdAt-badge').forEach(el => {
         const raw = el.dataset.datetime;
         const formatted = formatDateTimeWithoutSeconds(raw);
