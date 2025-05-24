@@ -1,4 +1,4 @@
-import { sendStatusMessage } from './chat_hiring_utils.js';
+import { sendStatusMessage, formatDateTimeWithoutSeconds } from './chat_hiring_utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function updateHiringStatus(hiringId, newStatus) {
+    function updateHiringStatus(hiringId, newStatus, user1Id, user2Id, serviceId, serviceTitle) {
         const formData = new FormData();
         formData.append('id', hiringId);
         formData.append('status', newStatus);
@@ -57,18 +57,25 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Error updating status');
+                throw new Error('Error updating hiring status');
             }
             return response.json();
         })
         .then(data => {
-            localStorage.setItem('openHiring', 'true');
-            location.reload();
+            if (data.success) {
+                showToast(data.message || `Status updated to ${newStatus}`, 'success');
+                sendStatusMessage(newStatus, user1Id, user2Id, serviceId, serviceTitle);
+            } else {
+                showToast(data.message || 'Error updating hiring status', 'error');
+            }
         })
         .catch(error => {
-            console.error('Error requesting:', error);
-            alert('Error accepting status change.');
+            console.error('Erro:', error);
+            showToast(error.message || 'Unexpected error', 'error');
         });
+
+        localStorage.setItem('openHiring', 'true');
+        setTimeout(() => location.reload(), 1500);
     }
 
     function drawServiceClients(element, serviceId, serviceTitle) {
@@ -80,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             clients = JSON.parse(clientsJSON);
         } catch (e) {
-            console.error("Erro ao parsear clientes", e);
+            console.error("Error parsing clients", e);
             return;
         }
 
@@ -96,19 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
         body.innerHTML = clients.map(client => `
             <div class="client-hiring-card">
                 <span class="client-username" id="client-username">${client.client_name}</span>
+                <span class="createdAt-badge ">${formatDateTimeWithoutSeconds(client.created_at)}</span>
                 <div class="hiring-actions">
                     ${client.status === 'Pending' ? `
-                        <button onclick="updateHiringStatus(${client.hiring_id}, 'Accepted');
-                            sendStatusMessage('Accepted', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')" 
+                        <button onclick="updateHiringStatus(${client.hiring_id}, 'Accepted', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')"
                             class="accept-btn">Accept
                         </button>
-                        <button onclick="updateHiringStatus(${client.hiring_id}, 'Rejected');
-                            sendStatusMessage('Rejected', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')"
+                        <button onclick="updateHiringStatus(${client.hiring_id}, 'Rejected', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')"
                             class="reject-btn">Reject
                         </button>
                         ` : client.status === 'Accepted' ? `
-                        <button onclick="updateHiringStatus(${client.hiring_id}, 'Completed');
-                            sendStatusMessage('Completed', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')"
+                        <button onclick="updateHiringStatus(${client.hiring_id}, 'Completed', ${client.owner_id}, ${client.client_id}, ${serviceId}, '${serviceTitle}')"
                             class="finish-btn">Finish
                         </button>
                         ` : `<span class="status-label">${client.status}</span>`}
@@ -117,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
-    function drawOwnHiringRequest(ownerUsername, ownerId, hirings, serviceId, serviceTitle) {
+    function drawOwnHiringRequest(ownerUsername, hirings, serviceId, serviceTitle) {
         
         const body = document.getElementById("hirings-body");
         const headerName = document.getElementById("hirings-freelancer-name");
@@ -136,26 +141,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const status = hiring.status;
             const showCancel = status === "Pending" || status === "Accepted" || status === "Completed";
             const statusBadge = `<span class="status-badge status-${status.toLowerCase()}">${status}</span>`;
+            const createdAt = hiring.created_at;
+            const createdAtBadge = `<span class="createdAt-badge ">${formatDateTimeWithoutSeconds(createdAt)}</span>`;
             
             html += `
             <div class="client-hiring-card">
                 <div class="card-header">
                     ${statusBadge}
                 </div>
+                ${createdAtBadge}
                 ${showCancel ? `
                     <div class="hiring-actions">
                         ${status === 'Completed' ? `
-                            <button onclick="updateHiringStatus(${hiring.id}, 'Closed');
-                                sendStatusMessage('Closed', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')" 
+                            <button onclick="updateHiringStatus(${hiring.id}, 'Closed', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')" 
                                 class="approve-btn">Approve
                             </button>
-                            <button onclick="updateHiringStatus(${hiring.id}, 'Pending');
-                                sendStatusMessage('Reopened', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')" 
+                            <button onclick="updateHiringStatus(${hiring.id}, 'Pending', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')"
                                 class="reopen-btn">Reopen Hiring
                             </button>
                             ` : `
-                            <button onclick="updateHiringStatus(${hiring.id}, 'Cancelled');
-                                sendStatusMessage('Cancelled', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')"
+                            <button onclick="updateHiringStatus(${hiring.id}, 'Cancelled', ${hiring.client_id}, ${hiring.owner_id}, ${serviceId}, '${serviceTitle}')"
                                 class="cancel-btn">Cancel
                             </button>`}
                     </div>` : ""}
@@ -165,4 +170,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         body.innerHTML = html;
     }
+
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.style.opacity = '1';
+        });
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+
 });

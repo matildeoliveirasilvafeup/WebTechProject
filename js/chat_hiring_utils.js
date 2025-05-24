@@ -99,3 +99,24 @@ export function sendStatusMessage(status, senderId, receiverId, serviceId, servi
         throw err;
     });
 }
+
+export function formatDateTimeWithoutSeconds(datetime) {
+    const date = new Date(datetime.replace(' ', 'T') + 'Z');
+
+    const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'Europe/Lisbon'
+    };
+    
+    const formatted = date.toLocaleString('pt-PT', options);
+    
+    const [day, month, yearAndTime] = formatted.split('/');
+    const [year, time] = yearAndTime.split(', ');
+
+    return `${year}-${month}-${day} ${time}`;
+}

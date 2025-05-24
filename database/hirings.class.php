@@ -45,6 +45,29 @@ class Hiring {
         }
     }
 
+    public static function getAllByService(int $serviceId, int $userId1, int $userId2): array {
+        $db = Database::getInstance();
+
+        $stmt = $db->prepare("
+            SELECT * FROM hirings 
+            WHERE service_id = ?
+            AND (
+                (client_id = ? AND owner_id = ?)
+                OR
+                (client_id = ? AND owner_id = ?)
+            )
+            ORDER BY created_at DESC
+        ");
+        $stmt->execute([$serviceId, $userId1, $userId2, $userId2, $userId1]);
+
+        $hirings = [];
+        while ($row = $stmt->fetch()) {
+            $hirings[] = self::fromRow($row);
+        }
+
+        return $hirings;
+    }
+
     public static function getAllByUser(int $userId, string $position): array {
         $db = Database::getInstance();
 
@@ -62,7 +85,7 @@ class Hiring {
     public static function updateStatus(int $id, string $newStatus): array {
         $db = Database::getInstance();
 
-        $validStatuses = ['Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed', 'Closed'];
+        $validStatuses = ['Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed', 'Closed', 'Disabled'];
         if (!in_array($newStatus, $validStatuses)) {
             throw new InvalidArgumentException("Invalid status: $newStatus");
         }

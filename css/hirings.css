@@ -184,7 +184,8 @@
 
 .hiring-item,
 .client-hiring-card {
-    width: 92%;
+    width: 100%;
+    box-sizing: border-box;
     padding: 0.75rem 1rem;
     margin-bottom: 0.75rem;
     background-color: #fff;
@@ -342,3 +343,10 @@
 .status-rejected { background-color: var(--rejected-color); color: var(--rejected-background) }
 .status-cancelled { background-color: var(--cancelled-color); color: var(--cancelled-background) }
 .status-completed, .status-closed { background-color: var(--completed-color); color: var(--completed-background) }
+
+.createdAt-badge {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: var(--text-lighter);
+    margin-left: 0.5rem;
+}

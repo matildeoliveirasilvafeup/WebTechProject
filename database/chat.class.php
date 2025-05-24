@@ -33,17 +33,17 @@ class Chat {
         return $conversation_id;
     }
 
-    public static function sendMessage(string $conversation_id, int $service_id, int $sender_id, int $receiver_id, ?string $message, ?string $sub_message = null, ?string $file = null): array {
+    public static function sendMessage(string $conversation_id, int $service_id, int $sender_id, int $receiver_id, ?string $message, ?string $sub_message = null, ?string $file = null, ?int $hiring_id = null): array {
         $db = Database::getInstance();
 
         self::createConversation($service_id, $sender_id, $receiver_id);
 
         $stmt = $db->prepare("
-            INSERT INTO messages (conversation_id, service_id, sender_id, receiver_id, message, sub_message, file)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO messages (conversation_id, hiring_id, service_id, sender_id, receiver_id, message, sub_message, file)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
         $success = $stmt->execute([
-            $conversation_id, $service_id, $sender_id, $receiver_id, $message, $sub_message, $file
+            $conversation_id, $hiring_id, $service_id, $sender_id, $receiver_id, $message, $sub_message, $file
         ]);
 
         return [
@@ -58,6 +58,7 @@ class Chat {
         $stmt = $db->prepare("
             SELECT 
                 id AS message_id,
+                hiring_id,
                 sender_id,
                 receiver_id,
                 message,

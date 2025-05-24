@@ -11,6 +11,7 @@
     require_once (__DIR__ . '/../database/chat.class.php');
     require_once (__DIR__ . '/../database/hirings.class.php');
     require_once (__DIR__ . '/../database/review.class.php');
+    require_once (__DIR__ . '/../database/custom_offer.class.php');
 
     require_once (__DIR__ . '/../templates/dashboard.tpl.php');
     require_once (__DIR__ . '/../templates/personal_details.tpl.php');

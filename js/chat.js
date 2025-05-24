@@ -1,3 +1,5 @@
+import { formatDateTimeWithoutSeconds } from './chat_hiring_utils.js';
+
 window.ChatState = {
     CURRENT_CONVERSATION_ID: null,
     CURRENT_SERVICE_ID: null,
@@ -9,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkUnreadMessages();
 
     window.drawMessages = drawMessages;
+    window.sendMessage = sendMessage;
 
     const toggleBtn = document.getElementById('chat-toggle-btn');
     const closeBtn = document.getElementById('chat-close-btn');
@@ -93,8 +96,66 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('hirings-modal')?.classList.remove('hidden');
         localStorage.removeItem('openHiring');
     } 
-});
 
+    const customOrderBtn = document.getElementById('chat-custom-order');
+    const customOrderModal = document.getElementById('custom-order-modal');
+    const hiringsList = document.getElementById('hirings-list');
+    const customOrderCloseBtn = document.getElementById('custom-order-close-btn');
+
+    customOrderBtn?.addEventListener('click', () => {
+        customOrderModal.classList.toggle('hidden');
+
+        const serviceId = window.ChatState.CURRENT_SERVICE_ID;
+        const userId = window.ChatState.CURRENT_USER_ID;
+        const receiverId = window.ChatState.CURRENT_RECEIVER_ID;
+
+        if (!serviceId || !userId || !receiverId) {
+            hiringsList.innerHTML = "<p>No service or user selected.</p>";
+            return;
+        }
+
+        hiringsList.innerHTML = "<p>Loading...</p>";
+
+        fetch(`/actions/action_get_hirings_by_service.php?service_id=${serviceId}&user_id1=${userId}&user_id2=${receiverId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!Array.isArray(data) || data.length === 0) {
+                    hiringsList.innerHTML = "<p>No hirings found.</p>";
+                    return;
+                }
+
+                hiringsList.innerHTML = '';
+
+                data.forEach(hiring => {
+                    const div = document.createElement('div');
+                    div.classList.add('client-hiring-card');
+
+                    div.innerHTML = `
+                        <div class="card-header">
+                            <span class="status-badge status-${hiring.status.toLowerCase()}">${hiring.status}</span>
+                        </div>
+                        <span class="createdAt-badge">${formatDateTimeWithoutSeconds(hiring.createdAt)}</span>
+                    `;
+
+                    div.style.cursor = 'pointer';
+                    div.addEventListener('click', () => {
+                        console.log("Hiring service clicked");
+                        window.location.href = `/pages/custom_offer.php?hiring_id=${hiring.id}&user_id1=${userId}&user_id2=${receiverId}&service_id=${serviceId}`;
+                    });
+
+                    hiringsList.appendChild(div);
+                });
+            })
+            .catch(err => {
+                hiringsList.innerHTML = "<p>Error loading hirings.</p>";
+                console.error(err);
+            });
+    });
+
+    customOrderCloseBtn?.addEventListener('click', () => {
+        customOrderModal.classList.add('hidden');
+    });
+});
 
 function drawMessages(conversationId, serviceId, userId) {
     const chatMain = document.getElementById('chat-main');
@@ -163,7 +224,11 @@ function drawMessages(conversationId, serviceId, userId) {
                     bubble.classList.add('message-with-sub');
 
                     const mainText = document.createElement('p');
-                    mainText.textContent = msg.message;
+                    if (msg.hiring_id) {
+                        mainText.textContent = msg.message.replace(/\b\w+!$/, '').trim();
+                    } else {
+                        mainText.textContent = msg.message;
+                    }
                     bubble.appendChild(mainText);
 
                     const subText = document.createElement('p');
@@ -174,11 +239,15 @@ function drawMessages(conversationId, serviceId, userId) {
                         bubble.classList.add(`status-${msg.status_class.toLowerCase()}`);
                         subText.classList.add(`status-${msg.status_class.toLowerCase()}`);
                     }
-
+                    
                     subText.style.cursor = 'pointer';
                     subText.onclick = () => {
-                        localStorage.setItem('openHiring', 'true');
-                        location.reload();
+                        if (msg.hiring_id) {
+                            window.location.href = `/pages/custom_offer.php?hiring_id=${msg.hiring_id}&user_id1=${userId}&user_id2=${window.ChatState.CURRENT_RECEIVER_ID}&service_id=${serviceId}`;
+                        } else {
+                            localStorage.setItem('openHiring', 'true');
+                            location.reload();
+                        }
                     };
 
                     bubble.appendChild(subText);
@@ -269,6 +338,7 @@ function sendMessage(event) {
 
     const formData = new FormData();
     formData.append('conversation_id', window.ChatState.CURRENT_CONVERSATION_ID);
+    formData.append('hiring_id', null);
     formData.append('service_id', window.ChatState.CURRENT_SERVICE_ID);
     formData.append('sender_id', window.ChatState.CURRENT_USER_ID);
     formData.append('receiver_id', window.ChatState.CURRENT_RECEIVER_ID);

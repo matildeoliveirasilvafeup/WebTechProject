@@ -57,6 +57,7 @@ CREATE TABLE conversations (
 CREATE TABLE messages (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     conversation_id VARCHAR(50) NOT NULL,
+    hiring_id INTEGER,
     service_id INTEGER NOT NULL,
     sender_id INTEGER NOT NULL,
     receiver_id INTEGER NOT NULL,
@@ -136,9 +137,25 @@ CREATE TABLE hirings (
     service_id INTEGER REFERENCES services(id) ON DELETE CASCADE,
     client_id INTEGER,
     owner_id INTEGER,
-    status TEXT NOT NULL DEFAULT 'Pending' CHECK (status IN ('Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed', 'Closed')),
+    status TEXT NOT NULL DEFAULT 'Pending' CHECK (status IN ('Pending', 'Accepted', 'Rejected', 'Cancelled', 'Completed', 'Closed', 'Disabled')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ended_at TIMESTAMP
+);
+
+CREATE TABLE custom_offers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    hiring_id INTEGER,
+    sender_id INTEGER NOT NULL,
+    receiver_id INTEGER NOT NULL,
+    price REAL NOT NULL CHECK(price >= 0),
+    delivery_time INTEGER NOT NULL CHECK(delivery_time >= 1),
+    number_of_revisions INTEGER DEFAULT 1 CHECK(number_of_revisions >= 0),
+    status TEXT DEFAULT 'Pending' CHECK(status IN ('Pending', 'Accepted', 'Rejected', 'Cancelled')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ended_at TIMESTAMP,
+
+    FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 INSERT INTO users (name, username, email, password_hash, role) VALUES

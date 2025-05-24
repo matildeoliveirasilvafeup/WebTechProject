@@ -9,6 +9,7 @@ require_once(__DIR__ . '/../database/user.class.php');
 header('Content-Type: application/json');
 
 $conversationId = $_POST['conversation_id'] ?? null;
+$hiringId = (int)$_POST['hiring_id'] ?? null;
 $serviceId = (int)$_POST['service_id'] ?? null;
 $senderId = (int)$_POST['sender_id'] ?? null;
 $receiverId = (int)$_POST['receiver_id'] ?? null;
@@ -50,7 +51,7 @@ if (!empty($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
     }
 }
 
-$result = Chat::sendMessage($conversationId, $serviceId, $senderId, $receiverId, $message, $subMessage, $fileName);
+$result = Chat::sendMessage($conversationId, $serviceId, $senderId, $receiverId, $message, $subMessage, $fileName, $hiringId);
 
 if (!$result['success']) {
     http_response_code(500);
