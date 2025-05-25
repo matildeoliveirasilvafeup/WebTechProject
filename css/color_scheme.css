@@ -26,6 +26,8 @@
     --soft-line: #ddd;
     --accent-light: #e1ecf4;
     --box-shadow: rgba(0, 0, 0, 0.05);
+    --box-shadow-middle: rgba(0, 0, 0, 0.3);
+    --box-shadow-strong: rgba(0, 0, 0, 0.5);
     --section-divider: #adadad;
     --chat-darker-white: #f1f1f1;
     --pending-color: #ffecb3;
@@ -38,4 +40,6 @@
     --cancelled-background: #999;
     --completed-color: #dff0d8;
     --completed-background: #3c763d;
+    --message-out: #d0f0c0;
+    --light-border: rgba(211, 213, 219, 0.654);
 }

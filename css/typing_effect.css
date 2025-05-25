@@ -5,13 +5,13 @@
     border-right: 2px solid var(--secondary);
     padding-right: 5px;
     width: 0;
-    white-space: nowrap; 
+    white-space: nowrap;
     overflow: hidden;
-    text-align: center; 
+    text-align: center;
     position: absolute;
     top: 6em;
     left: 50%;
-    transform: translateX(-50%); 
+    transform: translateX(-50%);
     animation: typing 4s steps(40) 1s forwards, blink-caret 1s step-end infinite;
     z-index: 1;
 }
@@ -29,4 +29,21 @@
     50% {
         border-color: transparent;
     }
+}
+
+@media (max-width: 768px) {
+	#typing-effect {
+		font-size: 1.2em;
+		white-space: normal;
+		width: max-content;
+		max-width: 90vw;
+		animation: none;
+		overflow: visible;
+		border-right: none;
+		position: absolute;
+		top: 10rem;
+		left: 50%;
+		transform: translateX(-50%);
+		text-align: center;
+	}
 }

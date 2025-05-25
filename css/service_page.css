@@ -43,7 +43,7 @@
 }
 
 .freelancer-box img,
-.freelancer-box i, 
+.freelancer-box i,
 .review-header img,
 .review-header i {
     width: 40px;
@@ -88,7 +88,7 @@
     flex-wrap: wrap;
 }
 
-.btn-hire, 
+.btn-hire,
 .btn-add-cart {
     display: inline-block;
     padding: 12px 24px;
@@ -195,10 +195,6 @@
 
 .icon-btn.favorite i {
     color: #ef4444;
-}
-
-.icon-btn.report i {
-    color: #f59e0b;
 }
 
 .icon-btn span {
@@ -330,18 +326,18 @@
 
 .reviews-controls .btn-add-cart,
 .reviews-controls select {
-  vertical-align: middle; 
-  line-height: 1;         
-  font-size: 0.95em;       
-  height: 3em;          
+  vertical-align: middle;
+  line-height: 1;
+  font-size: 0.95em;
+  height: 3em;
   box-sizing: border-box;
-  margin: 0;             
-  padding: 0.2em 1em;     
+  margin: 0;
+  padding: 0.2em 1em;
 }
 
 .load-more-btn {
     display: flex;
-    grid-column: 1 / -1; 
+    grid-column: 1 / -1;
     justify-self: center;
     margin-top: 2em;
     padding: 0.75em 1.5em;
@@ -423,8 +419,8 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
+    background: var(--box-shadow-strong);
+    color: var(--secondary);
     border: none;
     padding: 10px;
     cursor: pointer;
@@ -532,11 +528,31 @@
     margin-left: auto;
     cursor: pointer;
     padding-left: 0.5em;
-    background: none; 
+    background: none;
     border: none;
     transition: color 0.2s ease;
 }
 
 .review-trash:hover {
     color: var(--button-danger);
+}
+@media (max-width: 768px) {
+    .info-actions {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        padding: inherit;
+        padding-right: 0;
+    }
+
+    .button-group {
+        position: inherit;
+        right: 3em;
+    }
+
+    #review-sort {
+        width: 100%;
+        max-width: 200px;
+        margin: 0 auto;
+    }
 }

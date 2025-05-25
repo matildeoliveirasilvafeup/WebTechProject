@@ -1,6 +1,6 @@
 .personal-details,
 .freelancer-reviews-section {
-    background: white;
+    background: var(--secondary);
     border-radius: 12px;
     box-shadow: 0 2px 10px var(--box-shadow);
     margin: 2em auto;
@@ -11,17 +11,12 @@
     max-width: 30vw;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
 :where(body) > .public-profile {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
- 
+
 :where(body) > .public-profile main {
     flex: 1;
     display: flex;
@@ -45,7 +40,7 @@ html, body {
     min-width: 40vw;
     max-width: 45vw;
     min-height: 40vh;
-} 
+}
 
 .public-profile .profile-header {
     display: inline-flex;
@@ -225,8 +220,9 @@ html, body {
     flex-direction: column;
     gap: 1.5em;
     margin-top: 1em;
-    overflow-y: auto;      
+    overflow-y: auto;
     padding-right: 0.5em;
+    max-height: 44vh;
 }
 
 .freelancer-reviews #no_reviews {
@@ -315,4 +311,87 @@ html, body {
 .review-body #service a:hover {
     color: black;
     transition: color 0.3s;
-}    
+}
+@media (max-width: 768px) {
+
+	.public-profile main {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.personal-details {
+		width: 100% !important;
+		max-width: 100% !important;
+		margin: 0 auto 1em auto;
+		padding: 1.5em;
+		box-sizing: border-box;
+	}
+
+	.freelancer-reviews-section {
+		width: 100% !important;
+		max-width: 100% !important;
+		margin: 0 auto 2em auto;
+		padding: 1.5em;
+		box-sizing: border-box;
+		font-size: 1em;
+		text-align: center;
+	}
+
+	.profile-header {
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		text-align: center;
+	}
+
+	.profile-icon {
+		width: 30vw;
+		height: 30vw;
+		margin-bottom: 1em;
+        margin-right: 0;
+	}
+
+	.profile-controls {
+		flex-direction: column;
+		gap: 1em;
+		width: 100%;
+		padding: 1em;
+		box-sizing: border-box;
+	}
+
+	.profile-controls .btn {
+		width: 100%;
+		max-width: 100%;
+		flex-grow: 0;
+		flex-basis: auto;
+		box-sizing: border-box;
+	}
+
+	#profile {
+        max-width: 95.8%;
+        padding: 1rem;
+		flex-direction: column;
+	}
+
+	.freelancer-reviews-section {
+		margin-top: 2rem;
+	}
+
+	.profile-info .name-line {
+		justify-content: center !important;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+
+	.profile-info {
+		white-space: nowrap;
+		margin-bottom: 1.5em;
+	}
+
+    .freelancer-reviews {
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 40vh;
+    }
+}
+

@@ -1,5 +1,5 @@
 header {
-    border-bottom: 1px solid rgba(211, 213, 219, 0.654);
+    border-bottom: 1px solid var(--light-border);
     padding: 1.5em 2em;
 }
 
@@ -23,4 +23,28 @@ nav a {
 
 nav a:hover {
     color: var(--main-theme);
+}
+
+@media (max-width: 768px) {
+
+	header {
+		padding: 1em;
+	}
+
+	.logo img {
+		max-height: 2.5em;
+	}
+
+	nav {
+		flex-direction: column;
+		gap: 10px;
+		align-items: center;
+	}
+
+	nav a {
+		padding: 10px 15px;
+		font-size: 1rem;
+		width: 100%;
+		text-align: center;
+	}
 }

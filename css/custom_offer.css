@@ -1,8 +1,3 @@
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
 :where(body) > .custom-offer-page-wrapper {
     min-height: 100vh;
     display: flex;
@@ -93,7 +88,7 @@ html, body {
     padding: 1em 1.5em;
     border-radius: 10px;
     color: var(--main-text-color);
-    box-shadow: 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.125em 0.5em var(--box-shadow-middle);
     font-size: 0.95rem;
     gap: 2em;
 }
@@ -136,14 +131,14 @@ html, body {
     cursor: pointer;
     font-size: 0.85rem;
     transition: background-color 0.2s ease;
-    color: white;
+    color: var(--secondary);
 }
 
 .edit-offer-btn {
     margin-top: 1em;
     padding: 0.5em 1em;
     background-color: var(--button-background);
-    color: white;
+    color: var(--secondary);
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -155,15 +150,11 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--box-shadow-strong);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-}
-
-.hidden {
-    display: none;
 }
 
 .create-offer-btn,

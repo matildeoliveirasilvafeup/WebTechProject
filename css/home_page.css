@@ -198,3 +198,11 @@
 .cta-btn.secondary:hover {
     background: var(--button-secondary-selected);
 }
+
+@media (max-width: 768px) {
+
+    .hero button {
+        display: flex;
+        align-items: center;
+    }
+}

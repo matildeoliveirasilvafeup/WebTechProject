@@ -26,7 +26,7 @@
 .category-card {
     width: 7vw;
     height: 6vw;
-    background: white;
+    background: var(--secondary);
     border-radius: 10px;
     text-align: center;
     padding: 1em;
@@ -37,8 +37,8 @@
     transition: transform 0.2s ease;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
-    align-items: center; 
+    justify-content: center;
+    align-items: center;
 }
 
 .category-card#admin {
@@ -117,4 +117,36 @@
 
 .iconpicker-popover.popover .popover-title input[type=search].iconpicker-search {
     max-width: 100%;
+}
+
+@media (max-width: 768px) {
+
+	.carousel-wrapper {
+		padding: 0 0.5em;
+        max-width: -webkit-fill-available;
+        margin: 0 1.5rem;
+	}
+
+	.category-carousel {
+		gap: 8px;
+		padding: 0.5em 0;
+	}
+
+	.category-card {
+		width: 15vw;
+		height: 13vw;
+		font-size: 0.75em;
+		padding: 0.7em;
+	}
+
+	.category-icon {
+		font-size: 1.5em;
+		margin-bottom: 0.2em;
+	}
+
+	.category-menu {
+		display: none;
+	}
+
+
 }

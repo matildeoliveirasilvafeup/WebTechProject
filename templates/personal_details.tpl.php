@@ -3,26 +3,26 @@
     <?php if (!$isPrivate) { ?>
         <h1><?= htmlspecialchars($user->name) ?>'s Profile</h1>
     <?php } ?>
-    
+
     <div id="profile" class="tab-content active">
         <div class="personal-details">
             <div class="profile-header">
 
                 <?php drawIcon($profile); ?>
                 <?php drawInfo($profile, $user, $isPrivate, $isAdmin); ?>
-                
+
             </div>
-            
+
             <hr class="section-divider">
-            
+
             <div class="profile-body">
-                
+
                 <?php drawBio($profile, $isPrivate); ?>
-                
+
                 <hr class="section-divider">
-                
+
                 <?php drawPreferences($profile_preferences, $isPrivate); ?>
-                
+
             </div>
 
             <?php if ($isPrivate)
@@ -31,7 +31,7 @@
 
         <?php drawReviews($freelancerReviews); ?>
     </div>
-    
+
 <?php } ?>
 
 <?php function drawIcon($profile) { ?>
@@ -65,7 +65,7 @@
                             <i class="fa-solid fa-user-slash"></i> Ban
                         </button>
                     </form>
-                </div>    
+                </div>
             <?php endif; ?>
         </div>
         <p class="username">@<?= htmlspecialchars($user->username) ?></p>
@@ -74,7 +74,7 @@
     </div>
     <?php if ($isPrivate) { ?>
         <button id="editProfBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
-    <?php } 
+    <?php }
 } ?>
 
 <?php function drawBio($profile, $isPrivate) { ?>
@@ -86,7 +86,7 @@
 
         <?php if ($isPrivate) { ?>
             <button id="editBioBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
-        <?php } ?>    
+        <?php } ?>
     </div>
 <?php } ?>
 
@@ -95,14 +95,14 @@
         <div class="content">
             <h3>Preferences</h3>
             <?php drawLanguage($profile_preferences); ?>
-            
+
             <?php drawDateTime($profile_preferences); ?>
-            
+
         </div>
 
         <?php if ($isPrivate) { ?>
             <button id="editPrefsBtn" class="btn"><i class="fa-solid fa-pencil"></i></button>
-        <?php } ?>    
+        <?php } ?>
     </div>
 <?php } ?>
 
@@ -110,9 +110,9 @@
     <p><i class="fas fa-language"></i> <?= htmlspecialchars($profile_preferences->language ?? 'Language not set') ?> (<?= htmlspecialchars($profile_preferences->proficiency ?? 'N/A') ?>): <?= htmlspecialchars($profile_preferences->communication ?? 'Not set') ?></p>
 <?php } ?>
 
-<?php function drawDateTime($profile_preferences) { 
+<?php function drawDateTime($profile_preferences) {
     $preferencesData = $profile_preferences->preferredDaysTimes ?? ['days' => []];
-    
+
     if (isset($preferencesData['days']) && is_array($preferencesData['days'])) {
         $grouped = [];
 
@@ -134,7 +134,7 @@
     }
 } ?>
 
-    
+
 <?php function drawControls($user) { ?>
     <div class="profile-controls">
         <a href="/pages/profile.php?user=<?= $user->username ?>" class="btn">Preview Profile</a>
@@ -187,8 +187,9 @@
 
 <?php function drawPublicProfileStart() { ?>
     <div class="public-profile">
-<?php } 
+<?php }
 
 function drawPublicProfileEnd() { ?>
     </div>
 <?php } ?>
+
