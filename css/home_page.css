@@ -200,9 +200,9 @@
 }
 
 @media (max-width: 768px) {
-	.hero button i.fas.fa-search {
-		position: relative;
-		top: -0.25em;
-		font-size: 0.9rem;
-	}
+
+    .hero button {
+        display: flex;
+        align-items: center;
+    }
 }

@@ -227,6 +227,7 @@ html, body {
     margin-top: 1em;
     overflow-y: auto;
     padding-right: 0.5em;
+    max-height: 44vh;
 }
 
 .freelancer-reviews #no_reviews {
@@ -391,5 +392,11 @@ html, body {
 		white-space: nowrap;
 		margin-bottom: 1.5em;
 	}
+
+    .freelancer-reviews {
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 40vh;
+    }
 }
 

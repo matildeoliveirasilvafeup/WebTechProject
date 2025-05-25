@@ -553,4 +553,10 @@
         position: inherit;
         right: 3em;
     }
+
+    #review-sort {
+        width: 100%;
+        max-width: 200px;
+        margin: 0 auto;
+    }
 }
