@@ -243,8 +243,14 @@ form.alt-style .search-icon {
     }
 
     .pagination {
+        display: flex;
+        flex-direction: row;   
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
         gap: 0.2em;
         font-size: 1em;
+        width: 100%;
     }
 
     .pagination a,
@@ -254,5 +260,6 @@ form.alt-style .search-icon {
         font-size: 1em;
         width: auto;
         box-sizing: border-box;
+        margin: 0 0.05em;
     }
 }
