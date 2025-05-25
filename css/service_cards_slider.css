@@ -86,7 +86,7 @@
 
 @media (max-width: 1024px) {
 	.service-card {
-		width: clamp(200px, 40%, 300px);
+		width: clamp(200px, 40%, 300px) !important;
 	}
 }
 
@@ -97,7 +97,7 @@
 	}
 
 	.service-card {
-		width: clamp(180px, 60%, 100%);
+		width: clamp(180px, 45%, 60%) !important;
 	}
 
 	.service-card img {
@@ -114,7 +114,7 @@
 @media (max-width: 600px) {
 	.service-card {
 		flex: 0 0 80%;
-			max-width: 80%;
+			max-width: 50%;
 		}
 
 	.service-card img {

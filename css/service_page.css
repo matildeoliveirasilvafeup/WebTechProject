@@ -540,3 +540,12 @@
 .review-trash:hover {
     color: var(--button-danger);
 }
+@media (max-width: 768px) {
+    .info-actions {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        padding: inherit;
+        padding-right: 0;
+    }
+}

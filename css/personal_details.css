@@ -352,6 +352,7 @@ html, body {
 		width: 30vw;
 		height: 30vw;
 		margin-bottom: 1em;
+        margin-right: 0;
 	}
 
 	.profile-controls {
