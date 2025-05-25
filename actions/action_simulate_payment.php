@@ -8,6 +8,13 @@ require_once(__DIR__ . '/../database/payment.class.php');
 
 header('Content-Type: application/json');
 
+$session = Session::getInstance();
+if (!$session->validateCSRFToken($_POST['csrf_token'] ?? '')) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'error' => 'Invalid CSRF token.']);
+    exit;
+}
+
 $requiredFields = [
     'service_id', 'client_id', 'freelancer_id',
     'payment_method', 'full_name', 'email', 'address', 'city', 'postal_code'

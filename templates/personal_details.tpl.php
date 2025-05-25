@@ -54,6 +54,7 @@
                 <div class="admin-buttons">
                     <form method="POST" action="/actions/action_promote_admin.php" class="admin-action-form">
                         <input type="hidden" name="id" value="<?= htmlspecialchars($user->id) ?>">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
                         <button type="submit" class="btn btn-promote" title="Promote to Admin">
                             <i class="fa-solid fa-user-shield"></i> Promote to Admin
                         </button>
@@ -61,6 +62,7 @@
 
                     <form method="POST" action="/actions/action_ban_user.php">
                         <input type="hidden" name="username" value="<?= htmlspecialchars($user->username) ?>">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
                         <button type="submit" class="btn btn-ban">
                             <i class="fa-solid fa-user-slash"></i> Ban
                         </button>

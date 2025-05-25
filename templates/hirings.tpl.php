@@ -7,6 +7,8 @@
         }
         $userId = $user->id;
     ?>
+    <input type="hidden" name="csrf_token" id="csrf_token" value="<?= htmlspecialchars($session->getCSRFToken()) ?>">
+
     <div id="hirings-container">
         <button id="hirings-toggle-btn">
             <i class="fa-solid fa-briefcase"></i>

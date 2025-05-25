@@ -11,6 +11,7 @@ declare(strict_types=1);
         <?php endif; ?>
 
         <form method="POST" action="../actions/action_register.php">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
 
             <label for="name">Name</label>
             <input type="name" name="name" id="name" required>
@@ -56,6 +57,7 @@ declare(strict_types=1);
         <?php endif; ?>
 
         <form method="POST" action="../actions/action_login.php">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
 
             <label for="email">Email</label>
             <input type="email" name="email" id="email" required>

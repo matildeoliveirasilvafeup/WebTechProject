@@ -7,6 +7,8 @@ require_once(__DIR__ . '/../database/profiles.class.php');
 
 header('Content-Type: application/json');
 
+$session = Session::getInstance();
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Method not allowed']);
@@ -18,6 +20,13 @@ if (!$data) {
     echo json_encode(['success' => false, 'message' => 'JSON invalid']);
     exit;
 }
+
+if (!$session->validateCSRFToken($data['csrf_token'] ?? '')) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Invalid CSRF token.']);
+    exit;
+}
+
 $bio = trim($data['bio'] ?? '');
 
 $result = Profile::updateBio($bio);

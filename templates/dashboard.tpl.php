@@ -21,8 +21,12 @@
             <li><a href="#" class="tab-link" data-tab="favorites"><i class="fa-solid fa-heart"></i><span>Favorites</span></a></li>
             <li><a href="#" class="tab-link" data-tab="listings"><i class="fa-solid fa-clipboard"></i><span><?= $isAdmin ? 'All Listings' : 'Own Listings' ?></span></a></li>
             <li><a href="#" class="tab-link" data-tab="settings"><i class="fa-solid fa-gear"></i><span>Settings</span></a><li>
-            <li class="logout"><a href="/actions/action_logout.php"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a></li>
+            <li class="logout"><a href="#" id="logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a></li>
         </ul>
+
+        <form id="logout-form" action="/actions/action_logout.php" method="POST" style="display:none;">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
+        </form>
     </div>
 <?php } ?>
 

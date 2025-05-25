@@ -13,6 +13,8 @@ async function toggleFavorite(icon, listingId) {
     const data = new FormData();
     data.append('id', listingId);
     data.append('action', isFavorited ? 'add' : 'remove');
+    const csrfToken = document.getElementById('csrf_token')?.value;
+    if (csrfToken) data.append('csrf_token', csrfToken);
 
     try {
         const response = await fetch("/actions/action_manage_favorite.php", {

@@ -8,6 +8,13 @@ require_once(__DIR__ . '/../database/user.class.php');
 
 header('Content-Type: application/json');
 
+$session = Session::getInstance();
+if (!$session->validateCSRFToken($_POST['csrf_token'] ?? '')) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Invalid CSRF token.']);
+    exit;
+}
+
 $language = $_POST['language'] ?? null;
 $proficiency = $_POST['proficiency'] ?? null;
 $communication = $_POST['communication'] ?? null;

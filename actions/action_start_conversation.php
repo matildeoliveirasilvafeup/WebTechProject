@@ -3,6 +3,13 @@ require_once('../includes/session.php');
 require_once('../includes/database.php');
 require_once('../database/chat.class.php');
 
+$session = Session::getInstance();
+if (!$session->validateCSRFToken($_POST['csrf_token'] ?? '')) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'error' => 'Invalid CSRF token.']);
+    exit;
+}
+
 $service_id = $_POST['service_id'] ?? null;
 $user1_id = $_POST['user1_id'] ?? null;
 $user2_id = $_POST['user2_id'] ?? null;

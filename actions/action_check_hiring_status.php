@@ -7,6 +7,13 @@ require_once(__DIR__ . '/../database/custom_offer.class.php');
 
 header('Content-Type: application/json');
 
+$session = Session::getInstance();
+if (!$session->validateCSRFToken($_POST['csrf_token'] ?? '')) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'error' => 'Invalid CSRF token.']);
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'error' => 'Invalid request method.']);
     exit;

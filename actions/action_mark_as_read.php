@@ -6,6 +6,10 @@ require_once(__DIR__ . '/../database/chat.class.php');
 require_once(__DIR__ . '/../database/user.class.php');
 
 $session = Session::getInstance();
+if (!$session->validateCSRFToken($_POST['csrf_token'] ?? '')) {
+    http_response_code(403);
+    exit;
+}
 $user = $session->getUser();
 $userId = $user->id;
 

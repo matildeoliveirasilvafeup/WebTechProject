@@ -25,6 +25,7 @@ function drawPaymentForm(Service $service, User $client, User $freelancer): void
     <div class="payment-step" id="step-billing">
         <h3>Step 1: Billing Information</h3>
         <form id="billing-form">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
             <input type="hidden" name="service_id" value="<?= htmlspecialchars($service->id) ?>">
             <input type="hidden" name="client_id" value="<?= htmlspecialchars($client->id) ?>">
             <input type="hidden" name="freelancer_id" value="<?= htmlspecialchars($freelancer->id) ?>">
@@ -58,7 +59,8 @@ function drawPaymentForm(Service $service, User $client, User $freelancer): void
             data-client-id="<?= $client->id ?>"
             data-freelancer-id="<?= $freelancer->id ?>"
             data-service-title="<?= htmlspecialchars($service->title, ENT_QUOTES) ?>">
-
+            
+            <input type="hidden" id="csrf_token" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
             <input type="hidden" name="service_id" value="<?= htmlspecialchars($service->id) ?>">
             <input type="hidden" name="client_id" value="<?= htmlspecialchars($client->id) ?>">
             <input type="hidden" name="freelancer_id" value="<?= htmlspecialchars($freelancer->id) ?>">

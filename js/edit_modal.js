@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             const formData = new FormData(editBioForm);
             const bio = formData.get("bio");
+            const csrfToken = editBioForm.querySelector('input[name="csrf_token"]')?.value;
 
             try {
                 const response = await fetch("/actions/action_update_bio.php", {
@@ -97,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ bio })
+                    body: JSON.stringify({ bio, csrf_token: csrfToken })
                 });
 
                 const text = await response.text();

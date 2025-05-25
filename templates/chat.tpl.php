@@ -83,6 +83,7 @@
 
         <div class="chat-footer">
             <form id="chat-form" onsubmit="sendMessage(event)" enctype="multipart/form-data">
+                <input type="hidden" id="csrf_token" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
                 <div id="chat-input-wrapper">
                     <label for="chat-file" id="chat-file-label">
                         <i class="fa-solid fa-paperclip"></i>

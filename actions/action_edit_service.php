@@ -8,6 +8,9 @@ require_once __DIR__ . '/action_upload_file.php';
 
 $session = Session::getInstance();
 $user = $session->getUser();
+if (!$session->validateCSRFToken($_POST['csrf_token'] ?? '')) {
+    die('CSRF token validation failed');
+}
 
 if (!$user) {
     http_response_code(401);

@@ -6,8 +6,15 @@ require_once __DIR__ . '/../database/profile_preferences.class.php';
 require_once __DIR__ . '/../includes/session.php';
 
 $error = '';
+$session = Session::getInstance();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!$session->validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $session->setError('Invalid CSRF token.');
+        header('Location: ../pages/login.php');
+        exit;
+    }
+    
     $name = $_POST['name'] ?? '';
     $username = $_POST['username'] ?? '';
     $email = $_POST['email'] ?? '';

@@ -15,6 +15,9 @@ export function startConversation(serviceId, user1Id, user2Id, flag) {
     formData.append('user1_id', user1Id);
     formData.append('user2_id', user2Id);
 
+    const csrfToken = document.getElementById('csrf_token')?.value;
+    if (csrfToken) formData.append('csrf_token', csrfToken);
+
     return fetch('/actions/action_start_conversation.php', {
         method: 'POST',
         body: formData
@@ -37,6 +40,7 @@ export function startConversation(serviceId, user1Id, user2Id, flag) {
 }
 
 export function createHiring(serviceId, clientId, ownerId) {
+    const csrfToken = document.getElementById('csrf_token')?.value;
     return fetch('/actions/action_create_hiring.php', {
         method: 'POST',
         headers: {
@@ -45,7 +49,8 @@ export function createHiring(serviceId, clientId, ownerId) {
         body: JSON.stringify({
             serviceId: serviceId,
             client_id: clientId,
-            owner_id: ownerId
+            owner_id: ownerId,
+            csrf_token: csrfToken
         })
     })
     .then(response => response.json())
@@ -81,6 +86,8 @@ export function sendStatusMessage(status, senderId, receiverId, serviceId, servi
     formData.append('receiver_id', receiverId);
     formData.append('message', message);
     formData.append('sub_message', subMessage);
+    const csrfToken = document.getElementById('csrf_token')?.value;
+    if (csrfToken) formData.append('csrf_token', csrfToken);
 
     setTimeout(() => {}, 2000);
 

@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = new FormData();
             data.append('reason', reason);
 
+            const csrfToken = document.getElementById('csrf_token')?.value;
+            data.append('csrf_token', csrfToken);
+
             try {
                 const response = await fetch("/actions/action_delete_account.php", {
                     method: "POST",
@@ -77,7 +80,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const email = document.getElementById("email").value;
             const data = new FormData();
             data.append('email', email);
-    
+
+            const csrfToken = document.getElementById('csrf_token')?.value;
+            data.append('csrf_token', csrfToken);
+
             try {
                 const response = await fetch("/actions/action_update_authentication.php", {
                     method: "POST",
@@ -122,6 +128,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = new FormData();
             data.append('password', password);
             data.append('newPassword', newPassword);
+
+            const csrfToken = document.getElementById('csrf_token')?.value;
+            data.append('csrf_token', csrfToken);
     
             try {
                 const response = await fetch("/actions/action_update_authentication.php", {

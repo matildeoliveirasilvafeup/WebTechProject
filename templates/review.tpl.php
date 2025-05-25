@@ -75,6 +75,7 @@ function renderStars(float $rating): string {
                     <?php if ($isAdmin || (isset($_SESSION['user']) && $_SESSION['user']->id == $review->clientId)): ?>
                         <form method="POST" action="../actions/action_delete_review.php">
                             <input type="hidden" name="review_id" value="<?= $review->id ?>">
+                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
                             <button type="submit" class="review-trash" title="Delete review">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
@@ -113,6 +114,7 @@ function renderStars(float $rating): string {
             <form id="review-form" action="../actions/action_submit_review.php" method="POST">
                 <input type="hidden" name="service_id" value="<?= htmlspecialchars((string)$service->id) ?>">
                 <input type="hidden" name="hiring_id" value="<?= htmlspecialchars((string)$eligibleHiringId) ?>">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
                 <label for="rating">Rating</label>
                 <div class="star-rating" id="star-rating-input">
                     <i class="fa-regular fa-star" data-value="1"></i>

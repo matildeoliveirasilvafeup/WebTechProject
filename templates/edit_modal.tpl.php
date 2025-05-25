@@ -5,6 +5,7 @@
     <div class="modal-content">
         <h3>Edit Profile</h3>
         <form id="editProfileForm">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
             
             <?php
             drawName($user);
@@ -88,6 +89,7 @@
     <div class="modal-content">
         <h3>Edit Bio</h3>
         <form id="editBioForm">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
             <textarea id="editBio" name="bio" rows="4" placeholder="Enter your bio..."><?= htmlspecialchars($profile->bio ?? '') ?></textarea>
             
             <?php drawButtons("cancelEditBio"); ?>
@@ -101,6 +103,7 @@
     <div class="modal-content">
         <h3>Edit Preferences</h3>
         <form id="preferencesForm">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
             
             <?php 
             drawLanguageField($profile_preferences);

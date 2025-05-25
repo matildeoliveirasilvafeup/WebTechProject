@@ -51,6 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('id', hiringId);
         formData.append('status', newStatus);
 
+        const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+        if (csrfToken) formData.append('csrf_token', csrfToken);
+
         fetch('/actions/action_update_hiring_status.php', {
             method: 'POST',
             body: formData

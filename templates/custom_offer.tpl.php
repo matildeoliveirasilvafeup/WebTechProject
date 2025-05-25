@@ -96,6 +96,7 @@
 
 <?php function drawCustomOfferModal($hiringId, $serviceId, $senderId, $receiverId) { ?>
     <form id="custom-offer-form" class="custom-offer-form">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
         <h1>Custom Offer</h1>
 
         <input type="hidden" name="offer_id" id="offer_id">
