@@ -372,6 +372,8 @@ html, body {
 	}
 
 	#profile {
+        max-width: 95.8%;
+        padding: 1rem;
 		flex-direction: column;
 	}
 

@@ -35,7 +35,7 @@
 	#typing-effect {
 		font-size: 1.2em;
 		white-space: normal;
-		width: auto;
+		width: max-content;
 		max-width: 90vw;
 		animation: none;
 		overflow: visible;

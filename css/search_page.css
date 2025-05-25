@@ -192,7 +192,11 @@ form.alt-style .search-icon {
 		width: 100%;
 	}
 
-	.price-field input {
-		height: 2.5em;
+	.price-field {
+		align-items: center;
 	}
+	
+    .price-field span {
+        width: 100%;
+    }
 }

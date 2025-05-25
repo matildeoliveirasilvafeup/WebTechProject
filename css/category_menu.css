@@ -123,6 +123,8 @@
 
 	.carousel-wrapper {
 		padding: 0 0.5em;
+        max-width: -webkit-fill-available;
+        margin: 0 1.5rem;
 	}
 
 	.category-carousel {

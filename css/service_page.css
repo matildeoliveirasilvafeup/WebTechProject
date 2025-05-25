@@ -548,4 +548,9 @@
         padding: inherit;
         padding-right: 0;
     }
+
+    .button-group {
+        position: inherit;
+        right: 3em;
+    }
 }
