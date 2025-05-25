@@ -4,10 +4,16 @@
     require_once(__DIR__ . '/../includes/database.php');
     require_once(__DIR__ . '/../database/user.class.php');
 
+    $session = Session::getInstance();
+    
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(405);
         echo json_encode(['success' => false, 'message' => 'Method not allowed']);
         exit;
+    }
+
+    if (!$session->validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        die('CSRF token validation failed');
     }
 
     $username = $_POST['username'] ?? '';

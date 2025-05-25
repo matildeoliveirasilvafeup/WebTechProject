@@ -49,6 +49,7 @@
 <?php function drawEmailSection($user) { ?>
     <div id="email-section" class="auth-section">
         <form id="editEmailForm">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
             <label for="email">Email</label>
             <input type="email" name="email" id="email" placeholder="<?= htmlspecialchars(encodeEmail($user->email ?? '')) ?>" required>
             
@@ -62,6 +63,7 @@
 <?php function drawPasswordSection($user) { ?>
     <div id="password-section" class="auth-section">
         <form id="editPasswordForm">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
             <label for="password">Current Password</label>
             <div class="password-wrapper">
                 <input type="password" name="password" id="password" required>

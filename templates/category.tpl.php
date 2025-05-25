@@ -66,6 +66,8 @@ require_once(__DIR__ .  '/../database/category.class.php');
 
     <section class="service-page" id="create_category">
         <form action="/actions/action_create_category.php" method="POST" enctype="multipart/form-data" class="create-form">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
+
             <h1>New Category</h1>
 
             <label for="category-name">Category Name</label>

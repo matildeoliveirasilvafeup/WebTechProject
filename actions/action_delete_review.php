@@ -6,6 +6,9 @@ require_once __DIR__ . '/../database/review.class.php';
 
 $session = Session::getInstance();
 $user = $session->getUser();
+if (!$session->validateCSRFToken($_POST['csrf_token'] ?? '')) {
+    die('CSRF token validation failed');
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);

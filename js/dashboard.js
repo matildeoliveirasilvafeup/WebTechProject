@@ -31,6 +31,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const initialTab = window.location.hash.substring(1) || tabLinks[0]?.getAttribute("data-tab");
     if (initialTab) showTab(initialTab);
+
+    const logoutLink = document.getElementById('logout-link');
+    const logoutForm = document.getElementById('logout-form');
+    if (logoutLink && logoutForm) {
+        logoutLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm("Are you sure you want to log out?")) {
+                logoutForm.submit();
+            }
+        });
+    }
 });
 
 function logout() {

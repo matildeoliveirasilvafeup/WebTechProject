@@ -28,6 +28,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
                     </a>
                     <form method="POST" action="../actions/action_delete_service.php" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this service?');">
                         <input type="hidden" name="id" value="<?= $service->id ?>">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
                         <button type="submit" class="icon-btn delete" title="Delete" onclick="event.stopPropagation();">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -79,6 +80,7 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
 <?php } ?>
 
 <?php function drawServicePage($service, $ratingInfo) { ?>
+    <input type="hidden" id="csrf_token" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
     <div class="service-page">
         <div class="media-carousel">
             <div class="carousel-wrapper">
@@ -197,6 +199,8 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
     <section class="service-page" id="<?= $service ? 'edit_service' : 'new_service' ?>">
         <form action="<?= $service ? '/actions/action_edit_service.php' : '/actions/action_list_service.php' ?>"
               method="POST" enctype="multipart/form-data" class="create-form">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
+
             <h1><?= $service ? 'Edit Service' : 'List New Service' ?></h1>
 
             <?php if ($service): ?>

@@ -165,10 +165,11 @@ function drawMessages(conversationId, serviceId, userId, isPolling = false) {
         });
 
     if (!isPolling) {
+        const csrfToken = document.getElementById('csrf_token')?.value;
         fetch('/actions/action_mark_as_read.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `conversation_id=${conversationId}&service_id=${serviceId}`
+            body: `conversation_id=${conversationId}&service_id=${serviceId}&csrf_token=${encodeURIComponent(csrfToken)}`
         }).then(checkUnreadMessages);
     }
 }
@@ -362,6 +363,8 @@ function sendMessage(event) {
     const fileInput = document.getElementById('chat-file');
     const fileDisplay = document.getElementById('file-name-display');
     const message = input.value.trim();
+    const csrfToken = document.getElementById('csrf_token')?.value;
+
 
     if (!message && (!fileInput || fileInput.files.length === 0)) return;
 
@@ -372,6 +375,7 @@ function sendMessage(event) {
     formData.append('sender_id', window.ChatState.CURRENT_USER_ID);
     formData.append('receiver_id', window.ChatState.CURRENT_RECEIVER_ID);
     formData.append('sub_message', '');
+    if (csrfToken) formData.append('csrf_token', csrfToken);
     
     if (fileInput && fileInput.files.length > 0) {
         formData.append('file', fileInput.files[0]);

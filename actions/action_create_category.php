@@ -9,12 +9,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit('Method Not Allowed');
 }
 
+$session = Session::getInstance();
+if (!$session->validateCSRFToken($_POST['csrf_token'] ?? '')) {
+    die('CSRF token validation failed');
+}
+
 $categoryName = trim($_POST['category_name'] ?? '');
 $icon = trim($_POST['category_icon'] ?? '');
 $subcategories = $_POST['subcategories'] ?? [];
 
 if (empty($categoryName)) {
-    $_SESSION['error'] = 'Category name is required.';
+    $session->setError('Category name is required.');
     header('Location: /pages/create_category.php');
     exit();
 }

@@ -125,6 +125,9 @@ function sendOfferMessage(status, hiring_id, sender_id, receiver_id, service_id,
     formData.append('receiver_id', receiver_id);
     formData.append('sub_message', subMessage);
     formData.append('message', message);
+
+    const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+    if (csrfToken) formData.append('csrf_token', csrfToken);
     
     if (fileInput) {
         formData.append('file', fileInput);
@@ -154,6 +157,9 @@ async function updateOfferStatus(status, id, hiringId, senderId, receiverId, ser
     formData.append('offer_id', id);
     formData.append('hiring_id', hiringId);
     formData.append('new_status', status);
+
+    const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+    if (csrfToken) formData.append('csrf_token', csrfToken);
 
     try {
         const res = await fetch('/actions/action_update_offer_status.php', {
