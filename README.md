@@ -54,3 +54,4 @@
 | juliocunha3@gmail.com       | juliocunha3P.               | user  |
 | matildeoliveira@gmail.com   | matildeoliveirasilva12.A    | user  |
 | dinisilva@gmail.com         | diniSilva.1                 | user  |
+| jose.almeida@gmail.com      | Senha123_                   | admin |
