@@ -44,5 +44,13 @@
 
 ## Credentials
 
-- admin/p4s5w0rd
-- johndoe/1234
+| Email                        | Password                    | Role  |
+|-----------------------------|-----------------------------|-------|
+| joanapinho@gmail.com        | joanaSoares2.               | user  |
+| joeloliver@gmail.com        | joeloliveira1.A             | user  |
+| paulaoliveira@gmail.com     | paulaoliv1A.                | user  |
+| carol@gmail.com             | carol1Aina.                 | user  |
+| edu@gmail.com               | edubrito1A.                 | user  |
+| juliocunha3@gmail.com       | juliocunha3P.               | user  |
+| matildeoliveira@gmail.com   | matildeoliveirasilva12.A    | user  |
+| dinisilva@gmail.com         | diniSilva.1                 | user  |
