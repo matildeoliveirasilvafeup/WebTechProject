@@ -196,9 +196,9 @@ class Service {
         return array_map(fn($row) => new Service($row), $rows);
     }
 
-    public static function getServicesBySearch(string $search, int $limit = 30): array {
+    public static function getServicesBySearch(string $search, int $limit = 30, int $offset = 0): array {
         $db = Database::getInstance();
-    
+
         $stmt = $db->prepare("
             SELECT 
                 services.*,
@@ -216,13 +216,14 @@ class Service {
             LEFT JOIN profiles ON users.id = profiles.user_id
             WHERE services.title LIKE :search OR users.name LIKE :search
             ORDER BY services.created_at DESC
-            LIMIT :limit
+            LIMIT :limit OFFSET :offset
         ");
         
         $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
-    
+
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($rows as &$row) {
@@ -232,7 +233,19 @@ class Service {
         return array_map(fn($row) => new Service($row), $rows);
     }
 
-    public static function getFilteredServices(string $search, array $filters, int $limit = 30): array {
+    public static function getTotalSearchCount(string $search): int {
+        $db = Database::getInstance();
+        $stmt = $db->prepare("
+            SELECT COUNT(*) FROM services
+            JOIN users ON services.freelancer_id = users.id AND users.is_banned = 0
+            WHERE services.title LIKE :search OR users.name LIKE :search
+        ");
+        $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
+    }
+
+    public static function getFilteredServices(string $search, array $filters, int $limit = 30, int $offset = 0): array {
         $db = Database::getInstance();
         $query = "
             SELECT 
@@ -275,7 +288,7 @@ class Service {
         if (!empty($filters['language'])) {
             $query .= " AND services.language LIKE :language";
         }
-
+    
         switch ($filters['sort'] ?? 'newest') {
             case 'oldest':
                 $query .= " ORDER BY services.created_at ASC";
@@ -297,7 +310,7 @@ class Service {
                 break;
         }
     
-        $query .= " LIMIT :limit";
+        $query .= " LIMIT :limit OFFSET :offset";
     
         $stmt = $db->prepare($query);
         $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
@@ -320,22 +333,88 @@ class Service {
             $stmt->bindValue(':language', "%{$filters['language']}%", PDO::PARAM_STR);
         }
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
     
         if (!empty($filters['subcategories'])) {
             foreach ($filters['subcategories'] as $index => $subcategory) {
                 $stmt->bindValue(":subcat_$index", $subcategory, PDO::PARAM_INT);
             }
         }
-
+    
         $stmt->execute();
     
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    
         foreach ($rows as &$row) {
             $row['mediaUrls'] = array_filter(explode(',', $row['media_urls'] ?? ''));
         }
-
+    
         return array_map(fn($row) => new Service($row), $rows);
+    }
+    
+    public static function getFilteredServicesCount(string $search, array $filters): int {
+        $db = Database::getInstance();
+        $query = "
+            SELECT COUNT(*) as total
+            FROM services
+            JOIN users ON services.freelancer_id = users.id AND users.is_banned = 0
+            WHERE (services.title LIKE :search OR users.name LIKE :search)
+        ";
+    
+        if (!empty($filters['category'])) {
+            $query .= " AND services.category_id = :category";
+        }
+        if (!empty($filters['subcategories'])) {
+            $subcatPlaceholders = [];
+            foreach ($filters['subcategories'] as $index => $subcategory) {
+                $subcatPlaceholders[] = ":subcat_$index";
+            }
+            $query .= " AND services.subcategory_id IN (" . implode(',', $subcatPlaceholders) . ")";
+        }
+        if (!empty($filters['min_price'])) {
+            $query .= " AND services.price >= :min_price";
+        }
+        if (!empty($filters['max_price'])) {
+            $query .= " AND services.price <= :max_price";
+        }
+        if (!empty($filters['delivery_time'])) {
+            $query .= " AND services.delivery_time <= :delivery_time";
+        }
+        if (!empty($filters['number_of_revisions'])) {
+            $query .= " AND services.number_of_revisions >= :number_of_revisions";
+        }
+        if (!empty($filters['language'])) {
+            $query .= " AND services.language LIKE :language";
+        }
+    
+        $stmt = $db->prepare($query);
+        $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+        if (!empty($filters['category'])) {
+            $stmt->bindValue(':category', $filters['category'], PDO::PARAM_INT);
+        }
+        if (!empty($filters['min_price'])) {
+            $stmt->bindValue(':min_price', $filters['min_price'], PDO::PARAM_STR);
+        }
+        if (!empty($filters['max_price'])) {
+            $stmt->bindValue(':max_price', $filters['max_price'], PDO::PARAM_STR);
+        }
+        if (!empty($filters['delivery_time'])) {
+            $stmt->bindValue(':delivery_time', $filters['delivery_time'], PDO::PARAM_INT);
+        }
+        if (!empty($filters['number_of_revisions'])) {
+            $stmt->bindValue(':number_of_revisions', $filters['number_of_revisions'], PDO::PARAM_INT);
+        }
+        if (!empty($filters['language'])) {
+            $stmt->bindValue(':language', "%{$filters['language']}%", PDO::PARAM_STR);
+        }
+        if (!empty($filters['subcategories'])) {
+            foreach ($filters['subcategories'] as $index => $subcategory) {
+                $stmt->bindValue(":subcat_$index", $subcategory, PDO::PARAM_INT);
+            }
+        }
+    
+        $stmt->execute();
+        return (int)$stmt->fetchColumn();
     }
 
     public static function create(array $data): int {

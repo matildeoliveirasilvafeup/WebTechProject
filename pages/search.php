@@ -16,11 +16,17 @@
 
     $categories = Category::getAllWithSubcategories();
     $searchQuery = $_GET['q'] ?? '';
-    $services = Service::getServicesBySearch($searchQuery, 20);
+    $page = max(1, (int)($_GET['page'] ?? 1));
+    $limit = 32;
+    $offset = ($page - 1) * $limit;
+
+    $services = Service::getServicesBySearch($searchQuery, $limit, $offset);
+    $totalServices = Service::getTotalSearchCount($searchQuery);
+    $totalPages = (int)ceil($totalServices / $limit);
 
     drawHeader();
     drawCategoryMenu($categories);
-    drawSearchPage('search.php', 'Search services...', false, 'alt-style', $searchQuery, $categories, $services);
+    drawSearchPage('search.php', 'Search services...', false, 'alt-style', $searchQuery, $categories, $services, $page, $totalPages);
     drawChat();
     drawHirings();
     drawFooter();

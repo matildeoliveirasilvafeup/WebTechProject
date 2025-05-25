@@ -94,13 +94,25 @@ function drawFilters(array $categories) {
 ?>
 
 <?php function drawSearchPage(string $action = 'search.php', string $placeholder = 'Search services...', bool $isButton = true, string $extraClass = '', 
-    string $initialValue = '', array $categories, array $services){ ?>
+    string $initialValue = '', array $categories, array $services, int $page = 1, int $totalPages = 1){ ?>
     
     <?= drawSearchForm('search.php', 'Search services...', false, 'alt-style', $initialValue); ?>
     <div class="search-page">
         <?= drawFilters($categories); 
         drawServiceGrid($services); ?>
     </div>
+    
+    <?php if ($totalPages > 1): ?>
+        <nav class="pagination">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <?php if ($i == $page): ?>
+                    <span class="current"><?= $i ?></span>
+                <?php else: ?>
+                    <a href="?q=<?= urlencode($initialValue) ?>&page=<?= $i ?>"><?= $i ?></a>
+                <?php endif; ?>
+            <?php endfor; ?>
+        </nav>
+    <?php endif; ?>
 
 <?php } ?>
 
