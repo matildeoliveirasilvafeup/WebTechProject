@@ -115,15 +115,12 @@
 }
 
 .chat-scrollable {
-	scrollbar-width: none;
-	/* Firefox */
-	-ms-overflow-style: none;
-	/* IE/Edge */
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE/Edge */
 }
 
 .chat-scrollable::-webkit-scrollbar {
-	display: none;
-	/* Chrome, Safari, Opera */
+	display: none; /* Chrome, Safari, Opera */
 }
 
 .chat-main {

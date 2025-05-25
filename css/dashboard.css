@@ -201,9 +201,7 @@
 
 .price {
 	margin: 0;
-	/* importante para evitar espaçamento extra */
 	flex-shrink: 0;
-	/* impede encolhimento */
 }
 
 .card-actions {
@@ -342,8 +340,8 @@
 	}
 }
 
-*,
+/* *,
 *::before,
 *::after {
 	box-sizing: border-box;
-}
+} */
