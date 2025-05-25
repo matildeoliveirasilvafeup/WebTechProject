@@ -323,6 +323,7 @@
 	.dashboard-details .dashboard-card {
 		max-width: 100%;
 		width: 100%;
+		padding-bottom: 1em;
 	}
 
 	.price-actions {
