@@ -13,6 +13,10 @@ $numberOfRevisions = $_GET['number_of_revisions'] ?? null;
 $language = $_GET['language'] ?? null;
 $sort = $_GET['sort'] ?? 'newest';
 
+$page = max(1, (int)($_GET['page'] ?? 1));
+$limit = 32;
+$offset = ($page - 1) * $limit;
+
 $filters = [
     'category' => $category,
     'subcategories' => $subcategories,
@@ -24,7 +28,13 @@ $filters = [
     'sort' => $sort,
 ];
 
-$services = Service::getFilteredServices($searchQuery, $filters, 30);
+$services = Service::getFilteredServices($searchQuery, $filters, $limit, $offset);
+$totalServices = Service::getFilteredServicesCount($searchQuery, $filters);
+$totalPages = (int)ceil($totalServices / $limit);
 
-echo json_encode($services);
+echo json_encode([
+    'services' => $services,
+    'totalPages' => $totalPages,
+    'page' => $page
+]);
 ?>

@@ -145,6 +145,48 @@ form.alt-style .search-icon {
     color: var(--text-lighter);
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    margin: 2em 0 1em 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.pagination a,
+.pagination span.current {
+    display: inline-block;
+    min-width: 2.2em;
+    padding: 0.4em 0.9em;
+    margin: 0 0.1em;
+    border-radius: 6px;
+    font-size: 1.1em;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    border: 1px solid var(--main-theme);
+    color: var(--main-theme);
+    background: var(--secondary);
+    box-shadow: 0 2px 8px var(--box-shadow-light);
+}
+
+.pagination a:hover {
+    background: var(--main-theme);
+    color: var(--secondary);
+    box-shadow: 0 4px 12px var(--box-shadow);
+}
+
+.pagination span.current {
+    background: var(--main-theme);
+    color: var(--secondary);
+    border: 1.5px solid var(--main-theme-darker);
+    cursor: default;
+    box-shadow: 0 4px 12px var(--box-shadow);
+}
+
 @media (max-width: 768px) {
 	form.alt-style {
 		flex-direction: column;
@@ -198,5 +240,19 @@ form.alt-style .search-icon {
 	
     .price-field span {
         width: 100%;
+    }
+
+    .pagination {
+        gap: 0.2em;
+        font-size: 1em;
+    }
+
+    .pagination a,
+    .pagination span.current {
+        min-width: 3em;
+        padding: 0.3em 0.6em;
+        font-size: 1em;
+        width: auto;
+        box-sizing: border-box;
     }
 }
