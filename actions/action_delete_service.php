@@ -4,6 +4,7 @@ require_once __DIR__ . '/../database/user.class.php';
 require_once __DIR__ . '/../database/service.class.php';
 
 $session = Session::getInstance();
+$user = $session->getUser();
 if (!$session->validateCSRFToken($_POST['csrf_token'] ?? '')) {
     die('CSRF token validation failed');
 }

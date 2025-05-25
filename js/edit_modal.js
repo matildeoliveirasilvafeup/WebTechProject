@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             const formData = new FormData(editBioForm);
             const bio = formData.get("bio");
-            const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+            const csrfToken = editBioForm.querySelector('input[name="csrf_token"]')?.value;
 
             try {
                 const response = await fetch("/actions/action_update_bio.php", {

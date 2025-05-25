@@ -182,6 +182,7 @@ async function updateOfferStatus(status, id, hiringId, senderId, receiverId, ser
 
     const formData1 = new FormData();
     formData1.append('hiring_id', hiringId);
+    if (csrfToken) formData1.append('csrf_token', csrfToken);
 
     fetch('/actions/action_check_hiring_status.php', {
         method: 'POST',
@@ -199,6 +200,7 @@ async function updateOfferStatus(status, id, hiringId, senderId, receiverId, ser
             const formData2 = new FormData();
             formData2.append('id', hiringId);
             formData2.append('status', newStatus);
+            if (csrfToken) formData2.append('csrf_token', csrfToken);
 
             return fetch('/actions/action_update_hiring_status.php', {
                 method: 'POST',

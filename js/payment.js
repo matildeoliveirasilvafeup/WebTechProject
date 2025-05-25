@@ -49,14 +49,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 resultDiv.innerHTML = '<p class="success">Payment successful! Redirecting...</p>';
 
-                await startConversation(serviceId, clientId, freelancerId, 'false');
-                await createHiring(serviceId, clientId, freelancerId);
-                await sendStatusMessage('Pending', clientId, freelancerId, serviceId, serviceTitle);
+                try {
+                    await startConversation(serviceId, clientId, freelancerId, 'false');
+                    await createHiring(serviceId, clientId, freelancerId);
+                    await sendStatusMessage('Pending', clientId, freelancerId, serviceId, serviceTitle);
 
-                paymentStep.classList.add('hidden');
-                goBackStep.classList.remove('hidden');
+                    paymentStep.classList.add('hidden');
+                    goBackStep.classList.remove('hidden');
 
-                window.location.href = '/pages/home_page.php';
+                    window.location.href = '/pages/home_page.php';
+                } catch (error) {
+                    resultDiv.innerHTML += `<p class="error">Something went wrong after payment. Please contact support.</p>`;
+                }
             } else {
                 resultDiv.innerHTML = `<p class="error">${data.message}</p>`;
             }

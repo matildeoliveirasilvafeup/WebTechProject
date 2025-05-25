@@ -60,7 +60,7 @@ function drawPaymentForm(Service $service, User $client, User $freelancer): void
             data-freelancer-id="<?= $freelancer->id ?>"
             data-service-title="<?= htmlspecialchars($service->title, ENT_QUOTES) ?>">
             
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
+            <input type="hidden" id="csrf_token" name="csrf_token" value="<?= htmlspecialchars(Session::getInstance()->getCSRFToken()) ?>">
             <input type="hidden" name="service_id" value="<?= htmlspecialchars($service->id) ?>">
             <input type="hidden" name="client_id" value="<?= htmlspecialchars($client->id) ?>">
             <input type="hidden" name="freelancer_id" value="<?= htmlspecialchars($freelancer->id) ?>">
