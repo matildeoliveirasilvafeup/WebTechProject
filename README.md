@@ -25,11 +25,21 @@
 - [x] Oversee and ensure the smooth operation of the entire system.
 
 **Extra:**
-- [ ] Something else.
+- [X] Favorites: Users can mark services as favorites to store them on their favorites page for easier access later. The total number of likes received by a service is displayed on its main page.
+- [X] Custom Order System: Clients can request tailored services based on their needs, and freelancers can propose modified versions of their services to reach an agreement with the client.
+- [X] Ban Users: Admins can ban non-admin users.
+- [X] Edit and Delete Services: Services can be edited or deleted by their creators, as well as by admins who have the necessary permissions.
+- [X] Delete Account: Users can delete their own account.
+- [X] Sort Services: A sorting feature has been added, allowing services to be organized in combination with the filters described above.
+- [X] Sort Reviews: A sorting feature has been added, allowing users to more easily view the reviews they’re most interested in first.
+- [X] Enhanced Chat: Supports File Sharing to facilitate the delivery of completed work, when applicable.
+- [X] Public Profile: Displays public user information and the reviews they’ve received on their listings, helping clients assess whether the freelancer is trustworthy.
+- [X] Integration between the Hire and Custom Offer systems and Chat: Any change in the status of a Hire or Custom Offer automatically sends a message in the chat to notify the other user directly.
 
 ## Running
 
-    sqlite3 database/database.db < database/database.sql
+> Database is already populated. 
+
     php -S localhost:9000
 
 ## Credentials
