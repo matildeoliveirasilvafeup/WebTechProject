@@ -149,9 +149,6 @@ function renderServiceCard(Service $service, bool $isDashboard = false, bool $is
             <button class="icon-btn share" onclick="shareService()">
                 <i class="fas fa-share-alt"></i>
             </button>
-            <a href="report_service.php?id=<?= $service->id ?>" class="icon-btn report" title="Report this service">
-                <i class="fas fa-flag"></i>
-            </a>
         </div>
 
         <div class="service-info">
