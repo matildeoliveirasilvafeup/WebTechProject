@@ -1,8 +1,3 @@
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
 :where(body) > .payment-page-wrapper {
     min-height: 100vh;
     display: flex;
@@ -22,10 +17,10 @@ html, body {
     width: 31.25rem;
     margin: 2.5rem auto;
     padding: 1.5625rem;
-    background: white;
+    background: var(--secondary);
     border-radius: 0.625rem;
     border: 1px solid var(--background-disabled);
-    box-shadow: 0 0.3125rem 0.9375rem rgba(0,0,0,0.1);
+    box-shadow: 0 0.3125rem 0.9375rem var(--box-shadow);
     font-family: Arial, sans-serif;
 }
 
@@ -96,8 +91,4 @@ html, body {
 .method-form label {
     display: block;
     margin-bottom: 0.5rem;
-}
-
-.hidden {
-    display: none !important;
 }

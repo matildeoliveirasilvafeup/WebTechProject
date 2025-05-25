@@ -1,5 +1,5 @@
 header {
-    border-bottom: 1px solid rgba(211, 213, 219, 0.654);
+    border-bottom: 1px solid var(--light-border);
     padding: 1.5em 2em;
 }
 

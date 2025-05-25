@@ -1,5 +1,5 @@
 footer {
     margin: 0 2em;
-    border-top: 1px solid rgba(211, 213, 219, 0.654);
+    border-top: 1px solid var(--light-border);
     padding: 1em 0;
 }

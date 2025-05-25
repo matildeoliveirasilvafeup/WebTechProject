@@ -1,7 +1,3 @@
-.hidden {
-    display: none !important;
-}
-
 #notification p {
     display: block;
     font-weight: bold;

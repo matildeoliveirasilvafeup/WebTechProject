@@ -3,12 +3,12 @@
 	bottom: 1rem;
 	right: 1rem;
 	background-color: var(--main-theme-darker);
-	color: white;
+	color: var(--secondary);
 	border: none;
 	padding: 1rem;
 	border-radius: 50px;
 	cursor: pointer;
-	box-shadow: 0.125rem 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+	box-shadow: 0.125rem 0.25rem 0.5rem var(--box-shadow-strong);
 	font-size: 1rem;
 }
 
@@ -19,9 +19,9 @@
 	width: 90vw;
 	max-width: 50rem;
 	height: 62.5vh;
-	background: white;
+	background: var(--secondary);
 	border-radius: 10px;
-	box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.3);
+	box-shadow: 0 0.5rem 1.25rem var(--box-shadow-strong);
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
@@ -29,7 +29,7 @@
 }
 
 .hidden {
-	display: none;
+	display: none !important;
 }
 
 .close-button {
@@ -38,6 +38,7 @@
     right: 0.5rem;
     z-index: 10;
 }
+
 .close-button #chat-close-btn,
 .close-button #chat-custom-order {
     background: transparent;
@@ -49,9 +50,10 @@
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
+
 .close-button #chat-close-btn:hover,
 .close-button #chat-custom-order:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--box-shadow);
 }
 
 .chat-wrapper {
@@ -173,7 +175,7 @@
 
 #chat-send-btn {
 	background-color: var(--main-theme-darker);
-	color: white;
+	color: var(--secondary);
 	border: none;
 	padding: 1rem 1rem;
 	border-radius: 0 20px 20px 0;
@@ -210,7 +212,7 @@
 }
 
 .message-out .msg-text {
-	background-color: #d0f0c0;
+	background-color: var(--message-out);
 	align-self: flex-end;
 }
 
@@ -272,8 +274,8 @@
 .badge,
 .chat-badge,
 .chat-item-badge {
-	background-color: red;
-	color: white;
+	background-color: var(--error);
+	color: var(--secondary);
 	font-size: 0.7rem;
 	border-radius: 12px;
 	line-height: 1;
@@ -336,7 +338,7 @@
 #chat-file-label {
 	padding: 0.3em;
 	border-radius: 1em;
-	background-color: white;
+	background-color: var(--secondary);
 	position: absolute;
 	left: 0.6rem;
 	top: 0.6rem;
@@ -392,6 +394,7 @@
     padding: 0.625rem;
     border-radius: 12px;
 }
+
 .message-with-sub.status-pending, .message-with-sub.status-reopened { background-color: var(--pending-color); color: var(--pending-background) }
 .message-with-sub.status-accepted { background-color: var(--accepted-color); color: var(--accepted-background) }
 .message-with-sub.status-rejected { background-color: var(--rejected-color); color: var(--rejected-background) }
@@ -405,6 +408,7 @@
     font-size: 0.875rem;
     font-weight: bold;
 }
+
 .sub-message-bubble.status-pending, .sub-message-bubble.status-reopened { background-color: #f0dca1; color: var(--pending-background) }
 .sub-message-bubble.status-accepted { background-color: #b7daed; color: var(--accepted-background) }
 .sub-message-bubble.status-rejected { background-color: #e7c5c5; color: var(--rejected-background) }
@@ -415,10 +419,10 @@
     top: 0.5rem;
     right: 3.5rem;
     position: absolute;
-    background: white;
+    background: var(--secondary);
     border: 1px solid var(--background-disabled);
     border-radius: 6px;
-    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
+    box-shadow: 0 0.25rem 0.5rem var(--box-shadow);
     padding: 1rem;
     width: 15rem;
     z-index: 1000;
@@ -526,22 +530,3 @@
 		padding: 0.4rem 0.6rem;
 	}
 }
-
-/*#chat-toggle-btn {
-	position: fixed;
-	bottom: 5rem;
-	left: 1rem;
-	background-color: var(--main-theme-darker);
-	color: white;
-	border: none;
-	width: 3rem;
-	height: 3rem;
-	border-radius: 50%;
-	cursor: pointer;
-	box-shadow: 0.125rem 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
-	font-size: 1rem;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	z-index: 1100;
-}*/

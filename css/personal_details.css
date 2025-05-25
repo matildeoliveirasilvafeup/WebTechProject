@@ -1,6 +1,6 @@
 .personal-details,
 .freelancer-reviews-section {
-    background: white;
+    background: var(--secondary);
     border-radius: 12px;
     box-shadow: 0 2px 10px var(--box-shadow);
     margin: 2em auto;
@@ -9,11 +9,6 @@
 
 .personal-details {
     max-width: 30vw;
-}
-
-html, body {
-    height: 100%;
-    margin: 0;
 }
 
 :where(body) > .public-profile {

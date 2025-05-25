@@ -197,10 +197,6 @@
     color: #ef4444;
 }
 
-.icon-btn.report i {
-    color: #f59e0b;
-}
-
 .icon-btn span {
     font-size: 0.85rem;
 }
@@ -423,8 +419,8 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
+    background: var(--box-shadow-strong);
+    color: var(--secondary);
     border: none;
     padding: 10px;
     cursor: pointer;

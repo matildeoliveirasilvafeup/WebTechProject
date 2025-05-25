@@ -37,7 +37,7 @@ form.alt-style .search-icon {
     border: 1px solid var(--soft-line);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px var(--box-shadow);
     width: 90%;
     font-family: 'Segoe UI', sans-serif;
 }
@@ -98,7 +98,7 @@ form.alt-style .search-icon {
 
 .btn-filter {
     background-color: var(--main-theme);
-    color: white;
+    color: var(--secondary);
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 6px;
