@@ -38,7 +38,7 @@
 
 ## Running
 
-> Database is already populated. 
+> The Database is already populated, so running the Project is as simple as executing the following command from the root directory:
 
     php -S localhost:9000
 
